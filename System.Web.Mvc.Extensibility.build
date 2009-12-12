@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Full" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <UsingTask AssemblyFile="References\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit"/>
+    <PropertyGroup Condition="'$(Condition)' == ''">
+        <Configuration>Debug</Configuration>
+    </PropertyGroup>
+    <Target Name="Full" DependsOnTargets="Clean;Build;Test" />
+    <Target Name="Clean">
+        <MSBuild Projects="System.Web.Mvc.Extensibility.sln" Targets="Clean" Properties="Configuration=$(Configuration)" />
+    </Target>
+    <Target Name="Build" DependsOnTargets="Clean">
+        <MSBuild Projects="System.Web.Mvc.Extensibility.sln" Targets="Build" Properties="Configuration=$(Configuration)"/>
+    </Target>
+    <Target Name="Test" DependsOnTargets="Build">
+        <xunit Assembly="System.Web.Mvc.Extensibility.Tests\bin\$(Configuration)\System.Web.Mvc.Extensibility.Tests.dll" />
+        <xunit Assembly="System.Web.Mvc.Extensibility.Autofac.Tests\bin\$(Configuration)\System.Web.Mvc.Extensibility.Autofac.Tests.dll" />
+        <xunit Assembly="System.Web.Mvc.Extensibility.Ninject.Tests\bin\$(Configuration)\System.Web.Mvc.Extensibility.Ninject.Tests.dll" />
+        <xunit Assembly="System.Web.Mvc.Extensibility.StructureMap.Tests\bin\$(Configuration)\System.Web.Mvc.Extensibility.StructureMap.Tests.dll" />
+        <xunit Assembly="System.Web.Mvc.Extensibility.Unity.Tests\bin\$(Configuration)\System.Web.Mvc.Extensibility.Unity.Tests.dll" />
+        <xunit Assembly="System.Web.Mvc.Extensibility.Windsor.Tests\bin\$(Configuration)\System.Web.Mvc.Extensibility.Windsor.Tests.dll" />
+    </Target>
+</Project>
