@@ -15,11 +15,16 @@ namespace System.Web.Mvc.Extensibility.Windsor
         protected override IServiceLocator CreateServiceLocator()
         {
             IWindsorContainer container = new WindsorContainer();
+            IServiceLocator serviceLocator = new WindsorServiceLocator(container);
 
+            container.Kernel.AddComponentInstance(typeof(IServiceLocator).FullName, typeof(IServiceLocator), serviceLocator);
             container.Kernel.AddComponentInstance(typeof(RouteCollection).FullName, RouteTable.Routes);
             container.Kernel.AddComponentInstance(typeof(ControllerBuilder).FullName, ControllerBuilder.Current);
             container.Kernel.AddComponentInstance(typeof(ModelBinderDictionary).FullName, ModelBinders.Binders);
             container.Kernel.AddComponentInstance(typeof(ViewEngineCollection).FullName, ViewEngines.Engines);
+
+            container.AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Transient)
+                     .AddComponentLifeStyle(typeof(IActionInvoker).FullName, typeof(IActionInvoker), typeof(ExtendedControllerActionInvoker), LifestyleType.Transient);
 
             IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
 
@@ -40,7 +45,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
                          .Cast<IModule>()
                          .Each(module => module.Load(container));
 
-            return new WindsorServiceLocator(container);
+            return serviceLocator;
         }
     }
 }

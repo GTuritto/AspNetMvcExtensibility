@@ -1,6 +1,7 @@
 namespace Demo.Web.Autofac
 {
     using System;
+    using System.ComponentModel;
     using System.Web.Mvc;
     using System.Web.Mvc.Extensibility;
 
@@ -16,7 +17,7 @@ namespace Demo.Web.Autofac
             this.supplierRepository = supplierRepository;
         }
 
-        protected override object GetPropertyValue(ControllerContext controllerContext, ModelBindingContext bindingContext, System.ComponentModel.PropertyDescriptor propertyDescriptor, IModelBinder propertyBinder)
+        protected override object GetPropertyValue(ControllerContext controllerContext, ModelBindingContext bindingContext, PropertyDescriptor propertyDescriptor, IModelBinder propertyBinder)
         {
             const string CategoryProperty = "Category";
             const string SupplierProperty = "Supplier";
@@ -34,7 +35,7 @@ namespace Demo.Web.Autofac
             return base.GetPropertyValue(controllerContext, bindingContext, propertyDescriptor, propertyBinder);
         }
 
-        private static object GetValue<TEntity>(string propertyName, IRepository<TEntity> repository,ControllerContext controllerContext, ModelBindingContext bindingContext) where TEntity : EntityBase
+        private static object GetValue<TEntity>(string propertyName, IRepository<TEntity> repository, ControllerContext controllerContext, ModelBindingContext bindingContext) where TEntity : EntityBase
         {
             ValueProviderResult result = bindingContext.ValueProvider.GetValue(controllerContext, propertyName);
             int? id = (result != null) ? (int?) result.ConvertTo(typeof(int?)) : null;

@@ -18,13 +18,17 @@ namespace System.Web.Mvc.Extensibility.StructureMap
         protected override IServiceLocator CreateServiceLocator()
         {
             IContainer container = new Container();
+            IServiceLocator serviceLocator = new StructureMapServiceLocator(container);
 
             container.Configure(x =>
                                 {
+                                    x.ForRequestedType<IServiceLocator>().TheDefault.IsThis(serviceLocator);
                                     x.ForRequestedType<RouteCollection>().TheDefault.IsThis(RouteTable.Routes);
                                     x.ForRequestedType<ControllerBuilder>().TheDefault.IsThis(ControllerBuilder.Current);
                                     x.ForRequestedType<ModelBinderDictionary>().TheDefault.IsThis(ModelBinders.Binders);
                                     x.ForRequestedType<ViewEngineCollection>().TheDefault.IsThis(ViewEngines.Engines);
+                                    x.ForRequestedType<IControllerFactory>().TheDefaultIsConcreteType<ExtendedControllerFactory>();
+                                    x.ForRequestedType<IActionInvoker>().TheDefaultIsConcreteType<ExtendedControllerActionInvoker>();
                                 });
 
             IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
@@ -46,7 +50,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
                          .Cast<Registry>()
                          .Each(registry => container.Configure(x => x.AddRegistry(registry)));
 
-            return new StructureMapServiceLocator(container);
+            return serviceLocator;
         }
     }
 }

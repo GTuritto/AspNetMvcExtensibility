@@ -11,9 +11,14 @@ namespace System.Web.Mvc.Extensibility.Tests
             var builder = new ControllerBuilder();
             var registration = new RegisterControllerFactory(builder);
 
-            registration.Execute(new Mock<FakeServiceLocator>().Object);
+            var serviceLocator = new Mock<FakeServiceLocator>();
+            var controllerFactory = new Mock<IControllerFactory>();
 
-            Assert.IsType<ExtendedControllerFactory>(builder.GetControllerFactory());
+            serviceLocator.Setup(sl => sl.GetInstance<IControllerFactory>()).Returns(controllerFactory.Object);
+
+            registration.Execute(serviceLocator.Object);
+
+            Assert.Same(controllerFactory.Object, builder.GetControllerFactory());
         }
     }
 }

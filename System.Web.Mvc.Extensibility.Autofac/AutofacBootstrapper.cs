@@ -8,7 +8,6 @@ namespace System.Web.Mvc.Extensibility.Autofac
 
     using CollectionModule = global::Autofac.Modules.ImplicitCollectionSupportModule;
     using ContainerBuilder = global::Autofac.Builder.ContainerBuilder;
-    using IContainer = global::Autofac.IContainer;
     using IModule = global::Autofac.IModule;
 
     public class AutofacBootstrapper : BootstrapperBase
@@ -18,11 +17,16 @@ namespace System.Web.Mvc.Extensibility.Autofac
         protected override IServiceLocator CreateServiceLocator()
         {
             ContainerBuilder builder = new ContainerBuilder();
+            AutofacServiceLocator serviceLocator = new AutofacServiceLocator();
 
+            builder.Register(serviceLocator).As<IServiceLocator>();
             builder.Register(RouteTable.Routes);
             builder.Register(ControllerBuilder.Current);
             builder.Register(ModelBinders.Binders);
             builder.Register(ViewEngines.Engines);
+
+            builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().FactoryScoped();
+            builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
 
             builder.RegisterModule(new CollectionModule());
 
@@ -44,9 +48,9 @@ namespace System.Web.Mvc.Extensibility.Autofac
                          .Where(type => !type.Namespace.StartsWith("Autofac", StringComparison.OrdinalIgnoreCase))
                          .Each(type => builder.RegisterModule(Activator.CreateInstance(type) as IModule));
 
-            IContainer container = builder.Build();
+            serviceLocator.Container = builder.Build();
 
-            return new AutofacServiceLocator(container);
+            return serviceLocator;
         }
     }
 }

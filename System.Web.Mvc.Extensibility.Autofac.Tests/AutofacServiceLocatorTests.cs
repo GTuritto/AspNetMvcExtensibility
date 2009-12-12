@@ -14,7 +14,7 @@ namespace System.Web.Mvc.Extensibility.Autofac.Tests
         public AutofacServiceLocatorTests()
         {
             container = new Mock<IContainer>();
-            serviceLocator = new AutofacServiceLocator(container.Object);
+            serviceLocator = new AutofacServiceLocator { Container = container.Object };
         }
 
         [Fact]

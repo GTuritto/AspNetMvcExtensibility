@@ -14,11 +14,15 @@ namespace System.Web.Mvc.Extensibility.Unity
         protected override IServiceLocator CreateServiceLocator()
         {
             IUnityContainer container = new UnityContainer();
+            IServiceLocator serviceLocator = new UnityServiceLocator(container);
 
-            container.RegisterInstance(RouteTable.Routes);
-            container.RegisterInstance(ControllerBuilder.Current);
-            container.RegisterInstance(ModelBinders.Binders);
-            container.RegisterInstance(ViewEngines.Engines);
+            container.RegisterInstance(RouteTable.Routes)
+                     .RegisterInstance(ControllerBuilder.Current)
+                     .RegisterInstance(ModelBinders.Binders)
+                     .RegisterInstance(ViewEngines.Engines)
+                     .RegisterInstance(serviceLocator)
+                     .RegisterType<IControllerFactory, ExtendedControllerFactory>()
+                     .RegisterType<IActionInvoker, ExtendedControllerActionInvoker>();
 
             IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
 
@@ -39,7 +43,7 @@ namespace System.Web.Mvc.Extensibility.Unity
                          .Cast<IModule>()
                          .Each(module => module.Load(container));
 
-            return new UnityServiceLocator(container);
+            return serviceLocator;
         }
     }
 }

@@ -17,10 +17,10 @@ namespace System.Web.Mvc.Extensibility
             private set;
         }
 
-        protected override void ExecuteCore(IServiceLocator locator)
+        protected override void ExecuteCore(IServiceLocator serviceLocator)
         {
-            locator.GetAllInstances<IViewEngine>()
-                   .Each(engine =>
+            serviceLocator.GetAllInstances<IViewEngine>()
+                          .Each(engine =>
                                   {
                                       if (!ViewEngines.Contains(engine))
                                       {

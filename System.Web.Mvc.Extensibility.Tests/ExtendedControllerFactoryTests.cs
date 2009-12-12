@@ -15,13 +15,15 @@ namespace System.Web.Mvc.Extensibility.Tests
             var serviceLocator = new Mock<FakeServiceLocator>();
             var controllerFactory = new ExtendedControllerFactoryTestDouble(serviceLocator.Object);
 
-            var controller = new FakeController();
+            var actionInvoker = new Mock<IActionInvoker>();
+            var controller = new Mock<Controller>();
 
-            serviceLocator.Setup(sl => sl.GetInstance(typeof(FakeController))).Returns(controller);
+            serviceLocator.Setup(sl => sl.GetInstance(It.Is<Type>(type => typeof(Controller).IsAssignableFrom(type)))).Returns(controller.Object);
+            serviceLocator.Setup(sl => sl.GetInstance<IActionInvoker>()).Returns(actionInvoker.Object);
 
-            controllerFactory.PublicGetControllerInstance(null, typeof(FakeController));
+            controllerFactory.PublicGetControllerInstance(null, controller.Object.GetType());
 
-            Assert.IsType<ExtendedControllerActionInvoker>(controller.ActionInvoker);
+            Assert.Same(actionInvoker.Object, controller.Object.ActionInvoker);
         }
 
         private sealed class ExtendedControllerFactoryTestDouble : ExtendedControllerFactory
@@ -34,10 +36,6 @@ namespace System.Web.Mvc.Extensibility.Tests
             {
                 GetControllerInstance(requestContext, controllerType);
             }
-        }
-
-        private sealed class FakeController : Controller
-        {
         }
     }
 }

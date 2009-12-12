@@ -49,7 +49,7 @@ namespace System.Web.Mvc.Extensibility
 
                 if (controller != null)
                 {
-                    controller.ActionInvoker = new ExtendedControllerActionInvoker(ServiceLocator);
+                    controller.ActionInvoker = ServiceLocator.GetInstance<IActionInvoker>();
                 }
             }
 

@@ -20,11 +20,14 @@ namespace System.Web.Mvc.Extensibility.Ninject
             IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
 
             IKernel kernal = new Kernel(new DefaualtModule(concreteTypes));
+            IServiceLocator serviceLocator = new NinjectServiceLocator(kernal);
+
+            kernal.Bind<IServiceLocator>().ToConstant(serviceLocator).InSingletonScope();
 
             concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
                          .Each(type => kernal.LoadModule(Activator.CreateInstance(type) as IModule));
 
-            return new NinjectServiceLocator(kernal);
+            return serviceLocator;
         }
 
         private sealed class DefaualtModule : Module
@@ -42,6 +45,9 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 Bind<ControllerBuilder>().ToConstant(ControllerBuilder.Current);
                 Bind<ModelBinderDictionary>().ToConstant(ModelBinders.Binders);
                 Bind<ViewEngineCollection>().ToConstant(ViewEngines.Engines);
+
+                Bind<IControllerFactory>().To<ExtendedControllerFactory>().InTransientScope();
+                Bind<IActionInvoker>().To<ExtendedControllerActionInvoker>().InTransientScope();
 
                 concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.BootstrapperTaskType).To(type).InTransientScope());

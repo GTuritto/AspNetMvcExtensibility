@@ -4,13 +4,13 @@ namespace System.Web.Mvc.Extensibility
 
     public abstract class BootstrapperTaskBase : DisposableBase, IBootstrapperTask
     {
-        public void Execute(IServiceLocator locator)
+        public void Execute(IServiceLocator serviceLocator)
         {
-            Invariant.IsNotNull(locator, "locator");
+            Invariant.IsNotNull(serviceLocator, "serviceLocator");
 
-            ExecuteCore(locator);
+            ExecuteCore(serviceLocator);
         }
 
-        protected abstract void ExecuteCore(IServiceLocator locator);
+        protected abstract void ExecuteCore(IServiceLocator serviceLocator);
     }
 }

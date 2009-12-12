@@ -17,9 +17,9 @@ namespace System.Web.Mvc.Extensibility
             private set;
         }
 
-        protected override void ExecuteCore(IServiceLocator locator)
+        protected override void ExecuteCore(IServiceLocator serviceLocator)
         {
-            ControllerBuilder.SetControllerFactory(new ExtendedControllerFactory(locator));
+            ControllerBuilder.SetControllerFactory(serviceLocator.GetInstance<IControllerFactory>());
         }
     }
 }

@@ -12,13 +12,6 @@ namespace System.Web.Mvc.Extensibility.Autofac
     {
         private bool isDisposed;
 
-        public AutofacServiceLocator(IContainer container)
-        {
-            Invariant.IsNotNull(container, "container");
-
-            Container = container;
-        }
-
         [DebuggerStepThrough]
         ~AutofacServiceLocator()
         {
@@ -28,7 +21,7 @@ namespace System.Web.Mvc.Extensibility.Autofac
         public IContainer Container
         {
             get;
-            private set;
+            set;
         }
 
         [DebuggerStepThrough]
@@ -67,7 +60,10 @@ namespace System.Web.Mvc.Extensibility.Autofac
         {
             if (!isDisposed && disposing)
             {
-                Container.Dispose();
+                if (Container != null)
+                {
+                    Container.Dispose();
+                }
             }
 
             isDisposed = true;

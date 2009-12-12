@@ -19,10 +19,10 @@ namespace System.Web.Mvc.Extensibility
             private set;
         }
 
-        protected override void ExecuteCore(IServiceLocator locator)
+        protected override void ExecuteCore(IServiceLocator serviceLocator)
         {
-            locator.GetAllInstances<IModelBinder>()
-                   .Select(binder => new
+            serviceLocator.GetAllInstances<IModelBinder>()
+                          .Select(binder => new
                                          {
                                              Binder = binder,
                                              Types = binder.GetType()
@@ -30,7 +30,7 @@ namespace System.Web.Mvc.Extensibility
                                                            .OfType<BindingTypesAttribute>()
                                                            .SelectMany(attribute => attribute.Types)
                                          })
-                   .Each(pair => pair.Types.Each(type =>
+                           .Each(pair => pair.Types.Each(type =>
                                                          {
                                                              if (!Binders.ContainsKey(type))
                                                              {
