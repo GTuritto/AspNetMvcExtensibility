@@ -46,6 +46,7 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 Bind<ModelBinderDictionary>().ToConstant(ModelBinders.Binders);
                 Bind<ViewEngineCollection>().ToConstant(ViewEngines.Engines);
 
+                Bind<IFilterRegistry>().To<FilterRegistry>().InSingletonScope();
                 Bind<IControllerFactory>().To<ExtendedControllerFactory>().InTransientScope();
                 Bind<IActionInvoker>().To<ExtendedControllerActionInvoker>().InTransientScope();
 
@@ -56,6 +57,9 @@ namespace System.Web.Mvc.Extensibility.Ninject
                              .Each(type => Bind(KnownTypes.ModelBinderType).To(type).InSingletonScope());
 
                 concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
+                             .Each(type => Bind(type).ToSelf().InTransientScope());
+
+                concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
                              .Each(type => Bind(type).ToSelf().InTransientScope());
 
                 concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))

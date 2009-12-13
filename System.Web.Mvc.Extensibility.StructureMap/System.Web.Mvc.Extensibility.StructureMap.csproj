@@ -94,6 +94,7 @@
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="StructureMapMvcApplication.cs" />
     <Compile Include="StructureMapBootstrapper.cs" />
     <Compile Include="StructureMapServiceLocator.cs" />

@@ -23,7 +23,8 @@ namespace System.Web.Mvc.Extensibility.Windsor
             container.Kernel.AddComponentInstance(typeof(ModelBinderDictionary).FullName, ModelBinders.Binders);
             container.Kernel.AddComponentInstance(typeof(ViewEngineCollection).FullName, ViewEngines.Engines);
 
-            container.AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Transient)
+            container.AddComponentLifeStyle(typeof(IFilterRegistry).FullName, typeof(IFilterRegistry), typeof(FilterRegistry), LifestyleType.Singleton)
+                     .AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Transient)
                      .AddComponentLifeStyle(typeof(IActionInvoker).FullName, typeof(IActionInvoker), typeof(ExtendedControllerActionInvoker), LifestyleType.Transient);
 
             IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
@@ -35,6 +36,9 @@ namespace System.Web.Mvc.Extensibility.Windsor
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelBinderType, type, LifestyleType.Singleton));
 
             concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, type, type, LifestyleType.Transient));
+
+            concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, type, type, LifestyleType.Transient));
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))

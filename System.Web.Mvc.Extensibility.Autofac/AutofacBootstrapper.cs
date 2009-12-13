@@ -25,6 +25,7 @@ namespace System.Web.Mvc.Extensibility.Autofac
             builder.Register(ModelBinders.Binders);
             builder.Register(ViewEngines.Engines);
 
+            builder.Register<FilterRegistry>().As<IFilterRegistry>().ContainerScoped();
             builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().FactoryScoped();
             builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
 
@@ -39,6 +40,9 @@ namespace System.Web.Mvc.Extensibility.Autofac
                          .Each(type => builder.Register(type).As(KnownTypes.ModelBinderType).ContainerScoped());
 
             concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
+                         .Each(type => builder.Register(type).FactoryScoped());
+
+            concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).FactoryScoped());
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))

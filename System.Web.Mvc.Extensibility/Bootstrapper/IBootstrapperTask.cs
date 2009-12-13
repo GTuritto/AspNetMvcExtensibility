@@ -4,6 +4,6 @@ namespace System.Web.Mvc.Extensibility
 
     public interface IBootstrapperTask : IDisposable
     {
-        void Execute(IServiceLocator locator);
+        void Execute(IServiceLocator serviceLocator);
     }
 }

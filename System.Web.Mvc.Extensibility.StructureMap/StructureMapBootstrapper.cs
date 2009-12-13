@@ -27,6 +27,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
                                     x.ForRequestedType<ControllerBuilder>().TheDefault.IsThis(ControllerBuilder.Current);
                                     x.ForRequestedType<ModelBinderDictionary>().TheDefault.IsThis(ModelBinders.Binders);
                                     x.ForRequestedType<ViewEngineCollection>().TheDefault.IsThis(ViewEngines.Engines);
+                                    x.ForRequestedType<IFilterRegistry>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<FilterRegistry>();
                                     x.ForRequestedType<IControllerFactory>().TheDefaultIsConcreteType<ExtendedControllerFactory>();
                                     x.ForRequestedType<IActionInvoker>().TheDefaultIsConcreteType<ExtendedControllerActionInvoker>();
                                 });
@@ -40,6 +41,9 @@ namespace System.Web.Mvc.Extensibility.StructureMap
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelBinderType).CacheBy(InstanceScope.Singleton).AddType(type)));
 
             concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
+                         .Each(type => container.Configure(x => x.ForRequestedType(type).TheDefaultIsConcreteType(type)));
+
+            concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(type).TheDefaultIsConcreteType(type)));
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))

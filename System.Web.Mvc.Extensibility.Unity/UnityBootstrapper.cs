@@ -21,6 +21,7 @@ namespace System.Web.Mvc.Extensibility.Unity
                      .RegisterInstance(ModelBinders.Binders)
                      .RegisterInstance(ViewEngines.Engines)
                      .RegisterInstance(serviceLocator)
+                     .RegisterType<IFilterRegistry, FilterRegistry>(new ContainerControlledLifetimeManager())
                      .RegisterType<IControllerFactory, ExtendedControllerFactory>()
                      .RegisterType<IActionInvoker, ExtendedControllerActionInvoker>();
 
@@ -33,6 +34,9 @@ namespace System.Web.Mvc.Extensibility.Unity
                          .Each(type => container.RegisterType(KnownTypes.ModelBinderType, type, type.FullName, new ContainerControlledLifetimeManager()));
 
             concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
+                         .Each(type => container.RegisterType(type, type));
+
+            concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(type, type));
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
