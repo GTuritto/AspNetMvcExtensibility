@@ -22,13 +22,12 @@ namespace Demo.Web.StructureMap
             return View(repository.Get(id).AsDisplayModel());
         }
 
-        [PopulateCategories, PopulateSuppliers]
         public ActionResult Create()
         {
             return View(new ProductEditModel());
         }
 
-        [HttpPost, PopulateCategories, PopulateSuppliers]
+        [HttpPost]
         public ActionResult Create(FormCollection form)
         {
             ProductEditModel model = new ProductEditModel();
@@ -46,13 +45,12 @@ namespace Demo.Web.StructureMap
             return View(model);
         }
 
-        [PopulateCategories, PopulateSuppliers]
         public ActionResult Edit(int id)
         {
             return View(repository.Get(id).AsEditModel());
         }
 
-        [HttpPost, PopulateCategories, PopulateSuppliers]
+        [HttpPost]
         public ActionResult Edit(ProductEditModel model)
         {
             if (ModelState.IsValid)

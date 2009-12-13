@@ -82,6 +82,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\ProductEditModelBinder.cs" />
+    <Compile Include="Infrastructure\RegisterFilters.cs" />
     <Compile Include="Infrastructure\RegisterRoutes.cs" />
     <Compile Include="Infrastructure\RegisterServices.cs" />
     <Compile Include="Models\AccountModels.cs" />

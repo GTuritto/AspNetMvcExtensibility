@@ -4,8 +4,8 @@ namespace Demo.Web.Ninject
     {
         public override void Load()
         {
-            Bind<IDatabase>().To<InMemoryDatabasae>().InSingletonScope();
-            Bind(typeof(IRepository<>)).To(typeof (Repository<>)).InRequestScope();
+            Bind<IDatabase>().To<InMemoryDatabasae>();
+            Bind(typeof(IRepository<>)).To(typeof (Repository<>));
         }
     }
 }

@@ -6,7 +6,12 @@ namespace Demo.Web.Windsor
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class PopulateCategoriesAttribute : PopulateModelAttribute
     {
-        public IRepository<Category> Repository { get; set; }
+        private readonly IRepository<Category> repository;
+
+        public PopulateCategoriesAttribute(IRepository<Category> repository)
+        {
+            this.repository = repository;
+        }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
@@ -14,7 +19,7 @@ namespace Demo.Web.Windsor
 
             if (editModel != null)
             {
-                editModel.Categories = new SelectList(Repository.All(), "Id", "Name", editModel.Category);
+                editModel.Categories = new SelectList(repository.All(), "Id", "Name", editModel.Category);
             }
         }
     }

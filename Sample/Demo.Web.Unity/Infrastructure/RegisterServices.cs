@@ -1,13 +1,15 @@
 namespace Demo.Web.Unity
 {
+    using System.Web.Mvc.Extensibility.Unity;
+
     using Microsoft.Practices.Unity;
 
-    public class RegisterServices : System.Web.Mvc.Extensibility.Unity.IModule
+    public class RegisterServices : IModule
     {
         public void Load(IUnityContainer container)
         {
-            container.RegisterType<IDatabase, InMemoryDatabasae>(new ContainerControlledLifetimeManager())
-                     .RegisterType(typeof(IRepository<>), typeof(Repository<>), new ContainerControlledLifetimeManager());
+            container.RegisterType<IDatabase, InMemoryDatabasae>()
+                     .RegisterType(typeof(IRepository<>), typeof(Repository<>));
         }
     }
 }

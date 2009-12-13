@@ -1,13 +1,14 @@
 namespace Demo.Web.Windsor
 {
-    using Castle.Core;
+    using System.Web.Mvc.Extensibility.Windsor;
+
     using Castle.Windsor;
 
-    public class RegisterServices : System.Web.Mvc.Extensibility.Windsor.IModule
+    public class RegisterServices : IModule
     {
         public void Load(IWindsorContainer container)
         {
-            container.AddComponentLifeStyle<IDatabase, InMemoryDatabasae>(typeof(IDatabase).FullName, LifestyleType.Singleton)
+            container.AddComponent<IDatabase, InMemoryDatabasae>(typeof(IDatabase).FullName)
                      .AddComponent(typeof(IRepository<>).FullName, typeof(IRepository<>), typeof(Repository<>));
         }
     }
