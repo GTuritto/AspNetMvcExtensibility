@@ -9,7 +9,3 @@
 // You do not need to add suppressions to this file manually. 
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2116:AptcaMethodsShouldOnlyCallAptcaMethods", Scope = "member", Target = "System.Web.Mvc.Extensibility.Windsor.WindsorBootstrapper.#CreateServiceLocator()")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2116:AptcaMethodsShouldOnlyCallAptcaMethods", Scope = "member", Target = "System.Web.Mvc.Extensibility.Windsor.WindsorServiceLocator.#DoGetAllInstances(System.Type)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2116:AptcaMethodsShouldOnlyCallAptcaMethods", Scope = "member", Target = "System.Web.Mvc.Extensibility.Windsor.WindsorServiceLocator.#DoGetInstance(System.Type,System.String)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2116:AptcaMethodsShouldOnlyCallAptcaMethods", Scope = "member", Target = "System.Web.Mvc.Extensibility.Windsor.WindsorServiceLocator.#Inject(System.Object)")]

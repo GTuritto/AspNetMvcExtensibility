@@ -14,9 +14,9 @@ namespace System.Web.Mvc.Extensibility
 
             MethodCallExpression methodCall = action.Body as MethodCallExpression;
 
-            if (methodCall == null)
+            if ((methodCall == null) || !KnownTypes.ActionResultType.IsAssignableFrom(methodCall.Method.ReturnType))
             {
-                throw new InvalidOperationException("The expression must be a valid method call.");
+                throw new ArgumentException(ExceptionMessages.TheExpressionMustBeAValidControllerAction, "action");
             }
 
             reflectedActionDescriptor = new ReflectedActionDescriptor(methodCall.Method, methodCall.Method.Name, new ReflectedControllerDescriptor(methodCall.Object.Type));
@@ -32,7 +32,30 @@ namespace System.Web.Mvc.Extensibility
 
             return (matchingDescriptor != null) ?
                    reflectedActionDescriptor.MethodInfo == matchingDescriptor.MethodInfo :
-                   reflectedActionDescriptor.ControllerDescriptor.FindAction(controllerContext, actionDescriptor.ActionName) != null;
+                   IsSameAction(reflectedActionDescriptor, actionDescriptor);
+        }
+
+        private static bool IsSameAction(ActionDescriptor descriptor1, ActionDescriptor descriptor2)
+        {
+            ParameterDescriptor[] parameters1 = descriptor1.GetParameters();
+            ParameterDescriptor[] parameters2 = descriptor2.GetParameters();
+
+            bool isSame = (descriptor1.ControllerDescriptor.ControllerName.Equals(descriptor2.ControllerDescriptor.ControllerName, StringComparison.OrdinalIgnoreCase)) &&
+                          (descriptor1.ActionName.Equals(descriptor2.ActionName, StringComparison.OrdinalIgnoreCase)) && 
+                          (parameters1.Length == parameters2.Length);
+
+            if (isSame)
+            {
+                for (int i = parameters1.Length - 1; i >= 0; i--)
+                {
+                    if (parameters1[i].ParameterType != parameters2[i].ParameterType)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return isSame;
         }
     }
 }

@@ -36,7 +36,18 @@ namespace System.Web.Mvc.Extensibility
 
         public IFilterRegistry Register<TController, TFilter>() where TController : Controller where TFilter : FilterAttribute
         {
-            return Register<TController, FilterAttribute>(ServiceLocator.GetInstance<TFilter>());
+            return Register<TController, TFilter>((TFilter filter) => { });
+        }
+
+        public IFilterRegistry Register<TController, TFilter>(Action<TFilter> configureFilter) where TController : Controller where TFilter : FilterAttribute
+        {
+            Invariant.IsNotNull(configureFilter, "configureFilter");
+
+            TFilter filter = ServiceLocator.GetInstance<TFilter>();
+
+            configureFilter(filter);
+
+            return Register<TController, FilterAttribute>(filter);
         }
 
         public IFilterRegistry Register<TController, TFilter1, TFilter2>() where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute
@@ -68,7 +79,19 @@ namespace System.Web.Mvc.Extensibility
 
         public IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action) where TController : Controller where TFilter : FilterAttribute
         {
-            return Register<TController, FilterAttribute>(action, ServiceLocator.GetInstance<TFilter>());
+            return Register<TController, TFilter>(action, filter => { });
+        }
+
+        public IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action, Action<TFilter> configureFilter) where TController : Controller where TFilter : FilterAttribute
+        {
+            Invariant.IsNotNull(action, "action");
+            Invariant.IsNotNull(configureFilter, "configureFilter");
+
+            TFilter filter = ServiceLocator.GetInstance<TFilter>();
+
+            configureFilter(filter);
+
+            return Register<TController, FilterAttribute>(action, filter);
         }
 
         public IFilterRegistry Register<TController, TFilter1, TFilter2>(Expression<Action<TController>> action) where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute
@@ -145,9 +168,9 @@ namespace System.Web.Mvc.Extensibility
                          .Cast<IResultFilter>()
                          .Each(filter => filterInfo.ResultFilters.Add(filter));
 
-            resultFilters.OrderBy(filter => filter.Order)
-                         .Cast<IExceptionFilter>()
-                         .Each(filter => filterInfo.ExceptionFilters.Add(filter));
+            exceptionFiltes.OrderBy(filter => filter.Order)
+                           .Cast<IExceptionFilter>()
+                           .Each(filter => filterInfo.ExceptionFilters.Add(filter));
 
             return filterInfo;
         }

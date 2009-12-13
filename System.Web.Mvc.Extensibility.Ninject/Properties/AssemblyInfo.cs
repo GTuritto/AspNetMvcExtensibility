@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 
+[assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyTitle("System.Web.Mvc.Extensibility.Ninject")]
 [assembly: AssemblyProduct("System.Web.Mvc.Extensibility.Ninject")]
 [assembly: CLSCompliant(true)]

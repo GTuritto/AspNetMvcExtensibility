@@ -16,6 +16,18 @@ namespace System.Web.Mvc.Extensibility.Unity
             IUnityContainer container = new UnityContainer();
             IServiceLocator serviceLocator = new UnityServiceLocator(container);
 
+            RegisterKnwonTypes(container, serviceLocator);
+
+            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+
+            RegisterDynamicTypes(container, concreteTypes);
+            RegisterModules(container, concreteTypes);
+
+            return serviceLocator;
+        }
+
+        private static void RegisterKnwonTypes(IUnityContainer container, IServiceLocator serviceLocator)
+        {
             container.RegisterInstance(RouteTable.Routes)
                      .RegisterInstance(ControllerBuilder.Current)
                      .RegisterInstance(ModelBinders.Binders)
@@ -24,9 +36,10 @@ namespace System.Web.Mvc.Extensibility.Unity
                      .RegisterType<IFilterRegistry, FilterRegistry>(new ContainerControlledLifetimeManager())
                      .RegisterType<IControllerFactory, ExtendedControllerFactory>()
                      .RegisterType<IActionInvoker, ExtendedControllerActionInvoker>();
+        }
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
-
+        private static void RegisterDynamicTypes(IUnityContainer container, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.BootstrapperTaskType, type, type.FullName));
 
@@ -41,13 +54,14 @@ namespace System.Web.Mvc.Extensibility.Unity
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.ViewEngineType, type, type.FullName, new ContainerControlledLifetimeManager()));
+        }
 
+        private static void RegisterModules(IUnityContainer container, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
                          .Select(type => Activator.CreateInstance(type))
                          .Cast<IModule>()
                          .Each(module => module.Load(container));
-
-            return serviceLocator;
         }
     }
 }

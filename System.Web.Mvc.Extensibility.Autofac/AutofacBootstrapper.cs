@@ -20,6 +20,20 @@ namespace System.Web.Mvc.Extensibility.Autofac
             AutofacServiceLocator serviceLocator = new AutofacServiceLocator();
 
             builder.Register(serviceLocator).As<IServiceLocator>();
+            RegisterKnownTypes(builder);
+
+            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+
+            RegisterDynamicTypes(builder, concreteTypes);
+            RegisterModules(builder, concreteTypes);
+
+            serviceLocator.Container = builder.Build();
+
+            return serviceLocator;
+        }
+
+        private static void RegisterKnownTypes(ContainerBuilder builder)
+        {
             builder.Register(RouteTable.Routes);
             builder.Register(ControllerBuilder.Current);
             builder.Register(ModelBinders.Binders);
@@ -28,11 +42,10 @@ namespace System.Web.Mvc.Extensibility.Autofac
             builder.Register<FilterRegistry>().As<IFilterRegistry>().ContainerScoped();
             builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().FactoryScoped();
             builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
+        }
 
-            builder.RegisterModule(new CollectionModule());
-
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
-
+        private static void RegisterDynamicTypes(ContainerBuilder builder, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).As(KnownTypes.BootstrapperTaskType).FactoryScoped());
 
@@ -47,14 +60,15 @@ namespace System.Web.Mvc.Extensibility.Autofac
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).As(KnownTypes.ViewEngineType).ContainerScoped());
+        }
+
+        private static void RegisterModules(ContainerBuilder builder, IEnumerable<Type> concreteTypes)
+        {
+            builder.RegisterModule(new CollectionModule());
 
             concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
                          .Where(type => !type.Namespace.StartsWith("Autofac", StringComparison.OrdinalIgnoreCase))
                          .Each(type => builder.RegisterModule(Activator.CreateInstance(type) as IModule));
-
-            serviceLocator.Container = builder.Build();
-
-            return serviceLocator;
         }
     }
 }

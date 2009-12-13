@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 
+[assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyTitle("System.Web.Mvc.Extensibility.StructureMap")]
 [assembly: AssemblyProduct("System.Web.Mvc.Extensibility.StructureMap")]
 [assembly: CLSCompliant(true)]

@@ -20,6 +20,18 @@ namespace System.Web.Mvc.Extensibility.StructureMap
             IContainer container = new Container();
             IServiceLocator serviceLocator = new StructureMapServiceLocator(container);
 
+            RegisterKnownTypes(container, serviceLocator);
+
+            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+
+            RegisterDynamicTypes(container, concreteTypes);
+            RegisterRegistry(container, concreteTypes);
+
+            return serviceLocator;
+        }
+
+        private static void RegisterKnownTypes(IContainer container, IServiceLocator serviceLocator)
+        {
             container.Configure(x =>
                                 {
                                     x.ForRequestedType<IServiceLocator>().TheDefault.IsThis(serviceLocator);
@@ -31,9 +43,10 @@ namespace System.Web.Mvc.Extensibility.StructureMap
                                     x.ForRequestedType<IControllerFactory>().TheDefaultIsConcreteType<ExtendedControllerFactory>();
                                     x.ForRequestedType<IActionInvoker>().TheDefaultIsConcreteType<ExtendedControllerActionInvoker>();
                                 });
+        }
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
-
+        private static void RegisterDynamicTypes(IContainer container, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.BootstrapperTaskType).AddType(type)));
 
@@ -48,13 +61,14 @@ namespace System.Web.Mvc.Extensibility.StructureMap
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ViewEngineType).CacheBy(InstanceScope.Singleton).AddType(type)));
+        }
 
+        private static void RegisterRegistry(IContainer container, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => registryType.IsAssignableFrom(type) && type.HasDefaultConstructor())
                          .Select(type => Activator.CreateInstance(type))
                          .Cast<Registry>()
                          .Each(registry => container.Configure(x => x.AddRegistry(registry)));
-
-            return serviceLocator;
         }
     }
 }

@@ -17,6 +17,18 @@ namespace System.Web.Mvc.Extensibility.Windsor
             IWindsorContainer container = new WindsorContainer();
             IServiceLocator serviceLocator = new WindsorServiceLocator(container);
 
+            RegisterKnownTypes(container, serviceLocator);
+
+            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+
+            RegisterDynamicTypes(container, concreteTypes);
+            RegisterModules(container, concreteTypes);
+
+            return serviceLocator;
+        }
+
+        private static void RegisterKnownTypes(IWindsorContainer container, IServiceLocator serviceLocator)
+        {
             container.Kernel.AddComponentInstance(typeof(IServiceLocator).FullName, typeof(IServiceLocator), serviceLocator);
             container.Kernel.AddComponentInstance(typeof(RouteCollection).FullName, RouteTable.Routes);
             container.Kernel.AddComponentInstance(typeof(ControllerBuilder).FullName, ControllerBuilder.Current);
@@ -26,9 +38,10 @@ namespace System.Web.Mvc.Extensibility.Windsor
             container.AddComponentLifeStyle(typeof(IFilterRegistry).FullName, typeof(IFilterRegistry), typeof(FilterRegistry), LifestyleType.Singleton)
                      .AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Transient)
                      .AddComponentLifeStyle(typeof(IActionInvoker).FullName, typeof(IActionInvoker), typeof(ExtendedControllerActionInvoker), LifestyleType.Transient);
+        }
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
-
+        private static void RegisterDynamicTypes(IWindsorContainer container, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.BootstrapperTaskType, type, LifestyleType.Transient));
 
@@ -43,13 +56,14 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, type, type, LifestyleType.Singleton));
+        }
 
+        private static void RegisterModules(IWindsorContainer container, IEnumerable<Type> concreteTypes)
+        {
             concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
                          .Select(type => Activator.CreateInstance(type))
                          .Cast<IModule>()
                          .Each(module => module.Load(container));
-
-            return serviceLocator;
         }
     }
 }

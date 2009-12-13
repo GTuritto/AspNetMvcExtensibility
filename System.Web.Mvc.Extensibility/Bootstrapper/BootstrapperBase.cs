@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility
 
     public abstract class BootstrapperBase : DisposableBase, IBootstrapper
     {
-        private static readonly Func<IEnumerable<Assembly>> getReferencedAssemblies = () => BuildManager.GetReferencedAssemblies().Cast<Assembly>().Where(assembly => !assembly.GlobalAssemblyCache);
+        private static readonly Func<IEnumerable<Assembly>> getReferencedAssemblies = () => BuildManager.GetReferencedAssemblies().Cast<Assembly>();
         private IEnumerable<Assembly> referencedAssemblies;
 
         private IServiceLocator serviceLocator;

@@ -7,8 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Mvc.Extensibilit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedFiles", "SharedFiles", "{1AA92940-0B90-42B2-8E7B-A85F6248FB94}"
 	ProjectSection(SolutionItems) = preProject
+		build.bat = build.bat
 		SharedFiles\CodeAnalysisDictionary.xml = SharedFiles\CodeAnalysisDictionary.xml
 		SharedFiles\CommonAssemblyInfo.cs = SharedFiles\CommonAssemblyInfo.cs
+		System.Web.Mvc.Extensibility.build = System.Web.Mvc.Extensibility.build
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Mvc.Extensibility.Autofac", "System.Web.Mvc.Extensibility.Autofac\System.Web.Mvc.Extensibility.Autofac.csproj", "{3AD1F36E-61DF-409F-AD34-CE03DCDA8137}"

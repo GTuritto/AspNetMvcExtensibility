@@ -5,20 +5,38 @@ namespace System.Web.Mvc.Extensibility.Tests
 
     public class RegisterModelBindersTests
     {
-        [Fact]
-        public void Should_be_able_to_register_controller_factory()
+        private readonly ModelBinderDictionary modelBinders = new ModelBinderDictionary();
+        private readonly RegisterModelBinders registration;
+        private readonly IModelBinder modelBinder;
+        private readonly Mock<FakeServiceLocator> serviceLocator;
+
+        public RegisterModelBindersTests()
         {
-            var modelBinders = new ModelBinderDictionary();
-            var registration = new RegisterModelBinders(modelBinders);
+            modelBinders = new ModelBinderDictionary();
+            modelBinder = new FakeModelBinder();
+            serviceLocator = new Mock<FakeServiceLocator>();
 
-            var modelBinder = new FakeModelBinder();
+            registration = new RegisterModelBinders(modelBinders);
+        }
 
-            var serviceLocator = new Mock<FakeServiceLocator>();
+        [Fact]
+        public void Should_be_able_to_register_model_binders()
+        {
             serviceLocator.Setup(sl => sl.GetAllInstances<IModelBinder>()).Returns(new[] { modelBinder });
 
             registration.Execute(serviceLocator.Object);
 
             Assert.Same(modelBinders[typeof(object)], modelBinder);
+        }
+
+        [Fact]
+        public void Should_not_be_able_to_register_model_binder_for_the_same_type_more_than_once()
+        {
+            serviceLocator.Setup(sl => sl.GetAllInstances<IModelBinder>()).Returns(new[] { modelBinder, modelBinder });
+
+            registration.Execute(serviceLocator.Object);
+
+            Assert.Equal(1, modelBinders.Count);
         }
 
         [BindingTypes(typeof(object))]

@@ -8,5 +8,6 @@ namespace System.Web.Mvc.Extensibility
         public static readonly Type ControllerType = typeof(Controller);
         public static readonly Type FilterAttributeType = typeof(FilterAttribute);
         public static readonly Type ViewEngineType = typeof(IViewEngine);
+        public static readonly Type ActionResultType = typeof(ActionResult);
     }
 }

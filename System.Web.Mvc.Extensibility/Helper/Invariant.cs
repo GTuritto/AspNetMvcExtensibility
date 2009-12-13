@@ -10,7 +10,7 @@ namespace System.Web.Mvc.Extensibility
         {
             if (value == null)
             {
-                throw new ArgumentNullException(parameterName, string.Format(CultureInfo.CurrentUICulture, "\"{0}\" cannot be null.", parameterName));
+                throw new ArgumentNullException(parameterName, string.Format(CultureInfo.CurrentUICulture, ExceptionMessages.CannotBeNull, parameterName));
             }
         }
     }

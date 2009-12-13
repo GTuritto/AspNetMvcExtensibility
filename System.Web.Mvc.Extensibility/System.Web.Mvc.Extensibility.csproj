@@ -91,6 +91,11 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BootstrapperTask\RegisterFiltersBase.cs" />
+    <Compile Include="ExceptionMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Filter\FilterRegistry.cs" />
     <Compile Include="Filter\FilterRegistryActionItem.cs" />
     <Compile Include="Filter\FilterRegistryControllerItem.cs" />
@@ -119,6 +124,12 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\SharedFiles\CodeAnalysisDictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExceptionMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
