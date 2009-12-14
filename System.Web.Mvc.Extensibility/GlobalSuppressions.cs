@@ -8,6 +8,13 @@
 // "In Project Suppression File". 
 // You do not need to add suppressions to this file manually. 
 
+#region Copyright
+/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+/// This source is subject to the Microsoft Public License. 
+/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+/// All other rights reserved.
+#endregion
+
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Scope = "member", Target = "System.Web.Mvc.Extensibility.IFilterRegistry.#Register`2(!!1[])")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Scope = "member", Target = "System.Web.Mvc.Extensibility.IFilterRegistry.#Register`2()")]

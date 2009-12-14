@@ -1,0 +1,258 @@
+<stylecopresultscache>
+  <version>10</version>
+  <project key="1268672877">
+    <configuration>TRACE;DEBUG</configuration>
+  </project>
+  <sourcecode name="DisposableBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:34:21</timestamp>
+    <milliseconds>592</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="BootstrapperBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:34:29</timestamp>
+    <milliseconds>657</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="IInjection.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:34:14</timestamp>
+    <milliseconds>982</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="BootstrapperTaskBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:34:33</timestamp>
+    <milliseconds>614</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="IBootstrapperTask.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:34:53</timestamp>
+    <milliseconds>280</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="IBootstrapper.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:34:42</timestamp>
+    <milliseconds>199</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="RegisterControllerFactory.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:13</timestamp>
+    <milliseconds>792</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="RegisterFiltersBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:19</timestamp>
+    <milliseconds>736</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="RegisterModelBinders.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:25</timestamp>
+    <milliseconds>652</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="RegisterRoutesBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:31</timestamp>
+    <milliseconds>830</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="RegisterViewEngines.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:37</timestamp>
+    <milliseconds>593</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ExtendedControllerActionInvoker.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:50</timestamp>
+    <milliseconds>365</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ExtendedControllerFactory.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:35:56</timestamp>
+    <milliseconds>160</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ExceptionMessages.Designer.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:38:52</timestamp>
+    <milliseconds>227</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="EnumerableExtensions.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:36:03</timestamp>
+    <milliseconds>612</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ExtendedMvcApplicationBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:39:01</timestamp>
+    <milliseconds>554</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="TypeExtensions.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:36:09</timestamp>
+    <milliseconds>421</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="FilterRegistryActionItem.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:49:40</timestamp>
+    <milliseconds>32</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="FilterRegistry.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:36:18</timestamp>
+    <milliseconds>92</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="FilterRegistryItemBase.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:36:48</timestamp>
+    <milliseconds>479</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="FilterRegistryControllerItem.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:36:42</timestamp>
+    <milliseconds>116</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="GlobalSuppressions.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:49:30</timestamp>
+    <milliseconds>59</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="IFilterRegistry.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:36:56</timestamp>
+    <milliseconds>403</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="Invariant.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:37:56</timestamp>
+    <milliseconds>503</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="BindingTypesAttribute.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:38:31</timestamp>
+    <milliseconds>343</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="KnownTypes.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:37:49</timestamp>
+    <milliseconds>313</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="CommonAssemblyInfo.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:32:53</timestamp>
+    <milliseconds>150</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="AssemblyInfo.cs" parser="Microsoft.StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>12/14/2009 08:00:32</timestamp>
+      <milliseconds>546</milliseconds>
+    </settings>
+    <timestamp>12/14/2009 07:33:57</timestamp>
+    <milliseconds>799</milliseconds>
+    <violations />
+  </sourcecode>
+</stylecopresultscache>

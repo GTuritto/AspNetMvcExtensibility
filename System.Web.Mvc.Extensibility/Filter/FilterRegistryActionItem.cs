@@ -1,3 +1,10 @@
+#region Copyright
+/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+/// This source is subject to the Microsoft Public License. 
+/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+/// All other rights reserved.
+#endregion
+
 namespace System.Web.Mvc.Extensibility
 {
     using Collections.Generic;
@@ -40,8 +47,8 @@ namespace System.Web.Mvc.Extensibility
             ParameterDescriptor[] parameters1 = descriptor1.GetParameters();
             ParameterDescriptor[] parameters2 = descriptor2.GetParameters();
 
-            bool isSame = (descriptor1.ControllerDescriptor.ControllerName.Equals(descriptor2.ControllerDescriptor.ControllerName, StringComparison.OrdinalIgnoreCase)) &&
-                          (descriptor1.ActionName.Equals(descriptor2.ActionName, StringComparison.OrdinalIgnoreCase)) && 
+            bool isSame = descriptor1.ControllerDescriptor.ControllerName.Equals(descriptor2.ControllerDescriptor.ControllerName, StringComparison.OrdinalIgnoreCase) &&
+                          descriptor1.ActionName.Equals(descriptor2.ActionName, StringComparison.OrdinalIgnoreCase) && 
                           (parameters1.Length == parameters2.Length);
 
             if (isSame)
