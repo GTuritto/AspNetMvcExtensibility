@@ -57,7 +57,8 @@ namespace System.Web.Mvc.Extensibility
                 {
                     if (parameters1[i].ParameterType != parameters2[i].ParameterType)
                     {
-                        return false;
+                        isSame = false;
+                        break;
                     }
                 }
             }
