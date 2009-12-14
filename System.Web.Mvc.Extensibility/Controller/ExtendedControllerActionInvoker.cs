@@ -78,19 +78,19 @@ namespace System.Web.Mvc.Extensibility
         {
             Merge(decoratedFilters.AuthorizationFilters, registeredFilters.AuthorizationFilters, IsNonFilterAttriute)
                 .Reverse()
-                .Each(filter => mergedFilters.AuthorizationFilters.Add(filter));
+                .Each(filter => mergedFilters.AuthorizationFilters.Insert(0, filter));
 
             Merge(decoratedFilters.ActionFilters, registeredFilters.ActionFilters, IsNonFilterAttriute)
                 .Reverse()
-                .Each(filter => mergedFilters.ActionFilters.Add(filter));
+                .Each(filter => mergedFilters.ActionFilters.Insert(0, filter));
 
             Merge(decoratedFilters.ResultFilters, registeredFilters.ResultFilters, IsNonFilterAttriute)
                 .Reverse()
-                .Each(filter => mergedFilters.ResultFilters.Add(filter));
+                .Each(filter => mergedFilters.ResultFilters.Insert(0, filter));
 
             Merge(decoratedFilters.ExceptionFilters, registeredFilters.ExceptionFilters, IsNonFilterAttriute)
                 .Reverse()
-                .Each(filter => mergedFilters.ExceptionFilters.Add(filter));
+                .Each(filter => mergedFilters.ExceptionFilters.Insert(0, filter));
         }
 
         private static IEnumerable<T> Merge<T>(IEnumerable<T> source1, IEnumerable<T> source2, Func<T, bool> filter)
@@ -112,12 +112,16 @@ namespace System.Web.Mvc.Extensibility
         {
             foreach (TFilter filter in filters)
             {
-                // Since the same filter can appear in different stages of processing
-                // we do not want a filter to get injected more than once.
-                if (!injectedFilters.Contains(filter))
+                // Only inject dependency for Filter Attribute
+                if (IsFilterAttriute(filter))
                 {
-                    injection.Inject(filter);
-                    injectedFilters.Add(filter);
+                    // Since the same filter can appear in different stages of processing
+                    // we do not want a filter to get injected more than once.
+                    if (!injectedFilters.Contains(filter))
+                    {
+                        injection.Inject(filter);
+                        injectedFilters.Add(filter);
+                    }
                 }
             }
         }

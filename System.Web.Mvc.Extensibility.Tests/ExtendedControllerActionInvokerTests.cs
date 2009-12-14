@@ -22,24 +22,41 @@ namespace System.Web.Mvc.Extensibility.Tests
         }
 
         [Fact]
-        public void GetFilters_should_merge_filters()
+        public void GetFilters_should_merge_filters_in_correct_order()
         {
-            var decoratedActionFilter = new Mock<IActionFilter>();
-            var decoratedResultFilter = new Mock<IResultFilter>();
+            var controller = new FakeController();
+
+            var decoratedAuthorizationFilter = new DummyFilter1{ Order = 2 };
+            var decoratedActionFilter = new DummyFilter2{ Order = 2 };
+            var decoratedResultFilter = new DummyFilter3{ Order = 2 };
+            var decoratedExceptionFilter = new DummyFilter4{ Order = 2 };
+
             var decoratedFilters = new FilterInfo();
 
-            decoratedFilters.ActionFilters.Add(decoratedActionFilter.Object);
-            decoratedFilters.ResultFilters.Add(decoratedResultFilter.Object);
+            decoratedFilters.AuthorizationFilters.Add(decoratedAuthorizationFilter);
+            decoratedFilters.ActionFilters.Add(decoratedActionFilter);
+            decoratedFilters.ResultFilters.Add(decoratedResultFilter);
+            decoratedFilters.ExceptionFilters.Add(decoratedExceptionFilter);
+
+            decoratedFilters.AuthorizationFilters.Add(controller);
+            decoratedFilters.ActionFilters.Add(controller);
+            decoratedFilters.ResultFilters.Add(controller);
+            decoratedFilters.ExceptionFilters.Add(controller);
 
             var actionDescriptor = new Mock<ActionDescriptor>();
             actionDescriptor.Setup(ad => ad.GetFilters()).Returns(decoratedFilters);
 
-            var registeredActionFilter = new Mock<IActionFilter>();
-            var registeredResultFilter = new Mock<IResultFilter>();
+            var registeredAuthorizationFilter = new DummyFilter5 { Order = 1 };
+            var registeredActionFilter = new DummyFilter6 { Order = 1 };
+            var registeredResultFilter = new DummyFilter7{ Order = 1 };
+            var registeredExceptionFilter = new DummyFilter8{ Order = 1 };
+
             var registeredFilters = new FilterInfo();
 
-            registeredFilters.ActionFilters.Add(registeredActionFilter.Object);
-            registeredFilters.ResultFilters.Add(registeredResultFilter.Object);
+            registeredFilters.AuthorizationFilters.Add(registeredAuthorizationFilter);
+            registeredFilters.ActionFilters.Add(registeredActionFilter);
+            registeredFilters.ResultFilters.Add(registeredResultFilter);
+            registeredFilters.ExceptionFilters.Add(registeredExceptionFilter);
 
             filterRegistry.Setup(fr => fr.Matching(It.IsAny<ControllerContext>(), It.IsAny<ActionDescriptor>())).Returns(registeredFilters);
 
@@ -47,10 +64,21 @@ namespace System.Web.Mvc.Extensibility.Tests
 
             var mergedFilters = controllerActionInvoker.PublicGetFilters(controllerContext, actionDescriptor.Object);
 
-            Assert.Contains(decoratedActionFilter.Object, mergedFilters.ActionFilters);
-            Assert.Contains(registeredActionFilter.Object, mergedFilters.ActionFilters);
-            Assert.Contains(decoratedResultFilter.Object, mergedFilters.ResultFilters);
-            Assert.Contains(registeredResultFilter.Object, mergedFilters.ResultFilters);
+            Assert.Same(controller, mergedFilters.AuthorizationFilters[0]);
+            Assert.Same(registeredAuthorizationFilter, mergedFilters.AuthorizationFilters[1]);
+            Assert.Same(decoratedAuthorizationFilter, mergedFilters.AuthorizationFilters[2]);
+
+            Assert.Same(controller, mergedFilters.ActionFilters[0]);
+            Assert.Same(registeredActionFilter, mergedFilters.ActionFilters[1]);
+            Assert.Same(decoratedActionFilter, mergedFilters.ActionFilters[2]);
+
+            Assert.Same(controller, mergedFilters.ResultFilters[0]);
+            Assert.Same(registeredResultFilter, mergedFilters.ResultFilters[1]);
+            Assert.Same(decoratedResultFilter, mergedFilters.ResultFilters[2]);
+
+            Assert.Same(controller, mergedFilters.ExceptionFilters[0]);
+            Assert.Same(registeredExceptionFilter, mergedFilters.ExceptionFilters[1]);
+            Assert.Same(decoratedExceptionFilter, mergedFilters.ExceptionFilters[2]);
         }
 
         private sealed class ExtendedControllerActionInvokerTestDouble : ExtendedControllerActionInvoker
@@ -62,6 +90,94 @@ namespace System.Web.Mvc.Extensibility.Tests
             public FilterInfo PublicGetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
             {
                 return GetFilters(controllerContext, actionDescriptor);
+            }
+        }
+
+        private sealed class FakeController : Controller
+        {
+        }
+
+        private sealed class DummyFilter1 : FilterAttribute, IAuthorizationFilter
+        {
+            public void OnAuthorization(AuthorizationContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter2 : FilterAttribute, IActionFilter
+        {
+            public void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnActionExecuted(ActionExecutedContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter3 : FilterAttribute, IResultFilter
+        {
+            public void OnResultExecuting(ResultExecutingContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnResultExecuted(ResultExecutedContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter4 : FilterAttribute, IExceptionFilter
+        {
+            public void OnException(ExceptionContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter5 : FilterAttribute, IAuthorizationFilter
+        {
+            public void OnAuthorization(AuthorizationContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter6 : FilterAttribute, IActionFilter
+        {
+            public void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnActionExecuted(ActionExecutedContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter7 : FilterAttribute, IResultFilter
+        {
+            public void OnResultExecuting(ResultExecutingContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnResultExecuted(ResultExecutedContext filterContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private sealed class DummyFilter8 : FilterAttribute, IExceptionFilter
+        {
+            public void OnException(ExceptionContext filterContext)
+            {
+                throw new NotImplementedException();
             }
         }
     }

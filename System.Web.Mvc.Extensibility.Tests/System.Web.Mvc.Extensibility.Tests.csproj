@@ -113,6 +113,7 @@
     <Compile Include="RegisterModelBindersTests.cs" />
     <Compile Include="RegisterRoutesBaseTests.cs" />
     <Compile Include="RegisterViewEnginesTests.cs" />
+    <Compile Include="TypeExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Web.Mvc.Extensibility\System.Web.Mvc.Extensibility.csproj">

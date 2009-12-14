@@ -1,8 +1,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 
-[assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyCompany("Kazi Manzur Rashid")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCopyright("Copyright © Kazi Manzur Rashid 2009")]
