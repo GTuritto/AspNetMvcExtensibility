@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility.Autofac
     {
         protected override IBootstrapper CreateBootstrapper()
         {
-            return new AutofacBootstrapper();
+            return new AutofacBootstrapper(BuildManagerWrapper.Current);
         }
     }
 }

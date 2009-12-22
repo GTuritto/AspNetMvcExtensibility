@@ -14,7 +14,7 @@ namespace System.Web.Mvc.Extensibility.Ninject
     using Extension = global::Ninject.ResolutionExtensions;
     using IKernel = global::Ninject.IKernel;
 
-    public class NinjectServiceLocator : ServiceLocatorImplBase, IInjection, IDisposable
+    public class NinjectServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
     {
         private bool isDisposed;
 

@@ -7,11 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility.Ninject.Tests
 {
-    using Collections.Generic;
-    using Reflection;
-
-    using Microsoft.Practices.ServiceLocation;
-
+    using Moq;
     using Xunit;
 
     public class NinjectBootstrapperTests
@@ -19,26 +15,12 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
         [Fact]
         public void Should_be_able_to_create_service_locator()
         {
-            var serviceLocator = new NinjectBootstrapperTestDouble().PublicCreateServiceLocator();
+            var buildManager = new Mock<IBuildManager>();
+            buildManager.SetupGet(bm => bm.Assemblies).Returns(new[] { GetType().Assembly });
 
-            Assert.NotNull(serviceLocator);
-            Assert.IsType<NinjectServiceLocator>(serviceLocator);
-        }
+            var bootstrapper = new NinjectBootstrapper(buildManager.Object);
 
-        private class NinjectBootstrapperTestDouble : NinjectBootstrapper
-        {
-            protected override IEnumerable<Assembly> ReferencedAssemblies
-            {
-                get
-                {
-                    yield return GetType().Assembly;
-                }
-            }
-
-            public IServiceLocator PublicCreateServiceLocator()
-            {
-                return CreateServiceLocator();
-            }
+            Assert.IsType<NinjectServiceLocator>(bootstrapper.ServiceLocator);
         }
     }
 }

@@ -7,11 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility.Unity.Tests
 {
-    using Collections.Generic;
-    using Reflection;
-
-    using Microsoft.Practices.ServiceLocation;
-
+    using Moq;
     using Xunit;
 
     public class UnityBootstrapperTests
@@ -19,26 +15,12 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         [Fact]
         public void Should_be_able_to_create_service_locator()
         {
-            var serviceLocator = new UnityBootstrapperTestDouble().PublicCreateServiceLocator();
+            var buildManager = new Mock<IBuildManager>();
+            buildManager.SetupGet(bm => bm.Assemblies).Returns(new[]{ GetType().Assembly });
 
-            Assert.NotNull(serviceLocator);
-            Assert.IsType<UnityServiceLocator>(serviceLocator);
-        }
+            var bootstrapper = new UnityBootstrapper(buildManager.Object);
 
-        private class UnityBootstrapperTestDouble : UnityBootstrapper
-        {
-            protected override IEnumerable<Assembly> ReferencedAssemblies
-            {
-                get
-                {
-                    yield return GetType().Assembly;
-                }
-            }
-
-            public IServiceLocator PublicCreateServiceLocator()
-            {
-                return CreateServiceLocator();
-            }
+            Assert.IsType<UnityServiceLocator>(bootstrapper.ServiceLocator);
         }
     }
 }

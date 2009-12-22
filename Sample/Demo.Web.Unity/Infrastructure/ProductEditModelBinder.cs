@@ -24,20 +24,20 @@ namespace Demo.Web.Unity
 
             if (propertyDescriptor.Name.Equals(CategoryProperty, StringComparison.OrdinalIgnoreCase))
             {
-                return GetValue(CategoryProperty, categoryRepository, controllerContext, bindingContext);
+                return GetValue(CategoryProperty, categoryRepository, bindingContext);
             }
 
             if (propertyDescriptor.Name.Equals(SupplierProperty, StringComparison.OrdinalIgnoreCase))
             {
-                return GetValue(SupplierProperty, supplierRepository, controllerContext, bindingContext);
+                return GetValue(SupplierProperty, supplierRepository, bindingContext);
             }
 
             return base.GetPropertyValue(controllerContext, bindingContext, propertyDescriptor, propertyBinder);
         }
 
-        private static object GetValue<TEntity>(string propertyName, IRepository<TEntity> repository, ControllerContext controllerContext, ModelBindingContext bindingContext) where TEntity : EntityBase
+        private static object GetValue<TEntity>(string propertyName, IRepository<TEntity> repository, ModelBindingContext bindingContext) where TEntity : EntityBase
         {
-            ValueProviderResult result = bindingContext.ValueProvider.GetValue(controllerContext, propertyName);
+            ValueProviderResult result = bindingContext.ValueProvider.GetValue(propertyName);
             int? id = (result != null) ? (int?)result.ConvertTo(typeof(int?)) : null;
 
             return (id.HasValue && id.Value > 0) ? repository.Get(id.Value) : default(TEntity);

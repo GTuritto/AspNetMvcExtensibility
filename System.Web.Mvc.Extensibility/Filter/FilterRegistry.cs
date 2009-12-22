@@ -143,19 +143,23 @@ namespace System.Web.Mvc.Extensibility
             {
                 if (item.IsMatching(controllerContext, actionDescriptor))
                 {
-                    item.Filters.OfType<IAuthorizationFilter>()
+                    item.Filters
+                        .OfType<IAuthorizationFilter>()
                         .Cast<FilterAttribute>()
                         .Each(authorizationFilters.Add);
 
-                    item.Filters.OfType<IActionFilter>()
+                    item.Filters
+                        .OfType<IActionFilter>()
                         .Cast<FilterAttribute>()
                         .Each(actionFilters.Add);
 
-                    item.Filters.OfType<IResultFilter>()
+                    item.Filters
+                        .OfType<IResultFilter>()
                         .Cast<FilterAttribute>()
                         .Each(resultFilters.Add);
 
-                    item.Filters.OfType<IExceptionFilter>()
+                    item.Filters
+                        .OfType<IExceptionFilter>()
                         .Cast<FilterAttribute>()
                         .Each(exceptionFiltes.Add);
                 }

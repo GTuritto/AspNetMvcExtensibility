@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility.Ninject
     {
         protected override IBootstrapper CreateBootstrapper()
         {
-            return new NinjectBootstrapper();
+            return new NinjectBootstrapper(BuildManagerWrapper.Current);
         }
     }
 }

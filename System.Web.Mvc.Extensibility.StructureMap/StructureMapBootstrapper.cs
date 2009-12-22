@@ -22,14 +22,18 @@ namespace System.Web.Mvc.Extensibility.StructureMap
     {
         private static readonly Type registryType = typeof(Registry);
 
+        public StructureMapBootstrapper(IBuildManager buildManager) : base(buildManager)
+        {
+        }
+
         protected override IServiceLocator CreateServiceLocator()
         {
             IContainer container = new Container();
-            IServiceLocator serviceLocator = new StructureMapServiceLocator(container);
+            StructureMapServiceLocator serviceLocator = new StructureMapServiceLocator(container);
 
-            RegisterKnownTypes(container, serviceLocator);
+            RegisterKnownTypes(container, BuildManager, serviceLocator);
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+            IEnumerable<Type> concreteTypes = BuildManager.ConcreteTypes;
 
             RegisterDynamicTypes(container, concreteTypes);
             RegisterRegistry(container, concreteTypes);
@@ -37,17 +41,19 @@ namespace System.Web.Mvc.Extensibility.StructureMap
             return serviceLocator;
         }
 
-        private static void RegisterKnownTypes(IContainer container, IServiceLocator serviceLocator)
+        private static void RegisterKnownTypes(IContainer container, IBuildManager buildManager, StructureMapServiceLocator serviceLocator)
         {
             container.Configure(x =>
                                 {
+                                    x.ForRequestedType<IBuildManager>().TheDefault.IsThis(buildManager);
                                     x.ForRequestedType<IServiceLocator>().TheDefault.IsThis(serviceLocator);
+                                    x.ForRequestedType<IInjector>().TheDefault.IsThis(serviceLocator);
                                     x.ForRequestedType<RouteCollection>().TheDefault.IsThis(RouteTable.Routes);
                                     x.ForRequestedType<ControllerBuilder>().TheDefault.IsThis(ControllerBuilder.Current);
                                     x.ForRequestedType<ModelBinderDictionary>().TheDefault.IsThis(ModelBinders.Binders);
                                     x.ForRequestedType<ViewEngineCollection>().TheDefault.IsThis(ViewEngines.Engines);
                                     x.ForRequestedType<IFilterRegistry>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<FilterRegistry>();
-                                    x.ForRequestedType<IControllerFactory>().TheDefaultIsConcreteType<ExtendedControllerFactory>();
+                                    x.ForRequestedType<IControllerFactory>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<ExtendedControllerFactory>();
                                     x.ForRequestedType<IActionInvoker>().TheDefaultIsConcreteType<ExtendedControllerActionInvoker>();
                                 });
         }
@@ -55,7 +61,10 @@ namespace System.Web.Mvc.Extensibility.StructureMap
         private static void RegisterDynamicTypes(IContainer container, IEnumerable<Type> concreteTypes)
         {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
-                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.BootstrapperTaskType).AddType(type)));
+                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.BootstrapperTaskType).CacheBy(InstanceScope.Singleton).AddType(type)));
+
+            concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
+                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.PerRequestTaskType).CacheBy(InstanceScope.Singleton).AddType(type)));
 
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelBinderType).CacheBy(InstanceScope.Singleton).AddType(type)));

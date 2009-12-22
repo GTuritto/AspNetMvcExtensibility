@@ -90,7 +90,11 @@
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BuildManager\BuildManagerWrapper.cs" />
     <Compile Include="BootstrapperTask\RegisterFiltersBase.cs" />
+    <Compile Include="BuildManager\IBuildManager.cs" />
+    <Compile Include="PerRequestTask\IPerRequestTask.cs" />
+    <Compile Include="PerRequestTask\PerRequestExecutionContext.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -101,9 +105,10 @@
     <Compile Include="Filter\FilterRegistryControllerItem.cs" />
     <Compile Include="Filter\FilterRegistryItemBase.cs" />
     <Compile Include="Filter\IFilterRegistry.cs" />
+    <Compile Include="Helper\IFluentSyntax.cs" />
     <Compile Include="ModelBinder\BindingTypesAttribute.cs" />
     <Compile Include="Bootstrapper\BootstrapperBase.cs" />
-    <Compile Include="Bootstrapper\BootstrapperTaskBase.cs" />
+    <Compile Include="BootstrapperTask\BootstrapperTaskBase.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helper\KnownTypes.cs" />
     <Compile Include="BootstrapperTask\RegisterControllerFactory.cs" />
@@ -113,11 +118,12 @@
     <Compile Include="ExtensionMethod\EnumerableExtensions.cs" />
     <Compile Include="Controller\ExtendedControllerActionInvoker.cs" />
     <Compile Include="Bootstrapper\IBootstrapper.cs" />
-    <Compile Include="Bootstrapper\IBootstrapperTask.cs" />
-    <Compile Include="Abstraction\IInjection.cs" />
+    <Compile Include="BootstrapperTask\IBootstrapperTask.cs" />
+    <Compile Include="Abstraction\IInjector.cs" />
     <Compile Include="ExtendedMvcApplicationBase.cs" />
     <Compile Include="Controller\ExtendedControllerFactory.cs" />
     <Compile Include="Helper\Invariant.cs" />
+    <Compile Include="PerRequestTask\PerRequestTaskBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BootstrapperTask\RegisterViewEngines.cs" />
     <Compile Include="ExtensionMethod\TypeExtensions.cs" />

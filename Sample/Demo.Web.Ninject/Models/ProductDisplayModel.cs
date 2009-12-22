@@ -13,7 +13,7 @@ namespace Demo.Web.Ninject
 
         public string SupplierName { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:c}")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
     using Microsoft.Practices.ServiceLocation;
     using Castle.Windsor;
 
-    public class WindsorServiceLocator : ServiceLocatorImplBase, IInjection, IDisposable
+    public class WindsorServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
     {
         private bool isDisposed;
 

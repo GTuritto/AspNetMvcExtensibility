@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
     {
         protected override IBootstrapper CreateBootstrapper()
         {
-            return new WindsorBootstrapper();
+            return new WindsorBootstrapper(BuildManagerWrapper.Current);
         }
     }
 }

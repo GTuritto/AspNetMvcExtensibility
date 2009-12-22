@@ -10,7 +10,7 @@ namespace Demo.Web.Windsor
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Name cannot be blank.")]
-        [StringLength(64, ErrorMessage = "Name cannot be more than 64 characters.")]
+        [StringLength(64,ErrorMessage = "Name cannot be more than 64 characters.")]
         public string Name { get; set; }
 
         [DisplayName("Category")]
@@ -23,7 +23,7 @@ namespace Demo.Web.Windsor
 
         [Required(ErrorMessage = "Price cannot be blank.")]
         [Range(10, 1000, ErrorMessage = "Price must be between 10.00-1000.00.")]
-        [DisplayFormat(DataFormatString = "{0:c}")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         [ScaffoldColumn(false)]

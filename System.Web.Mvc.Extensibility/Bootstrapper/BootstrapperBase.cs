@@ -7,21 +7,21 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    using Collections.Generic;
-    using Compilation;
     using Diagnostics;
-    using Linq;
-    using Reflection;
 
     using Microsoft.Practices.ServiceLocation;
     using CurrentLocator = Microsoft.Practices.ServiceLocation.ServiceLocator;
 
     public abstract class BootstrapperBase : DisposableBase, IBootstrapper
     {
-        private static readonly Func<IEnumerable<Assembly>> getReferencedAssemblies = () => BuildManager.GetReferencedAssemblies().Cast<Assembly>();
-        private IEnumerable<Assembly> referencedAssemblies;
-
         private IServiceLocator serviceLocator;
+
+        protected BootstrapperBase(IBuildManager buildManager)
+        {
+            Invariant.IsNotNull(buildManager, "buildManager");
+
+            BuildManager = buildManager;
+        }
 
         public IServiceLocator ServiceLocator
         {
@@ -32,13 +32,10 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
-        protected virtual IEnumerable<Assembly> ReferencedAssemblies
+        protected IBuildManager BuildManager
         {
-            [DebuggerStepThrough]
-            get
-            {
-                return referencedAssemblies ?? (referencedAssemblies = getReferencedAssemblies());
-            }
+            get;
+            private set;
         }
 
         public void Execute()

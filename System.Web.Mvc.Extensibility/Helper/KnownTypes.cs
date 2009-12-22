@@ -11,6 +11,7 @@ namespace System.Web.Mvc.Extensibility
     {
         public static readonly Type BindingAttributeType = typeof(BindingTypesAttribute);
         public static readonly Type BootstrapperTaskType = typeof(IBootstrapperTask);
+        public static readonly Type PerRequestTaskType = typeof(IPerRequestTask);
         public static readonly Type ModelBinderType = typeof(IModelBinder);
         public static readonly Type ControllerType = typeof(Controller);
         public static readonly Type FilterAttributeType = typeof(FilterAttribute);

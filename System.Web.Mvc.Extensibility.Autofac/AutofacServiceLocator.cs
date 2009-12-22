@@ -15,8 +15,10 @@ namespace System.Web.Mvc.Extensibility.Autofac
     using Microsoft.Practices.ServiceLocation;
     using IContainer = global::Autofac.IContainer;
 
-    public class AutofacServiceLocator : ServiceLocatorImplBase, IInjection, IDisposable
+    public class AutofacServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
     {
+        private static readonly Type genericEnumerableType = typeof(IEnumerable<>);
+
         private bool isDisposed;
 
         [DebuggerStepThrough]
@@ -53,7 +55,7 @@ namespace System.Web.Mvc.Extensibility.Autofac
 
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
         {
-            Type type = typeof(IEnumerable<>).MakeGenericType(serviceType);
+            Type type = genericEnumerableType.MakeGenericType(serviceType);
 
             object instances;
 

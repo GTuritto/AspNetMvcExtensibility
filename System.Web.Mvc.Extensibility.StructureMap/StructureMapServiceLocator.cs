@@ -15,7 +15,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
     using IContainer = global::StructureMap.IContainer;
 
     [CLSCompliant(false)]
-    public class StructureMapServiceLocator : ServiceLocatorImplBase, IInjection
+    public class StructureMapServiceLocator : ServiceLocatorImplBase, IInjector
     {
         public StructureMapServiceLocator(IContainer container)
         {

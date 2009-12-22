@@ -7,9 +7,6 @@
 
 namespace System.Web.Mvc.Extensibility.Tests
 {
-    using Collections.Generic;
-    using Reflection;
-
     using Microsoft.Practices.ServiceLocation;
 
     using Moq;
@@ -63,27 +60,13 @@ namespace System.Web.Mvc.Extensibility.Tests
             Assert.Same(serviceLocator.Object, ServiceLocator.Current);
         }
 
-        [Fact]
-        public void Accessing_referenced_assemblies_should_throw_exception_when_not_running_in_web_server()
-        {
-            Assert.Throws<HttpException>(() => Assert.Empty(((BootstrapperBaseTestDouble) bootstrapper).PublicReferencedAssemblies));
-        }
-
         private sealed class BootstrapperBaseTestDouble : BootstrapperBase
         {
             private readonly Mock<FakeServiceLocator> serviceLocator;
 
-            public BootstrapperBaseTestDouble(Mock<FakeServiceLocator> serviceLocator)
+            public BootstrapperBaseTestDouble(Mock<FakeServiceLocator> serviceLocator) : base(new Mock<IBuildManager>().Object)
             {
                 this.serviceLocator = serviceLocator;
-            }
-
-            public IEnumerable<Assembly> PublicReferencedAssemblies
-            {
-                get
-                {
-                    return ReferencedAssemblies;
-                }
             }
 
             protected override IServiceLocator CreateServiceLocator()

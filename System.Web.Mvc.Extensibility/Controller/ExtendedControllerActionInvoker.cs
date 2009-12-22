@@ -115,7 +115,7 @@ namespace System.Web.Mvc.Extensibility
             return !KnownTypes.FilterAttributeType.IsAssignableFrom(filter.GetType());
         }
 
-        private static void Inject<TFilter>(IInjection injection, ICollection<object> injectedFilters, IEnumerable<TFilter> filters) where TFilter : class
+        private static void Inject<TFilter>(IInjector injector, ICollection<object> injectedFilters, IEnumerable<TFilter> filters) where TFilter : class
         {
             foreach (TFilter filter in filters)
             {
@@ -126,7 +126,7 @@ namespace System.Web.Mvc.Extensibility
                     // we do not want a filter to get injected more than once.
                     if (!injectedFilters.Contains(filter))
                     {
-                        injection.Inject(filter);
+                        injector.Inject(filter);
                         injectedFilters.Add(filter);
                     }
                 }
@@ -135,16 +135,16 @@ namespace System.Web.Mvc.Extensibility
 
         private void Inject(FilterInfo decoratedFilters)
         {
-            IInjection injection = ServiceLocator as IInjection;
+            IInjector injector = ServiceLocator as IInjector;
 
-            if (injection != null)
+            if (injector != null)
             {
                 ICollection<object> injectedFilters = new List<object>();
 
-                Inject(injection, injectedFilters, decoratedFilters.AuthorizationFilters);
-                Inject(injection, injectedFilters, decoratedFilters.ActionFilters);
-                Inject(injection, injectedFilters, decoratedFilters.ResultFilters);
-                Inject(injection, injectedFilters, decoratedFilters.ExceptionFilters);
+                Inject(injector, injectedFilters, decoratedFilters.AuthorizationFilters);
+                Inject(injector, injectedFilters, decoratedFilters.ActionFilters);
+                Inject(injector, injectedFilters, decoratedFilters.ResultFilters);
+                Inject(injector, injectedFilters, decoratedFilters.ExceptionFilters);
             }
         }
     }

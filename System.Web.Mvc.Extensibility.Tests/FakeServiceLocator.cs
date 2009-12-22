@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility.Tests
 
     using Microsoft.Practices.ServiceLocation;
 
-    public abstract class FakeServiceLocator : IServiceLocator, IInjection, IDisposable
+    public abstract class FakeServiceLocator : IServiceLocator, IInjector, IDisposable
     {
         public abstract object GetInstance(Type serviceType);
 

@@ -21,15 +21,20 @@ namespace System.Web.Mvc.Extensibility.Autofac
     {
         private static readonly Type moduleType = typeof(IModule);
 
+        public AutofacBootstrapper(IBuildManager buildManager) : base(buildManager)
+        {
+        }
+
         protected override IServiceLocator CreateServiceLocator()
         {
             ContainerBuilder builder = new ContainerBuilder();
             AutofacServiceLocator serviceLocator = new AutofacServiceLocator();
 
             builder.Register(serviceLocator).As<IServiceLocator>();
+            builder.Register(serviceLocator).As<IInjector>();
             RegisterKnownTypes(builder);
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+            IEnumerable<Type> concreteTypes = BuildManager.ConcreteTypes;
 
             RegisterDynamicTypes(builder, concreteTypes);
             RegisterModules(builder, concreteTypes);
@@ -39,22 +44,13 @@ namespace System.Web.Mvc.Extensibility.Autofac
             return serviceLocator;
         }
 
-        private static void RegisterKnownTypes(ContainerBuilder builder)
-        {
-            builder.Register(RouteTable.Routes);
-            builder.Register(ControllerBuilder.Current);
-            builder.Register(ModelBinders.Binders);
-            builder.Register(ViewEngines.Engines);
-
-            builder.Register<FilterRegistry>().As<IFilterRegistry>().ContainerScoped();
-            builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().FactoryScoped();
-            builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
-        }
-
         private static void RegisterDynamicTypes(ContainerBuilder builder, IEnumerable<Type> concreteTypes)
         {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.BootstrapperTaskType).FactoryScoped());
+                         .Each(type => builder.Register(type).As(KnownTypes.BootstrapperTaskType).ContainerScoped());
+
+            concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
+                         .Each(type => builder.Register(type).As(KnownTypes.PerRequestTaskType).ContainerScoped());
 
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => builder.Register(type).As(KnownTypes.ModelBinderType).ContainerScoped());
@@ -76,6 +72,18 @@ namespace System.Web.Mvc.Extensibility.Autofac
             concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
                          .Where(type => !type.Namespace.StartsWith("Autofac", StringComparison.OrdinalIgnoreCase))
                          .Each(type => builder.RegisterModule(Activator.CreateInstance(type) as IModule));
+        }
+
+        private void RegisterKnownTypes(ContainerBuilder builder)
+        {
+            builder.Register(RouteTable.Routes);
+            builder.Register(ControllerBuilder.Current);
+            builder.Register(ModelBinders.Binders);
+            builder.Register(ViewEngines.Engines);
+            builder.Register(BuildManager);
+
+            builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().ContainerScoped();
+            builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
         }
     }
 }

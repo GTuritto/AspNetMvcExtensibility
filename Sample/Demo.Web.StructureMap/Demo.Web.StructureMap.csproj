@@ -89,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Product\Create.aspx" />
     <Content Include="Views\Product\Delete.aspx" />
     <Content Include="Views\Product\Details.aspx" />

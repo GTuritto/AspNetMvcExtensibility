@@ -13,7 +13,7 @@ namespace System.Web.Mvc.Extensibility.Unity
     using Microsoft.Practices.ServiceLocation;
     using Microsoft.Practices.Unity;
 
-    public class UnityServiceLocator : ServiceLocatorImplBase, IInjection, IDisposable
+    public class UnityServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
     {
         private bool isDisposed;
 

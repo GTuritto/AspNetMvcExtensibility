@@ -196,16 +196,6 @@ fieldset p
     margin: 2px 12px 10px 10px;
 }
 
-fieldset label 
-{
-    display: block;
-}
-
-fieldset label.inline 
-{
-    display: inline;
-}
-
 legend 
 {
     font-size: 1.1em;
@@ -324,12 +314,6 @@ div#title
 .validation-summary-valid
 {
     display: none;
-}
-
-.display-label,
-.editor-label
-{
-    font-weight: bold;
 }
 
 .display-label,

@@ -15,6 +15,7 @@
 /// All other rights reserved.
 #endregion
 
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Scope = "member", Target = "System.Web.Mvc.Extensibility.IFilterRegistry.#Register`2(!!1[])")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Scope = "member", Target = "System.Web.Mvc.Extensibility.IFilterRegistry.#Register`2()")]
@@ -49,3 +50,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Scope = "member", Target = "System.Web.Mvc.Extensibility.FilterRegistryActionItem`1.#.ctor(System.Linq.Expressions.Expression`1<System.Action`1<!0>>,System.Collections.Generic.IEnumerable`1<System.Web.Mvc.FilterAttribute>)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Scope = "member", Target = "System.Web.Mvc.Extensibility.FilterRegistry.#Register`2(System.Linq.Expressions.Expression`1<System.Action`1<!!0>>,System.Action`1<!!1>)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Scope = "member", Target = "System.Web.Mvc.Extensibility.FilterRegistry.#Register`2(System.Action`1<!!1>)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "GetType", Scope = "member", Target = "System.Web.Mvc.Extensibility.IFluentSyntax.#GetType()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "System.Web.Mvc.Extensibility.IFluentSyntax.#GetType()")]

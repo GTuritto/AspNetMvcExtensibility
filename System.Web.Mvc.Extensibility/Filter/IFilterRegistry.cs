@@ -7,9 +7,10 @@
 
 namespace System.Web.Mvc.Extensibility
 {
+    using ComponentModel;
     using Linq.Expressions;
 
-    public interface IFilterRegistry
+    public interface IFilterRegistry : IFluentSyntax
     {
         IFilterRegistry Register<TController, TFilter>()
             where TController : Controller
@@ -71,6 +72,7 @@ namespace System.Web.Mvc.Extensibility
             where TController : Controller
             where TFilter : FilterAttribute;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         FilterInfo Matching(ControllerContext controllerContext, ActionDescriptor actionDescriptor);
     }
 }

@@ -19,14 +19,18 @@ namespace System.Web.Mvc.Extensibility.Windsor
     {
         private static readonly Type moduleType = typeof(IModule);
 
+        public WindsorBootstrapper(IBuildManager buildManager) : base(buildManager)
+        {
+        }
+
         protected override IServiceLocator CreateServiceLocator()
         {
             IWindsorContainer container = new WindsorContainer();
-            IServiceLocator serviceLocator = new WindsorServiceLocator(container);
+            WindsorServiceLocator serviceLocator = new WindsorServiceLocator(container);
 
-            RegisterKnownTypes(container, serviceLocator);
+            RegisterKnownTypes(container, BuildManager, serviceLocator);
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+            IEnumerable<Type> concreteTypes = BuildManager.ConcreteTypes;
 
             RegisterDynamicTypes(container, concreteTypes);
             RegisterModules(container, concreteTypes);
@@ -34,23 +38,28 @@ namespace System.Web.Mvc.Extensibility.Windsor
             return serviceLocator;
         }
 
-        private static void RegisterKnownTypes(IWindsorContainer container, IServiceLocator serviceLocator)
+        private static void RegisterKnownTypes(IWindsorContainer container, IBuildManager buildManager, WindsorServiceLocator serviceLocator)
         {
+            container.Kernel.AddComponentInstance(typeof(IBuildManager).FullName, typeof(IBuildManager), buildManager);
             container.Kernel.AddComponentInstance(typeof(IServiceLocator).FullName, typeof(IServiceLocator), serviceLocator);
+            container.Kernel.AddComponentInstance(typeof(IInjector).FullName, typeof(IInjector), serviceLocator);
             container.Kernel.AddComponentInstance(typeof(RouteCollection).FullName, RouteTable.Routes);
             container.Kernel.AddComponentInstance(typeof(ControllerBuilder).FullName, ControllerBuilder.Current);
             container.Kernel.AddComponentInstance(typeof(ModelBinderDictionary).FullName, ModelBinders.Binders);
             container.Kernel.AddComponentInstance(typeof(ViewEngineCollection).FullName, ViewEngines.Engines);
 
             container.AddComponentLifeStyle(typeof(IFilterRegistry).FullName, typeof(IFilterRegistry), typeof(FilterRegistry), LifestyleType.Singleton)
-                     .AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Transient)
+                     .AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Singleton)
                      .AddComponentLifeStyle(typeof(IActionInvoker).FullName, typeof(IActionInvoker), typeof(ExtendedControllerActionInvoker), LifestyleType.Transient);
         }
 
         private static void RegisterDynamicTypes(IWindsorContainer container, IEnumerable<Type> concreteTypes)
         {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
-                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.BootstrapperTaskType, type, LifestyleType.Transient));
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.BootstrapperTaskType, type, LifestyleType.Singleton));
+
+            concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.PerRequestTaskType, type, LifestyleType.Singleton));
 
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelBinderType, type, LifestyleType.Singleton));

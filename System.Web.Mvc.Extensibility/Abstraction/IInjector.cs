@@ -7,7 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public interface IInjection
+    public interface IInjector
     {
         void Inject(object instance);
     }

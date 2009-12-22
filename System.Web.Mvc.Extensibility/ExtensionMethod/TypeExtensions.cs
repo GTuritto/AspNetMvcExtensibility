@@ -14,13 +14,12 @@ namespace System.Web.Mvc.Extensibility
 
     public static class TypeExtensions
     {
-        [DebuggerHidden]
+        [DebuggerStepThrough]
         public static bool HasDefaultConstructor(this Type instance)
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
-                           .Any(ctor => ctor.GetParameters().Length == 0);
+            return instance.GetConstructors(BindingFlags.Instance | BindingFlags.Public).Any(ctor => ctor.GetParameters().Length == 0);
         }
 
         [DebuggerHidden]
@@ -29,7 +28,7 @@ namespace System.Web.Mvc.Extensibility
             return (instance == null) ?
                    Enumerable.Empty<Type>() :
                    instance.SelectMany(assembly => assembly.GetExportedTypes())
-                           .Where(type => type.IsClass && !type.IsAbstract && !type.IsGenericType);
+                           .Where(type => type.IsClass && !type.IsAbstract && !type.IsInterface && !type.IsGenericType);
         }
     }
 }

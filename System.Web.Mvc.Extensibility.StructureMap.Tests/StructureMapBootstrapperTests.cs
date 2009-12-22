@@ -7,11 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility.StructureMap.Tests
 {
-    using Collections.Generic;
-    using Reflection;
-
-    using Microsoft.Practices.ServiceLocation;
-
+    using Moq;
     using Xunit;
 
     public class StructureMapBootstrapperTests
@@ -19,26 +15,12 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
         [Fact]
         public void Should_be_able_to_create_service_locator()
         {
-            var serviceLocator = new StructureMapBootstrapperTestDouble().PublicCreateServiceLocator();
+            var buildManager = new Mock<IBuildManager>();
+            buildManager.SetupGet(bm => bm.Assemblies).Returns(new[] { GetType().Assembly });
 
-            Assert.NotNull(serviceLocator);
-            Assert.IsType<StructureMapServiceLocator>(serviceLocator);
-        }
+            var bootstrapper = new StructureMapBootstrapper(buildManager.Object);
 
-        private class StructureMapBootstrapperTestDouble : StructureMapBootstrapper
-        {
-            protected override IEnumerable<Assembly> ReferencedAssemblies
-            {
-                get
-                {
-                    yield return GetType().Assembly;
-                }
-            }
-
-            public IServiceLocator PublicCreateServiceLocator()
-            {
-                return CreateServiceLocator();
-            }
+            Assert.IsType<StructureMapServiceLocator>(bootstrapper.ServiceLocator);
         }
     }
 }

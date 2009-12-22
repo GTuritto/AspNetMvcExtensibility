@@ -18,14 +18,18 @@ namespace System.Web.Mvc.Extensibility.Unity
     {
         private static readonly Type moduleType = typeof(IModule);
 
+        public UnityBootstrapper(IBuildManager buildManager) : base(buildManager)
+        {
+        }
+
         protected override IServiceLocator CreateServiceLocator()
         {
             IUnityContainer container = new UnityContainer();
-            IServiceLocator serviceLocator = new UnityServiceLocator(container);
+            UnityServiceLocator serviceLocator = new UnityServiceLocator(container);
 
-            RegisterKnwonTypes(container, serviceLocator);
+            RegisterKnwonTypes(container, BuildManager, serviceLocator);
 
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+            IEnumerable<Type> concreteTypes = BuildManager.ConcreteTypes;
 
             RegisterDynamicTypes(container, concreteTypes);
             RegisterModules(container, concreteTypes);
@@ -33,22 +37,27 @@ namespace System.Web.Mvc.Extensibility.Unity
             return serviceLocator;
         }
 
-        private static void RegisterKnwonTypes(IUnityContainer container, IServiceLocator serviceLocator)
+        private static void RegisterKnwonTypes(IUnityContainer container, IBuildManager buildManager, UnityServiceLocator serviceLocator)
         {
             container.RegisterInstance(RouteTable.Routes)
                      .RegisterInstance(ControllerBuilder.Current)
                      .RegisterInstance(ModelBinders.Binders)
                      .RegisterInstance(ViewEngines.Engines)
-                     .RegisterInstance(serviceLocator)
+                     .RegisterInstance(buildManager)
+                     .RegisterInstance<IServiceLocator>(serviceLocator)
+                     .RegisterInstance<IInjector>(serviceLocator)
                      .RegisterType<IFilterRegistry, FilterRegistry>(new ContainerControlledLifetimeManager())
-                     .RegisterType<IControllerFactory, ExtendedControllerFactory>()
+                     .RegisterType<IControllerFactory, ExtendedControllerFactory>(new ContainerControlledLifetimeManager())
                      .RegisterType<IActionInvoker, ExtendedControllerActionInvoker>();
         }
 
         private static void RegisterDynamicTypes(IUnityContainer container, IEnumerable<Type> concreteTypes)
         {
             concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
-                         .Each(type => container.RegisterType(KnownTypes.BootstrapperTaskType, type, type.FullName));
+                         .Each(type => container.RegisterType(KnownTypes.BootstrapperTaskType, type, type.FullName, new ContainerControlledLifetimeManager()));
+
+            concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
+                         .Each(type => container.RegisterType(KnownTypes.PerRequestTaskType, type, type.FullName, new ContainerControlledLifetimeManager()));
 
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.RegisterType(KnownTypes.ModelBinderType, type, type.FullName, new ContainerControlledLifetimeManager()));

@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
     {
         protected override IBootstrapper CreateBootstrapper()
         {
-            return new StructureMapBootstrapper();
+            return new StructureMapBootstrapper(BuildManagerWrapper.Current);
         }
     }
 }

@@ -22,43 +22,53 @@ namespace System.Web.Mvc.Extensibility.Ninject
     {
         private static readonly Type moduleType = typeof(IModule);
 
+        public NinjectBootstrapper(IBuildManager buildManager) : base(buildManager)
+        {
+        }
+
         protected override IServiceLocator CreateServiceLocator()
         {
-            IEnumerable<Type> concreteTypes = ReferencedAssemblies.ConcreteTypes();
+            IKernel kernal = new Kernel(new DefaualtModule(BuildManager));
+            NinjectServiceLocator serviceLocator = new NinjectServiceLocator(kernal);
 
-            IKernel kernal = new Kernel(new DefaualtModule(concreteTypes));
-            IServiceLocator serviceLocator = new NinjectServiceLocator(kernal);
+            kernal.Bind<IServiceLocator>().ToConstant(serviceLocator);
+            kernal.Bind<IInjector>().ToConstant(serviceLocator);
 
-            kernal.Bind<IServiceLocator>().ToConstant(serviceLocator).InSingletonScope();
-
-            concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
-                         .Each(type => kernal.LoadModule(Activator.CreateInstance(type) as IModule));
+            BuildManager.ConcreteTypes
+                        .Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
+                        .Each(type => kernal.LoadModule(Activator.CreateInstance(type) as IModule));
 
             return serviceLocator;
         }
 
         private sealed class DefaualtModule : Module
         {
-            private readonly IEnumerable<Type> concreteTypes;
+            private readonly IBuildManager buildManager;
 
-            public DefaualtModule(IEnumerable<Type> concreteTypes)
+            public DefaualtModule(IBuildManager buildManager)
             {
-                this.concreteTypes = concreteTypes;
+                this.buildManager = buildManager;
             }
 
             public override void Load()
             {
+                Bind<IBuildManager>().ToConstant(buildManager);
                 Bind<RouteCollection>().ToConstant(RouteTable.Routes);
                 Bind<ControllerBuilder>().ToConstant(ControllerBuilder.Current);
                 Bind<ModelBinderDictionary>().ToConstant(ModelBinders.Binders);
                 Bind<ViewEngineCollection>().ToConstant(ViewEngines.Engines);
 
                 Bind<IFilterRegistry>().To<FilterRegistry>().InSingletonScope();
-                Bind<IControllerFactory>().To<ExtendedControllerFactory>().InTransientScope();
+                Bind<IControllerFactory>().To<ExtendedControllerFactory>().InSingletonScope();
                 Bind<IActionInvoker>().To<ExtendedControllerActionInvoker>().InTransientScope();
 
+                IEnumerable<Type> concreteTypes = buildManager.ConcreteTypes;
+
                 concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
-                             .Each(type => Bind(KnownTypes.BootstrapperTaskType).To(type).InTransientScope());
+                             .Each(type => Bind(KnownTypes.BootstrapperTaskType).To(type).InSingletonScope());
+
+                concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
+                             .Each(type => Bind(KnownTypes.PerRequestTaskType).To(type).InSingletonScope());
 
                 concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                              .Each(type => Bind(KnownTypes.ModelBinderType).To(type).InSingletonScope());

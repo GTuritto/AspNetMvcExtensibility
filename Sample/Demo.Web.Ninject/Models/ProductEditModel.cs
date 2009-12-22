@@ -23,7 +23,7 @@ namespace Demo.Web.Ninject
 
         [Required(ErrorMessage = "Price cannot be blank.")]
         [Range(10, 1000, ErrorMessage = "Price must be between 10.00-1000.00.")]
-        [DisplayFormat(DataFormatString = "{0:c}")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         [ScaffoldColumn(false)]
