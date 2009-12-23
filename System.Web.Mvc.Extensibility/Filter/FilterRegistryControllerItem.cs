@@ -13,7 +13,7 @@ namespace System.Web.Mvc.Extensibility
     {
         private readonly Type controllerType = typeof(TController);
 
-        public FilterRegistryControllerItem(IEnumerable<FilterAttribute> filters)
+        public FilterRegistryControllerItem(IEnumerable<Func<FilterAttribute>> filters)
         {
             Invariant.IsNotNull(filters, "filters");
 

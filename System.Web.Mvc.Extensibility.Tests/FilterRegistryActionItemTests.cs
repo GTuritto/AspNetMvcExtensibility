@@ -15,13 +15,13 @@ namespace System.Web.Mvc.Extensibility.Tests
         [Fact]
         public void Should_throw_exception_when_incorrect_expression_is_passed()
         {
-            Assert.Throws<ArgumentException>(() => new FilterRegistryActionItem<FakeController>(c => c.HttpContext.ClearError(), new FilterAttribute[0]));
+            Assert.Throws<ArgumentException>(() => new FilterRegistryActionItem<FakeController>(c => c.HttpContext.ClearError(), new Func<FilterAttribute>[0]));
         }
 
         [Fact]
         public void IsMatching_should_return_true_for_same_action()
         {
-            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Index(), new FilterAttribute[0]);
+            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Index(), new Func<FilterAttribute>[0]);
 
             var controllerContext = new ControllerContext
                                         {
@@ -41,7 +41,7 @@ namespace System.Web.Mvc.Extensibility.Tests
         [Fact]
         public void IsMatching_should_return_true_for_parameterized_actions()
         {
-            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Edit(0, null), new FilterAttribute[0]);
+            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Edit(0, null), new Func<FilterAttribute>[0]);
 
             var controllerContext = new ControllerContext
                                         {
@@ -68,7 +68,7 @@ namespace System.Web.Mvc.Extensibility.Tests
         [Fact]
         public void IsMatching_should_return_false_for_other_action()
         {
-            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Index(), new FilterAttribute[0]);
+            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Index(), new Func<FilterAttribute>[0]);
 
             var controllerContext = new ControllerContext
                                         {
@@ -88,7 +88,7 @@ namespace System.Web.Mvc.Extensibility.Tests
         [Fact]
         public void IsMatching_should_return_false_for_same_action_when_parameter_differs()
         {
-            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Edit(0), new FilterAttribute[0]);
+            var actionItem = new FilterRegistryActionItem<FakeController>(c => c.Edit(0), new Func<FilterAttribute>[0]);
 
             var controllerContext = new ControllerContext
                                         {

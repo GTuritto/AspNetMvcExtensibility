@@ -93,6 +93,9 @@
     <Compile Include="BuildManager\BuildManagerWrapper.cs" />
     <Compile Include="BootstrapperTask\RegisterFiltersBase.cs" />
     <Compile Include="BuildManager\IBuildManager.cs" />
+    <Compile Include="Filter\FilterRegistryExtensions.cs" />
+    <Compile Include="TypeCatalog\TypeCatalog.cs" />
+    <Compile Include="TypeCatalog\TypeCatalogBuilder.cs" />
     <Compile Include="PerRequestTask\IPerRequestTask.cs" />
     <Compile Include="PerRequestTask\PerRequestExecutionContext.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">

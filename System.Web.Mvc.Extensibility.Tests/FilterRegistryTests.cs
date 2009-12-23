@@ -28,6 +28,10 @@ namespace System.Web.Mvc.Extensibility.Tests
             serviceLocator.Setup(sl => sl.GetInstance<DummyFilter2>()).Returns(new DummyFilter2());
             serviceLocator.Setup(sl => sl.GetInstance<DummyFilter3>()).Returns(new DummyFilter3());
             serviceLocator.Setup(sl => sl.GetInstance<DummyFilter4>()).Returns(new DummyFilter4());
+            serviceLocator.Setup(sl => sl.GetInstance(typeof(DummyFilter1))).Returns(new DummyFilter1());
+            serviceLocator.Setup(sl => sl.GetInstance(typeof(DummyFilter2))).Returns(new DummyFilter2());
+            serviceLocator.Setup(sl => sl.GetInstance(typeof(DummyFilter3))).Returns(new DummyFilter3());
+            serviceLocator.Setup(sl => sl.GetInstance(typeof(DummyFilter4))).Returns(new DummyFilter4());
 
             registry = new FilterRegistryTestDouble(serviceLocator.Object);
         }
@@ -52,8 +56,8 @@ namespace System.Web.Mvc.Extensibility.Tests
             var item = (FilterRegistryControllerItem<FakeController>) registry.PublicItems[0];
 
             Assert.Equal(1, item.Filters.Count());
-            Assert.Equal(10, ((DummyFilter2) item.Filters.ToList()[0]).IntegerProperty);
-            Assert.Equal("foo", ((DummyFilter2)item.Filters.ToList()[0]).StringProperty);
+            Assert.Equal(10, ((DummyFilter2) item.Filters.ToList()[0]()).IntegerProperty);
+            Assert.Equal("foo", ((DummyFilter2)item.Filters.ToList()[0]()).StringProperty);
         }
 
         [Fact]
@@ -101,8 +105,8 @@ namespace System.Web.Mvc.Extensibility.Tests
             var item = (FilterRegistryActionItem<FakeController>)registry.PublicItems[0];
 
             Assert.Equal(1, item.Filters.Count());
-            Assert.Equal(10, ((DummyFilter3)item.Filters.ToList()[0]).LongProperty);
-            Assert.Equal(100, ((DummyFilter3)item.Filters.ToList()[0]).DecimalProperty);
+            Assert.Equal(10, ((DummyFilter3)item.Filters.ToList()[0]()).LongProperty);
+            Assert.Equal(100, ((DummyFilter3)item.Filters.ToList()[0]()).DecimalProperty);
         }
 
         [Fact]

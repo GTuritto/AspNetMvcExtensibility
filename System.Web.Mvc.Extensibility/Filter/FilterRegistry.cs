@@ -26,13 +26,13 @@ namespace System.Web.Mvc.Extensibility
             items = new List<FilterRegistryItemBase>();
         }
 
-        protected IServiceLocator ServiceLocator
+        public IServiceLocator ServiceLocator
         {
             get;
             private set;
         }
 
-        protected virtual IList<FilterRegistryItemBase> Items
+        public virtual IList<FilterRegistryItemBase> Items
         {
             [DebuggerStepThrough]
             get
@@ -41,89 +41,29 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
-        public IFilterRegistry Register<TController, TFilter>() where TController : Controller where TFilter : FilterAttribute
-        {
-            return Register<TController, TFilter>((TFilter filter) => { });
-        }
-
-        public IFilterRegistry Register<TController, TFilter>(Action<TFilter> configureFilter) where TController : Controller where TFilter : FilterAttribute
-        {
-            Invariant.IsNotNull(configureFilter, "configureFilter");
-
-            TFilter filter = ServiceLocator.GetInstance<TFilter>();
-
-            configureFilter(filter);
-
-            return Register<TController, FilterAttribute>(filter);
-        }
-
-        public IFilterRegistry Register<TController, TFilter1, TFilter2>() where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute
-        {
-            return Register<TController, FilterAttribute>(ServiceLocator.GetInstance<TFilter1>(), ServiceLocator.GetInstance<TFilter2>());
-        }
-
-        public IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3>() where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute where TFilter3 : FilterAttribute
-        {
-            return Register<TController, FilterAttribute>(ServiceLocator.GetInstance<TFilter1>(), ServiceLocator.GetInstance<TFilter2>(), ServiceLocator.GetInstance<TFilter3>());
-        }
-
-        public IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3, TFilter4>() where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute where TFilter3 : FilterAttribute where TFilter4 : FilterAttribute
-        {
-            return Register<TController, FilterAttribute>(ServiceLocator.GetInstance<TFilter1>(), ServiceLocator.GetInstance<TFilter2>(), ServiceLocator.GetInstance<TFilter3>(), ServiceLocator.GetInstance<TFilter4>());
-        }
-
-        public virtual IFilterRegistry Register<TController, TFilter>(params TFilter[] filters) where TController : Controller where TFilter : FilterAttribute
+        public virtual IFilterRegistry Register<TController, TFilter>(IEnumerable<Func<TFilter>> filters)
+            where TController : Controller where TFilter : FilterAttribute
         {
             Invariant.IsNotNull(filters, "filters");
 
             if (filters.Any())
             {
-                Items.Add(new FilterRegistryControllerItem<TController>(filters));
+                Items.Add(new FilterRegistryControllerItem<TController>(ConvertFilters(filters)));
             }
 
             return this;
         }
 
-        public IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action) where TController : Controller where TFilter : FilterAttribute
-        {
-            return Register<TController, TFilter>(action, filter => { });
-        }
-
-        public IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action, Action<TFilter> configureFilter) where TController : Controller where TFilter : FilterAttribute
-        {
-            Invariant.IsNotNull(action, "action");
-            Invariant.IsNotNull(configureFilter, "configureFilter");
-
-            TFilter filter = ServiceLocator.GetInstance<TFilter>();
-
-            configureFilter(filter);
-
-            return Register<TController, FilterAttribute>(action, filter);
-        }
-
-        public IFilterRegistry Register<TController, TFilter1, TFilter2>(Expression<Action<TController>> action) where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute
-        {
-            return Register<TController, FilterAttribute>(action, ServiceLocator.GetInstance<TFilter1>(), ServiceLocator.GetInstance<TFilter2>());
-        }
-
-        public IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3>(Expression<Action<TController>> action) where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute where TFilter3 : FilterAttribute
-        {
-            return Register<TController, FilterAttribute>(action, ServiceLocator.GetInstance<TFilter1>(), ServiceLocator.GetInstance<TFilter2>(), ServiceLocator.GetInstance<TFilter3>());
-        }
-
-        public IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3, TFilter4>(Expression<Action<TController>> action) where TController : Controller where TFilter1 : FilterAttribute where TFilter2 : FilterAttribute where TFilter3 : FilterAttribute where TFilter4 : FilterAttribute
-        {
-            return Register<TController, FilterAttribute>(action, ServiceLocator.GetInstance<TFilter1>(), ServiceLocator.GetInstance<TFilter2>(), ServiceLocator.GetInstance<TFilter3>(), ServiceLocator.GetInstance<TFilter4>());
-        }
-
-        public virtual IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action, params TFilter[] filters) where TController : Controller where TFilter : FilterAttribute
+        public virtual IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action, IEnumerable<Func<TFilter>> filters)
+            where TController : Controller
+            where TFilter : FilterAttribute
         {
             Invariant.IsNotNull(action, "action");
             Invariant.IsNotNull(filters, "filters");
 
             if (filters.Any())
             {
-                Items.Add(new FilterRegistryActionItem<TController>(action, filters));
+                Items.Add(new FilterRegistryActionItem<TController>(action, ConvertFilters(filters)));
             }
 
             return this;
@@ -143,25 +83,23 @@ namespace System.Web.Mvc.Extensibility
             {
                 if (item.IsMatching(controllerContext, actionDescriptor))
                 {
-                    item.Filters
-                        .OfType<IAuthorizationFilter>()
-                        .Cast<FilterAttribute>()
-                        .Each(authorizationFilters.Add);
+                    IEnumerable<FilterAttribute> filters = item.Filters.Select(filter => filter());
 
-                    item.Filters
-                        .OfType<IActionFilter>()
-                        .Cast<FilterAttribute>()
-                        .Each(actionFilters.Add);
+                    filters.OfType<IAuthorizationFilter>()
+                           .Cast<FilterAttribute>()
+                           .Each(authorizationFilters.Add);
 
-                    item.Filters
-                        .OfType<IResultFilter>()
-                        .Cast<FilterAttribute>()
-                        .Each(resultFilters.Add);
+                    filters.OfType<IActionFilter>()
+                           .Cast<FilterAttribute>()
+                           .Each(actionFilters.Add);
 
-                    item.Filters
-                        .OfType<IExceptionFilter>()
-                        .Cast<FilterAttribute>()
-                        .Each(exceptionFiltes.Add);
+                    filters.OfType<IResultFilter>()
+                           .Cast<FilterAttribute>()
+                           .Each(resultFilters.Add);
+
+                    filters.OfType<IExceptionFilter>()
+                           .Cast<FilterAttribute>()
+                           .Each(exceptionFiltes.Add);
                 }
             }
 
@@ -184,6 +122,12 @@ namespace System.Web.Mvc.Extensibility
                            .Each(filter => filterInfo.ExceptionFilters.Add(filter));
 
             return filterInfo;
+        }
+
+        private static IEnumerable<Func<FilterAttribute>> ConvertFilters<TFilter>(IEnumerable<Func<TFilter>> filters)
+            where TFilter : FilterAttribute
+        {
+            return filters.Select(filter => new Func<FilterAttribute>(() => filter()));
         }
     }
 }

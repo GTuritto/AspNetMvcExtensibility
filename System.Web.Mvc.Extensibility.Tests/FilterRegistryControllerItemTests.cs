@@ -16,7 +16,7 @@ namespace System.Web.Mvc.Extensibility.Tests
 
         public FilterRegistryControllerItemTests()
         {
-            controllerItem = new FilterRegistryControllerItem<FakeController>(new FilterAttribute[0]);
+            controllerItem = new FilterRegistryControllerItem<FakeController>(new[] { new Func<FilterAttribute>(() => null) });
         }
 
         [Fact]

@@ -23,12 +23,20 @@ namespace System.Web.Mvc.Extensibility
         }
 
         [DebuggerHidden]
+        public static IEnumerable<Type> ConcreteTypes(this Assembly instance)
+        {
+            return (instance == null) ?
+                   Enumerable.Empty<Type>() :
+                   instance.GetExportedTypes()
+                           .Where(type => type.IsClass && !type.IsAbstract && !type.IsInterface && !type.IsGenericType);
+        }
+
+        [DebuggerHidden]
         public static IEnumerable<Type> ConcreteTypes(this IEnumerable<Assembly> instance)
         {
             return (instance == null) ?
                    Enumerable.Empty<Type>() :
-                   instance.SelectMany(assembly => assembly.GetExportedTypes())
-                           .Where(type => type.IsClass && !type.IsAbstract && !type.IsInterface && !type.IsGenericType);
+                   instance.SelectMany(assembly => assembly.ConcreteTypes());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace System.Web.Mvc.Extensibility
 
     public abstract class FilterRegistryItemBase
     {
-        public IEnumerable<FilterAttribute> Filters
+        public IEnumerable<Func<FilterAttribute>> Filters
         {
             get;
             protected set;

@@ -14,7 +14,7 @@ namespace System.Web.Mvc.Extensibility
     {
         private readonly ReflectedActionDescriptor reflectedActionDescriptor;
 
-        public FilterRegistryActionItem(Expression<Action<TController>> action, IEnumerable<FilterAttribute> filters)
+        public FilterRegistryActionItem(Expression<Action<TController>> action, IEnumerable<Func<FilterAttribute>> filters)
         {
             Invariant.IsNotNull(action, "action");
             Invariant.IsNotNull(filters, "filters");
