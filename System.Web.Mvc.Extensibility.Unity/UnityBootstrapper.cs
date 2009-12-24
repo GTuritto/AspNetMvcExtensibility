@@ -47,6 +47,7 @@ namespace System.Web.Mvc.Extensibility.Unity
                      .RegisterInstance<IServiceLocator>(serviceLocator)
                      .RegisterInstance<IInjector>(serviceLocator)
                      .RegisterType<IFilterRegistry, FilterRegistry>(new ContainerControlledLifetimeManager())
+                     .RegisterType<IModelMetadataRegistry, ModelMetadataRegistry>(new ContainerControlledLifetimeManager())
                      .RegisterType<IControllerFactory, ExtendedControllerFactory>(new ContainerControlledLifetimeManager())
                      .RegisterType<IActionInvoker, ExtendedControllerActionInvoker>();
         }

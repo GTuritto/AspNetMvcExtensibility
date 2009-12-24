@@ -123,4 +123,7 @@
   <data name="TheExpressionMustBeAValidControllerAction" xml:space="preserve">
     <value>The expression must be a valid controller action.</value>
   </data>
+  <data name="ThePropertyNameOfTypeCouldNotBeFound" xml:space="preserve">
+    <value>The property {0}.{1} could not be found.</value>
+  </data>
 </root>

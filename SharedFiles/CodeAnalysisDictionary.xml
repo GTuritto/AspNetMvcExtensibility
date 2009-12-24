@@ -1,8 +1,8 @@
 ﻿<Dictionary>
     <Words>
         <Recognized>
+            <Word>Configurator</Word>
             <Word>Mvc</Word>
-            <Word>Injectable</Word>
             <Word>Autofac</Word>
             <Word>Ninject</Word>
         </Recognized>

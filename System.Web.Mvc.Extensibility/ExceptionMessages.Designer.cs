@@ -8,13 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-#region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
-#endregion
-
 namespace System.Web.Mvc.Extensibility {
     using System;
     
@@ -82,6 +75,15 @@ namespace System.Web.Mvc.Extensibility {
         internal static string TheExpressionMustBeAValidControllerAction {
             get {
                 return ResourceManager.GetString("TheExpressionMustBeAValidControllerAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The property {0}.{1} could not be found..
+        /// </summary>
+        internal static string ThePropertyNameOfTypeCouldNotBeFound {
+            get {
+                return ResourceManager.GetString("ThePropertyNameOfTypeCouldNotBeFound", resourceCulture);
             }
         }
     }

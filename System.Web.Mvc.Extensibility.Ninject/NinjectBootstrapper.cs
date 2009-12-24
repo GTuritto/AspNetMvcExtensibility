@@ -59,6 +59,7 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 Bind<ViewEngineCollection>().ToConstant(ViewEngines.Engines);
 
                 Bind<IFilterRegistry>().To<FilterRegistry>().InSingletonScope();
+                Bind<IModelMetadataRegistry>().To<ModelMetadataRegistry>().InSingletonScope();
                 Bind<IControllerFactory>().To<ExtendedControllerFactory>().InSingletonScope();
                 Bind<IActionInvoker>().To<ExtendedControllerActionInvoker>().InTransientScope();
 

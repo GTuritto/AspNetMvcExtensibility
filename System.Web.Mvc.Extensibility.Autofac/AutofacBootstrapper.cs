@@ -83,6 +83,7 @@ namespace System.Web.Mvc.Extensibility.Autofac
             builder.Register(BuildManager);
 
             builder.Register<FilterRegistry>().As<IFilterRegistry>().ContainerScoped();
+            builder.Register<ModelMetadataRegistry>().As<IModelMetadataRegistry>().ContainerScoped();
             builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().ContainerScoped();
             builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
         }

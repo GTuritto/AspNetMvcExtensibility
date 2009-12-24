@@ -48,9 +48,10 @@ namespace System.Web.Mvc.Extensibility.Windsor
             container.Kernel.AddComponentInstance(typeof(ModelBinderDictionary).FullName, ModelBinders.Binders);
             container.Kernel.AddComponentInstance(typeof(ViewEngineCollection).FullName, ViewEngines.Engines);
 
-            container.AddComponentLifeStyle(typeof(IFilterRegistry).FullName, typeof(IFilterRegistry), typeof(FilterRegistry), LifestyleType.Singleton)
-                     .AddComponentLifeStyle(typeof(IControllerFactory).FullName, typeof(IControllerFactory), typeof(ExtendedControllerFactory), LifestyleType.Singleton)
-                     .AddComponentLifeStyle(typeof(IActionInvoker).FullName, typeof(IActionInvoker), typeof(ExtendedControllerActionInvoker), LifestyleType.Transient);
+            container.AddComponentLifeStyle<IFilterRegistry, FilterRegistry>(LifestyleType.Singleton)
+                     .AddComponentLifeStyle<IModelMetadataRegistry, ModelMetadataRegistry>(LifestyleType.Singleton)
+                     .AddComponentLifeStyle<IControllerFactory, ExtendedControllerFactory>(LifestyleType.Singleton)
+                     .AddComponentLifeStyle<IActionInvoker, ExtendedControllerActionInvoker>(LifestyleType.Transient);
         }
 
         private static void RegisterDynamicTypes(IWindsorContainer container, IEnumerable<Type> concreteTypes)
