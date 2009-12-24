@@ -86,6 +86,38 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
+    <ItemGroup Condition=" '$(Configuration)'=='Debug' Or '$(Configuration)'=='Release' ">
+        <Compile Include="ModelMetadata\DateTimeMetadataItem.cs" />
+        <Compile Include="ModelMetadata\DateTimeMetadataItemBuilder.cs" />
+        <Compile Include="ModelMetadata\DecimalMetadataItemBuilder.cs" />
+        <Compile Include="ModelMetadata\ExtendedRangeValidator.cs" />
+        <Compile Include="ModelMetadata\RegularExpressionValidationMetadata.cs" />
+        <Compile Include="ModelMetadata\ExtendedRegularExpressionValidator.cs" />
+        <Compile Include="ModelMetadata\ExtendedModelMetadata.cs" />
+        <Compile Include="ModelMetadata\ExtendedModelMetadataProvider.cs">
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Include="ModelMetadata\ExtendedRequiredValidator.cs" />
+        <Compile Include="ModelMetadata\ExtendedStringLengthValidator.cs" />
+        <Compile Include="ModelMetadata\IModelMetadataFormattableItem.cs" />
+        <Compile Include="ModelMetadata\IModelMetadataRegistry.cs" />
+        <Compile Include="ModelMetadata\IModelValidationMetadata.cs" />
+        <Compile Include="ModelMetadata\StringLengthValidationMetadata.cs" />
+        <Compile Include="ModelMetadata\ModelMetadataItemBase.cs" />
+        <Compile Include="ModelMetadata\ModelMetadataItemBuilderBase.cs" />
+        <Compile Include="ModelMetadata\ModelMetadataRegistry.cs" />
+        <Compile Include="ModelMetadata\ModelMetadataItemConfigurator.cs" />
+        <Compile Include="ModelMetadata\ModelValidationMetadataBase.cs" />
+        <Compile Include="ModelMetadata\NumericMetadataItem.cs" />
+        <Compile Include="ModelMetadata\NumericMetadataItemBuilder.cs" />
+        <Compile Include="ModelMetadata\NumericMetadataItemBuilderBase.cs" />
+        <Compile Include="ModelMetadata\ObjectMetadataItem.cs" />
+        <Compile Include="ModelMetadata\ObjectMetadataItemBuilder.cs" />
+        <Compile Include="ModelMetadata\RangeValidationMetadata.cs" />
+        <Compile Include="ModelMetadata\RequiredValidationMetadata.cs" />
+        <Compile Include="ModelMetadata\StringMetadataItem.cs" />
+        <Compile Include="ModelMetadata\StringMetadataItemBuilder.cs" />
+    </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
@@ -94,36 +126,6 @@
     <Compile Include="BootstrapperTask\RegisterFiltersBase.cs" />
     <Compile Include="BuildManager\IBuildManager.cs" />
     <Compile Include="Filter\FilterRegistryExtensions.cs" />
-    <Compile Include="ModelMetadata\DateTimeMetadataItem.cs" />
-    <Compile Include="ModelMetadata\DateTimeMetadataItemBuilder.cs" />
-    <Compile Include="ModelMetadata\DecimalMetadataItemBuilder.cs" />
-    <Compile Include="ModelMetadata\ExtendedRangeValidator.cs" />
-    <Compile Include="ModelMetadata\RegularExpressionValidationMetadata.cs" />
-    <Compile Include="ModelMetadata\ExtendedRegularExpressionValidator.cs" />
-    <Compile Include="ModelMetadata\ExtendedModelMetadata.cs" />
-    <Compile Include="ModelMetadata\ExtendedModelMetadataProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ModelMetadata\ExtendedRequiredValidator.cs" />
-    <Compile Include="ModelMetadata\ExtendedStringLengthValidator.cs" />
-    <Compile Include="ModelMetadata\IModelMetadataFormattableItem.cs" />
-    <Compile Include="ModelMetadata\IModelMetadataRegistry.cs" />
-    <Compile Include="ModelMetadata\IModelValidationMetadata.cs" />
-    <Compile Include="ModelMetadata\StringLengthValidationMetadata.cs" />
-    <Compile Include="ModelMetadata\ModelMetadataItemBase.cs" />
-    <Compile Include="ModelMetadata\ModelMetadataItemBuilderBase.cs" />
-    <Compile Include="ModelMetadata\ModelMetadataRegistry.cs" />
-    <Compile Include="ModelMetadata\ModelMetadataItemConfigurator.cs" />
-    <Compile Include="ModelMetadata\ModelValidationMetadataBase.cs" />
-    <Compile Include="ModelMetadata\NumericMetadataItem.cs" />
-    <Compile Include="ModelMetadata\NumericMetadataItemBuilder.cs" />
-    <Compile Include="ModelMetadata\NumericMetadataItemBuilderBase.cs" />
-    <Compile Include="ModelMetadata\ObjectMetadataItem.cs" />
-    <Compile Include="ModelMetadata\ObjectMetadataItemBuilder.cs" />
-    <Compile Include="ModelMetadata\RangeValidationMetadata.cs" />
-    <Compile Include="ModelMetadata\RequiredValidationMetadata.cs" />
-    <Compile Include="ModelMetadata\StringMetadataItem.cs" />
-    <Compile Include="ModelMetadata\StringMetadataItemBuilder.cs" />
     <Compile Include="TypeCatalog\TypeCatalog.cs" />
     <Compile Include="TypeCatalog\TypeCatalogBuilder.cs" />
     <Compile Include="PerRequestTask\IPerRequestTask.cs" />
