@@ -61,21 +61,44 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        public TItemBuilder Writable()
+        {
+            Item.IsReadOnly = false;
+
+            return this as TItemBuilder;
+        }
+
         public TItemBuilder Required(string errorMessage)
         {
             Item.IsRequired = true;
 
-            RequiredValidationMetadata required = Item.Validations
-                                                      .OfType<RequiredValidationMetadata>()
-                                                      .FirstOrDefault();
+            RequiredValidationMetadata requiredValidation = Item.Validations
+                                                                .OfType<RequiredValidationMetadata>()
+                                                                .FirstOrDefault();
 
-            if (required == null)
+            if (requiredValidation == null)
             {
-                required = new RequiredValidationMetadata();
-                Item.Validations.Add(required);
+                requiredValidation = new RequiredValidationMetadata();
+                Item.Validations.Add(requiredValidation);
             }
 
-            required.ErrorMessage = errorMessage;
+            requiredValidation.ErrorMessage = errorMessage;
+
+            return this as TItemBuilder;
+        }
+
+        public TItemBuilder Optional()
+        {
+            Item.IsRequired = false;
+
+            RequiredValidationMetadata requiredValidation = Item.Validations
+                                                                .OfType<RequiredValidationMetadata>()
+                                                                .FirstOrDefault();
+
+            if (requiredValidation == null)
+            {
+                Item.Validations.Remove(requiredValidation);
+            }
 
             return this as TItemBuilder;
         }
