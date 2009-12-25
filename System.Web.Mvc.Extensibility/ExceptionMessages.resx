@@ -126,4 +126,16 @@
   <data name="ThePropertyNameOfTypeCouldNotBeFound" xml:space="preserve">
     <value>The property {0}.{1} could not be found.</value>
   </data>
+  <data name="CannotApplyUrlWhenThereIsAActiveExpression" xml:space="preserve">
+    <value>Cannot apply url when there is a active expression.</value>
+  </data>
+  <data name="CannotApplyEmailWhenThereIsAActiveExpression" xml:space="preserve">
+    <value>Cannot apply email when there is a active expression.</value>
+  </data>
+  <data name="InvalidEmailAddressFormat" xml:space="preserve">
+    <value>Invalid email address format.</value>
+  </data>
+  <data name="InvalidUrlFormat" xml:space="preserve">
+    <value>Invalid url format.</value>
+  </data>
 </root>

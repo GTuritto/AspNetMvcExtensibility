@@ -115,7 +115,7 @@
     <Compile Include="ModelMetadata\StringMetadataItemBuilder.cs" />
     <Compile Include="ModelMetadata\BooleanMetadataItem.cs" />
     <Compile Include="ModelMetadata\BooleanMetadataItemBuilder.cs" />
-    <Compile Include="ModelMetadata\IModelMetadaAdditionalSetting.cs" />
+    <Compile Include="ModelMetadata\IModelMetadataAdditionalSetting.cs" />
     <Compile Include="ModelMetadata\ModelMetadataItemSelectableElementSetting.cs" />
     <Compile Include="ModelMetadata\ValueTypeMetadataItemBuilderExtensions.cs" />
   </ItemGroup>

@@ -61,11 +61,47 @@ namespace System.Web.Mvc.Extensibility {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot apply email when there is a active expression..
+        /// </summary>
+        internal static string CannotApplyEmailWhenThereIsAActiveExpression {
+            get {
+                return ResourceManager.GetString("CannotApplyEmailWhenThereIsAActiveExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot apply url when there is a active expression..
+        /// </summary>
+        internal static string CannotApplyUrlWhenThereIsAActiveExpression {
+            get {
+                return ResourceManager.GetString("CannotApplyUrlWhenThereIsAActiveExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; cannot be null..
         /// </summary>
         internal static string CannotBeNull {
             get {
                 return ResourceManager.GetString("CannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email address format..
+        /// </summary>
+        internal static string InvalidEmailAddressFormat {
+            get {
+                return ResourceManager.GetString("InvalidEmailAddressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid url format..
+        /// </summary>
+        internal static string InvalidUrlFormat {
+            get {
+                return ResourceManager.GetString("InvalidUrlFormat", resourceCulture);
             }
         }
         

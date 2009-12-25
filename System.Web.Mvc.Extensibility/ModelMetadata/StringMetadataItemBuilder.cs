@@ -7,12 +7,79 @@
 
 namespace System.Web.Mvc.Extensibility
 {
+    using Diagnostics;
     using Linq;
 
     public class StringMetadataItemBuilder : ModelMetadataItemBuilderBase<StringMetadataItem, StringMetadataItemBuilder>
     {
+        private static string emailExpression = @"^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$";
+        private static string emailErrorMessage = ExceptionMessages.InvalidEmailAddressFormat;
+
+        private static string urlExpression = @"(ftp|http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?";
+        private static string urlErrorMessage = ExceptionMessages.InvalidUrlFormat;
+
         public StringMetadataItemBuilder(StringMetadataItem item) : base(item)
         {
+        }
+
+        public static string EmailExpression
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return emailExpression;
+            }
+
+            [DebuggerStepThrough]
+            set
+            {
+                emailExpression = value;
+            }
+        }
+
+        public static string EmailErrorMessage
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return emailErrorMessage;
+            }
+
+            [DebuggerStepThrough]
+            set
+            {
+                emailErrorMessage = value;
+            }
+        }
+
+        public static string UrlExpression
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return urlExpression;
+            }
+
+            [DebuggerStepThrough]
+            set
+            {
+                urlExpression = value;
+            }
+        }
+
+        public static string UrlErrorMessage
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return urlErrorMessage;
+            }
+
+            [DebuggerStepThrough]
+            set
+            {
+                urlErrorMessage = value;
+            }
         }
 
         public virtual StringMetadataItemBuilder DisplayFormat(string value)
@@ -45,7 +112,14 @@ namespace System.Web.Mvc.Extensibility
 
         public virtual StringMetadataItemBuilder AsEmail()
         {
-            return Template("EmailAddress");
+            Template("EmailAddress");
+
+            if (GetExpressionValidation() != null)
+            {
+                throw new InvalidOperationException(ExceptionMessages.CannotApplyEmailWhenThereIsAActiveExpression);
+            }
+
+            return Expression(EmailExpression, EmailErrorMessage);
         }
 
         public virtual StringMetadataItemBuilder AsHtml()
@@ -55,7 +129,14 @@ namespace System.Web.Mvc.Extensibility
 
         public virtual StringMetadataItemBuilder AsUrl()
         {
-            return Template("Url");
+            Template("Url");
+
+            if (GetExpressionValidation() != null)
+            {
+                throw new InvalidOperationException(ExceptionMessages.CannotApplyUrlWhenThereIsAActiveExpression);
+            }
+
+            return Expression(UrlExpression, UrlErrorMessage);
         }
 
         public virtual StringMetadataItemBuilder AsMultilineText()
@@ -70,9 +151,7 @@ namespace System.Web.Mvc.Extensibility
 
         public virtual StringMetadataItemBuilder Expression(string pattern, string errorMessage)
         {
-            RegularExpressionValidationMetadata regularExpressionValidation = Item.Validations
-                                                                                  .OfType<RegularExpressionValidationMetadata>()
-                                                                                  .FirstOrDefault();
+            RegularExpressionValidationMetadata regularExpressionValidation = GetExpressionValidation();
 
             if (regularExpressionValidation == null)
             {
@@ -102,6 +181,11 @@ namespace System.Web.Mvc.Extensibility
             stringLengthValidation.ErrorMessage = errorMessage;
 
             return this;
+        }
+
+        private RegularExpressionValidationMetadata GetExpressionValidation()
+        {
+            return Item.Validations.OfType<RegularExpressionValidationMetadata>().SingleOrDefault();
         }
     }
 }

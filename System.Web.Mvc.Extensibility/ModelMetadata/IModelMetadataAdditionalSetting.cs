@@ -7,7 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public interface IModelMetadaAdditionalSetting
+    public interface IModelMetadataAdditionalSetting
     {
     }
 }

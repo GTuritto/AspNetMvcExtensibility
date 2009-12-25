@@ -16,7 +16,7 @@ namespace System.Web.Mvc.Extensibility
 
         public ExtendedRequiredValidator(ModelMetadata metadata, ControllerContext controllerContext, IModelValidationMetadata validationMetadata) : base(metadata, controllerContext)
         {
-            attribute = new RequiredAttribute{ ErrorMessage = validationMetadata.ErrorMessage };
+            attribute = new RequiredAttribute { ErrorMessage = validationMetadata.ErrorMessage };
         }
 
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()

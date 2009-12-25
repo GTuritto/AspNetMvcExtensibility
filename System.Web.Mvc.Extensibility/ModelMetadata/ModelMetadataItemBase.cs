@@ -15,7 +15,7 @@ namespace System.Web.Mvc.Extensibility
         {
             ShowForDisplay = true;
             Validations = new List<IModelValidationMetadata>();
-            AdditionalSettings = new List<IModelMetadaAdditionalSetting>();
+            AdditionalSettings = new List<IModelMetadataAdditionalSetting>();
         }
 
         public string DisplayName
@@ -90,7 +90,7 @@ namespace System.Web.Mvc.Extensibility
             private set;
         }
 
-        public IList<IModelMetadaAdditionalSetting> AdditionalSettings
+        public IList<IModelMetadataAdditionalSetting> AdditionalSettings
         {
             get;
             private set;
