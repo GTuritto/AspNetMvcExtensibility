@@ -52,6 +52,9 @@ namespace System.Web.Mvc.Extensibility.Autofac
             concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).As(KnownTypes.PerRequestTaskType).ContainerScoped());
 
+            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                         .Each(type => builder.Register(type).As(KnownTypes.ModelMetadataConfigurationType).FactoryScoped());
+
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => builder.Register(type).As(KnownTypes.ModelBinderType).ContainerScoped());
 

@@ -91,9 +91,6 @@
     <Compile Include="ModelMetadata\RegularExpressionValidationMetadata.cs" />
     <Compile Include="ModelMetadata\ExtendedRegularExpressionValidator.cs" />
     <Compile Include="ModelMetadata\ExtendedModelMetadata.cs" />
-    <Compile Include="ModelMetadata\ExtendedModelMetadataProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ModelMetadata\ExtendedRequiredValidator.cs" />
     <Compile Include="ModelMetadata\ExtendedStringLengthValidator.cs" />
     <Compile Include="ModelMetadata\IModelMetadataFormattableItem.cs" />
@@ -103,7 +100,6 @@
     <Compile Include="ModelMetadata\ModelMetadataItemBase.cs" />
     <Compile Include="ModelMetadata\ModelMetadataItemBuilderBase.cs" />
     <Compile Include="ModelMetadata\ModelMetadataRegistry.cs" />
-    <Compile Include="ModelMetadata\ModelMetadataItemConfigurator.cs" />
     <Compile Include="ModelMetadata\ModelValidationMetadataBase.cs" />
     <Compile Include="ModelMetadata\ValueTypeMetadataItem.cs" />
     <Compile Include="ModelMetadata\ValueTypeMetadataItemBuilder.cs" />
@@ -118,16 +114,22 @@
     <Compile Include="ModelMetadata\IModelMetadataAdditionalSetting.cs" />
     <Compile Include="ModelMetadata\ModelMetadataItemSelectableElementSetting.cs" />
     <Compile Include="ModelMetadata\ValueTypeMetadataItemBuilderExtensions.cs" />
+    <Compile Include="ModelMetadata\ExtendedModelValidatorProvider.cs" />
+    <Compile Include="ModelMetadata\IModelMetadataConfiguration.cs" />
+    <Compile Include="ModelMetadata\ModelMetadataConfigurationBase.cs" />
+    <Compile Include="ModelMetadata\ExtendedModelMetadataProvider.cs">
+        <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BootstrapperTask\RegisterModelMetadata.cs" />
     <Compile Include="BuildManager\BuildManagerWrapper.cs" />
     <Compile Include="BootstrapperTask\RegisterFiltersBase.cs" />
     <Compile Include="BuildManager\IBuildManager.cs" />
     <Compile Include="Filter\FilterRegistryExtensions.cs" />
-    <Compile Include="ModelMetadata\ExtendedModelValidatorProvider.cs" />
     <Compile Include="TypeCatalog\TypeCatalog.cs" />
     <Compile Include="TypeCatalog\TypeCatalogBuilder.cs" />
     <Compile Include="PerRequestTask\IPerRequestTask.cs" />
@@ -145,25 +147,25 @@
     <Compile Include="Helper\IFluentSyntax.cs" />
     <Compile Include="ModelBinder\BindingTypesAttribute.cs" />
     <Compile Include="Bootstrapper\BootstrapperBase.cs" />
+    <Compile Include="Bootstrapper\IBootstrapper.cs" />
+    <Compile Include="BootstrapperTask\IBootstrapperTask.cs" />
     <Compile Include="BootstrapperTask\BootstrapperTaskBase.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helper\KnownTypes.cs" />
     <Compile Include="BootstrapperTask\RegisterControllerFactory.cs" />
     <Compile Include="BootstrapperTask\RegisterModelBinders.cs" />
     <Compile Include="BootstrapperTask\RegisterRoutesBase.cs" />
+    <Compile Include="BootstrapperTask\RegisterViewEngines.cs" />
     <Compile Include="Abstraction\DisposableBase.cs" />
     <Compile Include="ExtensionMethod\EnumerableExtensions.cs" />
     <Compile Include="Controller\ExtendedControllerActionInvoker.cs" />
-    <Compile Include="Bootstrapper\IBootstrapper.cs" />
-    <Compile Include="BootstrapperTask\IBootstrapperTask.cs" />
     <Compile Include="Abstraction\IInjector.cs" />
     <Compile Include="ExtendedMvcApplicationBase.cs" />
     <Compile Include="Controller\ExtendedControllerFactory.cs" />
     <Compile Include="Helper\Invariant.cs" />
+    <Compile Include="Helper\KnownTypes.cs" />
     <Compile Include="PerRequestTask\PerRequestTaskBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BootstrapperTask\RegisterViewEngines.cs" />
     <Compile Include="ExtensionMethod\TypeExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\SharedFiles\CodeAnalysisDictionary.xml" />

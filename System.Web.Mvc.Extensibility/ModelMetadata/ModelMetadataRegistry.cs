@@ -23,18 +23,12 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
-        public virtual IModelMetadataRegistry Register<TModel>(Action<ModelMetadataItemConfigurator<TModel>> configuration)
+        public virtual void Register(Type modelType, IDictionary<string, ModelMetadataItemBase> metadataDictionary)
         {
-            Invariant.IsNotNull(configuration, "configuration");
+            Invariant.IsNotNull(modelType, "modelType");
+            Invariant.IsNotNull(metadataDictionary, "metadataDictionary");
 
-            IDictionary<string, ModelMetadataItemBase> items = new Dictionary<string, ModelMetadataItemBase>(StringComparer.OrdinalIgnoreCase);
-            Configurations[typeof(TModel)] = items;
-
-            ModelMetadataItemConfigurator<TModel> configurator = new ModelMetadataItemConfigurator<TModel>(items);
-
-            configuration(configurator);
-
-            return this;
+            Configurations.Add(modelType, metadataDictionary);
         }
 
         public virtual IDictionary<string, ModelMetadataItemBase> Matching(Type modelType)

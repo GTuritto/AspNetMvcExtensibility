@@ -17,5 +17,6 @@ namespace System.Web.Mvc.Extensibility
         public static readonly Type FilterAttributeType = typeof(FilterAttribute);
         public static readonly Type ViewEngineType = typeof(IViewEngine);
         public static readonly Type ActionResultType = typeof(ActionResult);
+        public static readonly Type ModelMetadataConfigurationType = typeof(IModelMetadataConfiguration);
     }
 }

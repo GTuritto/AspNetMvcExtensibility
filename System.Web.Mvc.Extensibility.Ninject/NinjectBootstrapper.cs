@@ -71,6 +71,9 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.PerRequestTaskType).To(type).InSingletonScope());
 
+                concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                             .Each(type => Bind(KnownTypes.ModelMetadataConfigurationType).To(type).InTransientScope());
+
                 concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                              .Each(type => Bind(KnownTypes.ModelBinderType).To(type).InSingletonScope());
 

@@ -10,9 +10,9 @@ namespace System.Web.Mvc.Extensibility
     using Collections.Generic;
     using ComponentModel;
 
-    public interface IModelMetadataRegistry : IFluentSyntax
+    public interface IModelMetadataRegistry
     {
-        IModelMetadataRegistry Register<TModel>(Action<ModelMetadataItemConfigurator<TModel>> configuration);
+        void Register(Type modelType, IDictionary<string, ModelMetadataItemBase> metadataDictionary);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         IDictionary<string, ModelMetadataItemBase> Matching(Type modelType);
