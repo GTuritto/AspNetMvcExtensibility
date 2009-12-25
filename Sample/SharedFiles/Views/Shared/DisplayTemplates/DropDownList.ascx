@@ -18,7 +18,9 @@
 
                 if ((selectList != null) && selectList.Any())
                 {
-                    return selectList.Select(item => item.Selected).FirstOrDefault();
+                    return selectList.Where(item => item.Selected)
+                                     .Select(item => item.Text)
+                                     .FirstOrDefault();
                 }
             }
         }
@@ -31,5 +33,5 @@
     <%= Html.Encode(selectedText) %>
 <% }%>
 <% else {%>
-    <%= Html.DisplayForModel()%>
+    <%= Html.Encode(ViewData.TemplateInfo.FormattedModelValue) %>
 <% }%>
