@@ -7,14 +7,14 @@
 
         if (metadata != null)
         {
-            ModelMetadataItemDropDownListSetting setting = metadata.Metadata
-                                                                   .AdditionalSettings
-                                                                   .OfType<ModelMetadataItemDropDownListSetting>()
-                                                                   .SingleOrDefault();
+            ModelMetadataItemSelectableElementSetting setting = metadata.Metadata
+                                                                        .AdditionalSettings
+                                                                        .OfType<ModelMetadataItemSelectableElementSetting>()
+                                                                        .SingleOrDefault();
 
             if (setting != null)
             {
-                SelectList selectList = ViewData.Eval(setting.SelectListViewDataKey) as SelectList;
+                SelectList selectList = ViewData.Eval(setting.ViewDataKey) as SelectList;
 
                 if ((selectList != null) && selectList.Any())
                 {

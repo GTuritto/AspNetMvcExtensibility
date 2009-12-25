@@ -1,18 +1,18 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <%@ Import Namespace="System.Web.Mvc.Extensibility"%>
 <script runat="server">
-    ModelMetadataItemDropDownListSetting GetDropDownListSetting()
+    ModelMetadataItemSelectableElementSetting GetSelectableElementSetting()
     {
         ExtendedModelMetadata metadata = ViewData.ModelMetadata as ExtendedModelMetadata;
 
         return (metadata != null) ? metadata.Metadata.AdditionalSettings
-                                                     .OfType<ModelMetadataItemDropDownListSetting>()
+                                                     .OfType<ModelMetadataItemSelectableElementSetting>()
                                                      .SingleOrDefault() : null;
     }
 </script>
-<% ModelMetadataItemDropDownListSetting setting = GetDropDownListSetting();%>
+<% ModelMetadataItemSelectableElementSetting setting = GetSelectableElementSetting();%>
 <% if (setting != null) {%>
-    <%= Html.DropDownList(null, ViewData[setting.SelectListViewDataKey] as SelectList, setting.OptionLabel) %>
+    <%= Html.DropDownList(null, ViewData[setting.ViewDataKey] as SelectList, setting.OptionLabel) %>
 <% }%>
 <% else {%>
     <%= Html.DisplayForModel()%>

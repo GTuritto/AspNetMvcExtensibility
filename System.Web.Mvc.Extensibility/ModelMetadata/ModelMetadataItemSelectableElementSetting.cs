@@ -7,9 +7,9 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public class ModelMetadataItemDropDownListSetting : IModelMetadaAdditionalSetting
+    public class ModelMetadataItemSelectableElementSetting : IModelMetadaAdditionalSetting
     {
-        public string SelectListViewDataKey
+        public string ViewDataKey
         {
             get;
             set;

@@ -20,53 +20,39 @@ namespace System.Web.Mvc.Extensibility
             return DropDownList(viewDataKey, null);
         }
 
-        public virtual ObjectMetadataItemBuilder<TModel> DropDownList(string viewDataKey, string optionLabel)
+        public ObjectMetadataItemBuilder<TModel> DropDownList(string viewDataKey, string optionLabel)
         {
-            ModelMetadataItemDropDownListSetting dropDownListSetting = Item.AdditionalSettings
-                                                                           .OfType<ModelMetadataItemDropDownListSetting>()
-                                                                           .FirstOrDefault();
+            return List("DropDownList", viewDataKey, null);
+        }
 
-            if (dropDownListSetting == null)
+        public ObjectMetadataItemBuilder<TModel> Select(string viewDataKey)
+        {
+            return Select(viewDataKey, null);
+        }
+
+        public ObjectMetadataItemBuilder<TModel> Select(string viewDataKey, string optionLabel)
+        {
+            return List("Select", viewDataKey, null);
+        }
+
+        protected virtual ObjectMetadataItemBuilder<TModel> List(string templateName, string viewDataKey, string optionLabel)
+        {
+            ModelMetadataItemSelectableElementSetting selectableElementSetting = Item.AdditionalSettings
+                                                                                     .OfType<ModelMetadataItemSelectableElementSetting>()
+                                                                                     .FirstOrDefault();
+
+            if (selectableElementSetting == null)
             {
-                dropDownListSetting = new ModelMetadataItemDropDownListSetting();
-                Item.AdditionalSettings.Add(dropDownListSetting);
+                selectableElementSetting = new ModelMetadataItemSelectableElementSetting();
+                Item.AdditionalSettings.Add(selectableElementSetting);
             }
 
-            dropDownListSetting.SelectListViewDataKey = viewDataKey;
-            dropDownListSetting.OptionLabel = optionLabel;
+            selectableElementSetting.ViewDataKey = viewDataKey;
+            selectableElementSetting.OptionLabel = optionLabel;
 
-            Item.TemplateName = "DropDownList";
+            Item.TemplateName = templateName;
 
             return this;
         }
-
-        // The Current methods are commented out as there is no way to support strongly typed version with
-        // asp.net mvc implementation Check http://aspnet.codeplex.com/WorkItem/View.aspx?WorkItemId=5101
-        // for the details.
-
-        //public ObjectMetadataItemBuilder<TModel> DropDownList(Expression<Func<TModel, SelectList>> selectList)
-        //{
-        //    return DropDownList(selectList, null);
-        //}
-
-        //public virtual ObjectMetadataItemBuilder<TModel> DropDownList(Expression<Func<TModel, SelectList>> selectList, string optionLabel)
-        //{
-        //    ModelMetadataItemDropDownListSetting dropDownListSetting = Item.AdditionalSettings
-        //                                                                   .OfType<ModelMetadataItemDropDownListSetting>()
-        //                                                                   .FirstOrDefault();
-
-        //    if (dropDownListSetting == null)
-        //    {
-        //        dropDownListSetting = new ModelMetadataItemDropDownListSetting();
-        //        Item.AdditionalSettings.Add(dropDownListSetting);
-        //    }
-
-        //    dropDownListSetting.SelectListViewDataKey = ExpressionHelper.GetExpressionText(selectList);
-        //    dropDownListSetting.OptionLabel = optionLabel;
-
-        //    Item.TemplateName = "DropDownList";
-
-        //    return this;
-        //}
     }
 }
