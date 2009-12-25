@@ -19,7 +19,7 @@ namespace Demo.Web
 
             if (editModel != null)
             {
-                editModel.Categories = new SelectList(repository.All(), "Id", "Name", editModel.Category);
+                filterContext.Controller.ViewData["categories"] = new SelectList(repository.All(), "Id", "Name", editModel.Category);
             }
         }
     }

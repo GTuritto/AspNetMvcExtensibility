@@ -10,20 +10,20 @@ namespace System.Web.Mvc.Extensibility
     using Collections.Generic;
     using ComponentModel.DataAnnotations;
 
-    public class ExtendedRangeValidator<TNumeric> : ModelValidator
+    public class ExtendedRangeValidator<TValueType> : ModelValidator
     {
         private readonly RangeAttribute attribute;
 
         public ExtendedRangeValidator(ModelMetadata metadata, ControllerContext controllerContext, ModelValidationMetadataBase validationMetadata) : base(metadata, controllerContext)
         {
-            RangeValidationMetadata<TNumeric> rangeValidationMetadata = validationMetadata as RangeValidationMetadata<TNumeric>;
+            RangeValidationMetadata<TValueType> rangeValidationMetadata = validationMetadata as RangeValidationMetadata<TValueType>;
 
             if (rangeValidationMetadata == null)
             {
                 throw new InvalidCastException();
             }
 
-            attribute = new RangeAttribute(typeof(TNumeric), rangeValidationMetadata.Minimum.ToString(), rangeValidationMetadata.Maximum.ToString()) { ErrorMessage = rangeValidationMetadata.ErrorMessage };
+            attribute = new RangeAttribute(typeof(TValueType), rangeValidationMetadata.Minimum.ToString(), rangeValidationMetadata.Maximum.ToString()) { ErrorMessage = rangeValidationMetadata.ErrorMessage };
         }
 
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()

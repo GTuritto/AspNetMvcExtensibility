@@ -24,16 +24,14 @@ namespace System.Web.Mvc.Extensibility
 
         public override IEnumerable<ModelValidator> GetValidators(ControllerContext context)
         {
-            if (Metadata == null)
-            {
-                yield break;
-            }
-
             Invariant.IsNotNull(context, "context");
 
-            foreach (IModelValidationMetadata validationMeta in Metadata.Validations)
+            if (Metadata != null)
             {
-                yield return validationMeta.CreateValidator(this, context);
+                foreach (IModelValidationMetadata validationMeta in Metadata.Validations)
+                {
+                    yield return validationMeta.CreateValidator(this, context);
+                }
             }
         }
     }

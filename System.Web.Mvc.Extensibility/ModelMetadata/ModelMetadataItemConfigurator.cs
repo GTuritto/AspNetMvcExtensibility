@@ -26,99 +26,99 @@ namespace System.Web.Mvc.Extensibility
             return new StringMetadataItemBuilder(Append<StringMetadataItem, string>(expression));
         }
 
-        public virtual DateTimeMetadataItemBuilder Configure(Expression<Func<TModel, DateTime>> expression)
+        public virtual BooleanMetadataItemBuilder Configure(Expression<Func<TModel, bool>> expression)
         {
-            return new DateTimeMetadataItemBuilder(Append<DateTimeMetadataItem, DateTime>(expression));
+            return new BooleanMetadataItemBuilder(Append<BooleanMetadataItem, bool>(expression));
         }
 
-        public virtual DateTimeMetadataItemBuilder Configure(Expression<Func<TModel, DateTime?>> expression)
+        public virtual BooleanMetadataItemBuilder Configure(Expression<Func<TModel, bool?>> expression)
         {
-            return new DateTimeMetadataItemBuilder(Append<DateTimeMetadataItem, DateTime?>(expression));
+            return new BooleanMetadataItemBuilder(Append<BooleanMetadataItem, bool?>(expression));
         }
 
-        public virtual DecimalMetadataItemBuilder Configure(Expression<Func<TModel, decimal>> expression)
+        public virtual ValueTypeMetadataItemBuilder<DateTime> Configure(Expression<Func<TModel, DateTime>> expression)
         {
-            return new DecimalMetadataItemBuilder(Append<NumericMetadataItem, decimal>(expression));
+            return new ValueTypeMetadataItemBuilder<DateTime>(Append<ValueTypeMetadataItem, DateTime>(expression));
         }
 
-        public virtual DecimalMetadataItemBuilder Configure(Expression<Func<TModel, decimal?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<DateTime?> Configure(Expression<Func<TModel, DateTime?>> expression)
         {
-            return new DecimalMetadataItemBuilder(Append<NumericMetadataItem, decimal?>(expression));
+            return new ValueTypeMetadataItemBuilder<DateTime?>(Append<ValueTypeMetadataItem, DateTime?>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<byte> Configure(Expression<Func<TModel, byte>> expression)
+        public virtual ValueTypeMetadataItemBuilder<byte> Configure(Expression<Func<TModel, byte>> expression)
         {
-            return new NumericMetadataItemBuilder<byte>(Append<NumericMetadataItem, byte>(expression));
+            return new ValueTypeMetadataItemBuilder<byte>(Append<ValueTypeMetadataItem, byte>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<byte?> Configure(Expression<Func<TModel, byte?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<byte?> Configure(Expression<Func<TModel, byte?>> expression)
         {
-            return new NumericMetadataItemBuilder<byte?>(Append<NumericMetadataItem, byte?>(expression));
+            return new ValueTypeMetadataItemBuilder<byte?>(Append<ValueTypeMetadataItem, byte?>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<short> Configure(Expression<Func<TModel, short>> expression)
+        public virtual ValueTypeMetadataItemBuilder<short> Configure(Expression<Func<TModel, short>> expression)
         {
-            return new NumericMetadataItemBuilder<short>(Append<NumericMetadataItem, short>(expression));
+            return new ValueTypeMetadataItemBuilder<short>(Append<ValueTypeMetadataItem, short>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<short?> Configure(Expression<Func<TModel, short?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<short?> Configure(Expression<Func<TModel, short?>> expression)
         {
-            return new NumericMetadataItemBuilder<short?>(Append<NumericMetadataItem, short?>(expression));
+            return new ValueTypeMetadataItemBuilder<short?>(Append<ValueTypeMetadataItem, short?>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<int> Configure(Expression<Func<TModel, int>> expression)
+        public virtual ValueTypeMetadataItemBuilder<int> Configure(Expression<Func<TModel, int>> expression)
         {
-            return new NumericMetadataItemBuilder<int>(Append<NumericMetadataItem, int>(expression));
+            return new ValueTypeMetadataItemBuilder<int>(Append<ValueTypeMetadataItem, int>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<int?> Configure(Expression<Func<TModel, int?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<int?> Configure(Expression<Func<TModel, int?>> expression)
         {
-            return new NumericMetadataItemBuilder<int?>(Append<NumericMetadataItem, int?>(expression));
+            return new ValueTypeMetadataItemBuilder<int?>(Append<ValueTypeMetadataItem, int?>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<long> Configure(Expression<Func<TModel, long>> expression)
+        public virtual ValueTypeMetadataItemBuilder<long> Configure(Expression<Func<TModel, long>> expression)
         {
-            return new NumericMetadataItemBuilder<long>(Append<NumericMetadataItem, long>(expression));
+            return new ValueTypeMetadataItemBuilder<long>(Append<ValueTypeMetadataItem, long>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<long?> Configure(Expression<Func<TModel, long?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<long?> Configure(Expression<Func<TModel, long?>> expression)
         {
-            return new NumericMetadataItemBuilder<long?>(Append<NumericMetadataItem, long?>(expression));
+            return new ValueTypeMetadataItemBuilder<long?>(Append<ValueTypeMetadataItem, long?>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<float> Configure(Expression<Func<TModel, float>> expression)
+        public virtual ValueTypeMetadataItemBuilder<float> Configure(Expression<Func<TModel, float>> expression)
         {
-            return new NumericMetadataItemBuilder<float>(Append<NumericMetadataItem, float>(expression));
+            return new ValueTypeMetadataItemBuilder<float>(Append<ValueTypeMetadataItem, float>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<float?> Configure(Expression<Func<TModel, float?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<float?> Configure(Expression<Func<TModel, float?>> expression)
         {
-            return new NumericMetadataItemBuilder<float?>(Append<NumericMetadataItem, float?>(expression));
+            return new ValueTypeMetadataItemBuilder<float?>(Append<ValueTypeMetadataItem, float?>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<double> Configure(Expression<Func<TModel, double>> expression)
+        public virtual ValueTypeMetadataItemBuilder<double> Configure(Expression<Func<TModel, double>> expression)
         {
-            return new NumericMetadataItemBuilder<double>(Append<NumericMetadataItem, double>(expression));
+            return new ValueTypeMetadataItemBuilder<double>(Append<ValueTypeMetadataItem, double>(expression));
         }
 
-        public virtual NumericMetadataItemBuilder<double?> Configure(Expression<Func<TModel, double?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<double?> Configure(Expression<Func<TModel, double?>> expression)
         {
-            return new NumericMetadataItemBuilder<double?>(Append<NumericMetadataItem, double?>(expression));
+            return new ValueTypeMetadataItemBuilder<double?>(Append<ValueTypeMetadataItem, double?>(expression));
         }
 
-        public virtual ObjectMetadataItemBuilder Configure(Expression<Func<TModel, bool>> expression)
+        public virtual ValueTypeMetadataItemBuilder<decimal> Configure(Expression<Func<TModel, decimal>> expression)
         {
-            return new ObjectMetadataItemBuilder(Append<ObjectMetadataItem, bool>(expression));
+            return new ValueTypeMetadataItemBuilder<decimal>(Append<ValueTypeMetadataItem, decimal>(expression));
         }
 
-        public virtual ObjectMetadataItemBuilder Configure(Expression<Func<TModel, bool?>> expression)
+        public virtual ValueTypeMetadataItemBuilder<decimal?> Configure(Expression<Func<TModel, decimal?>> expression)
         {
-            return new ObjectMetadataItemBuilder(Append<ObjectMetadataItem, bool?>(expression));
+            return new ValueTypeMetadataItemBuilder<decimal?>(Append<ValueTypeMetadataItem, decimal?>(expression));
         }
 
-        public virtual ObjectMetadataItemBuilder Configure<TValue>(Expression<Func<TModel, TValue>> expression)
+        public virtual ObjectMetadataItemBuilder<TModel> Configure<TValue>(Expression<Func<TModel, TValue>> expression)
         {
-            return new ObjectMetadataItemBuilder(Append<ObjectMetadataItem, TValue>(expression));
+            return new ObjectMetadataItemBuilder<TModel>(Append<ObjectMetadataItem, TValue>(expression));
         }
 
         private TItem Append<TItem, TType>(Expression<Func<TModel, TType>> expression) where TItem : ModelMetadataItemBase, new()

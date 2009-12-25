@@ -7,21 +7,15 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public class DateTimeMetadataItem : ModelMetadataItemBase, IModelMetadataFormattableItem
+    public class ModelMetadataItemDropDownListSetting : IModelMetadaAdditionalSetting
     {
-        public string DisplayFormat
+        public string SelectListViewDataKey
         {
             get;
             set;
         }
 
-        public string EditFormat
-        {
-            get;
-            set;
-        }
-
-        public bool ApplyFormatInEditMode
+        public string OptionLabel
         {
             get;
             set;

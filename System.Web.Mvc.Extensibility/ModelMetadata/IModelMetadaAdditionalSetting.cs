@@ -7,10 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public class NumericMetadataItemBuilder<TNumeric> : NumericMetadataItemBuilderBase<TNumeric, NumericMetadataItemBuilder<TNumeric>>
+    public interface IModelMetadaAdditionalSetting
     {
-        public NumericMetadataItemBuilder(NumericMetadataItem item) : base(item)
-        {
-        }
     }
 }

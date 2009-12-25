@@ -1,7 +1,5 @@
 namespace Demo.Web
 {
-    using System.Web.Mvc;
-
     public class ProductEditModel
     {
         public int Id { get; set; }
@@ -13,9 +11,5 @@ namespace Demo.Web
         public Supplier Supplier { get; set; }
 
         public decimal Price { get; set; }
-
-        public SelectList Categories { get; set; }
-
-        public SelectList Suppliers { get; set; }
     }
 }

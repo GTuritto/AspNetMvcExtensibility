@@ -27,49 +27,24 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(containerType, "containerType");
 
-            IDictionary<string, ModelMetadataItemBase> propertyMetadatas = registry.Matching(containerType);
+            IDictionary<string, ModelMetadataItemBase> metadataDictionary = registry.Matching(containerType);
 
-            if (propertyMetadatas == null)
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(containerType))
             {
-                return TypeDescriptor.GetProperties(containerType)
-                                     .Cast<PropertyDescriptor>()
-                                     .Select(property => new ExtendedModelMetadata(this, containerType, () => property.GetValue(container), property.PropertyType, property.Name, null))
-                                     .Cast<ModelMetadata>();
+                ModelMetadataItemBase metadata;
+
+                metadataDictionary.TryGetValue(descriptor.Name, out metadata);
+
+                PropertyDescriptor tempDescriptor = descriptor;
+
+                yield return CreateModelMetaData(containerType, tempDescriptor.Name, tempDescriptor.PropertyType, metadata, () => tempDescriptor.GetValue(container));
             }
-
-            IEnumerable<PropertyDescriptor> propertyDescriptors = TypeDescriptor.GetProperties(containerType)
-                                                                                .Cast<PropertyDescriptor>();
-
-            List<ModelMetadata> properties = new List<ModelMetadata>();
-
-            foreach (KeyValuePair<string, ModelMetadataItemBase> pair in propertyMetadatas)
-            {
-                string propertyName = pair.Key;
-
-                PropertyDescriptor propertyDescriptor = propertyDescriptors.FirstOrDefault(property => property.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase));
-
-                if (propertyDescriptor == null)
-                {
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, ExceptionMessages.ThePropertyNameOfTypeCouldNotBeFound, containerType.FullName, propertyName));
-                }
-
-                properties.Add(CreateModelMetaData(containerType, propertyName, propertyDescriptor.PropertyType, pair.Value, () => propertyDescriptor.GetValue(container)));
-            }
-
-            return properties;
         }
 
         public override ModelMetadata GetMetadataForProperty(Func<object> modelAccessor, Type containerType, string propertyName)
         {
             Invariant.IsNotNull(containerType, "containerType");
             Invariant.IsNotNull(propertyName, "propertyName");
-
-            ModelMetadataItemBase propertyMetaData = registry.Matching(containerType, propertyName);
-
-            if (propertyMetaData == null)
-            {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, ExceptionMessages.ThePropertyNameOfTypeCouldNotBeFound, containerType.FullName, propertyName));
-            }
 
             PropertyDescriptor propertyDescriptor = TypeDescriptor.GetProperties(containerType)
                                                                   .Cast<PropertyDescriptor>()
@@ -80,7 +55,7 @@ namespace System.Web.Mvc.Extensibility
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, ExceptionMessages.ThePropertyNameOfTypeCouldNotBeFound, containerType.FullName, propertyName));
             }
 
-            return CreateModelMetaData(containerType, propertyName, propertyDescriptor.PropertyType, propertyMetaData, modelAccessor);
+            return CreateModelMetaData(containerType, propertyName, propertyDescriptor.PropertyType, registry.Matching(containerType, propertyName), modelAccessor);
         }
 
         public override ModelMetadata GetMetadataForType(Func<object> modelAccessor, Type modelType)
@@ -90,6 +65,11 @@ namespace System.Web.Mvc.Extensibility
 
         private ModelMetadata CreateModelMetaData(Type containerType, string propertyName, Type propertyType, ModelMetadataItemBase propertyMetaData, Func<object> modelAccessor)
         {
+            if (propertyMetaData == null)
+            {
+                return new ExtendedModelMetadata(this, containerType, modelAccessor, propertyType, propertyName, propertyMetaData);
+            }
+
             ModelMetadata modelMetaData = new ExtendedModelMetadata(this, containerType, modelAccessor, propertyType, propertyName, propertyMetaData)
                                               {
                                                   ShowForDisplay = propertyMetaData.ShowForDisplay,

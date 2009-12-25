@@ -7,15 +7,15 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public class RangeValidationMetadata<TNumeric> : ModelValidationMetadataBase
+    public class RangeValidationMetadata<TValueType> : ModelValidationMetadataBase
     {
-        public TNumeric Minimum
+        public TValueType Minimum
         {
             get;
             set;
         }
 
-        public TNumeric Maximum
+        public TValueType Maximum
         {
             get;
             set;
@@ -23,7 +23,7 @@ namespace System.Web.Mvc.Extensibility
 
         protected override ModelValidator CreateValidatorCore(ExtendedModelMetadata modelMetadata, ControllerContext context)
         {
-            return new ExtendedRangeValidator<TNumeric>(modelMetadata, context, this);
+            return new ExtendedRangeValidator<TValueType>(modelMetadata, context, this);
         }
     }
 }

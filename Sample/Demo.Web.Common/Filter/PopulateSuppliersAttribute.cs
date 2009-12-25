@@ -19,7 +19,7 @@ namespace Demo.Web
 
             if (editModel != null)
             {
-                editModel.Suppliers = new SelectList(repository.All(), "Id", "CompanyName", editModel.Supplier);
+                filterContext.Controller.ViewData["suppliers"] = new SelectList(repository.All(), "Id", "CompanyName", editModel.Supplier);
             }
         }
     }

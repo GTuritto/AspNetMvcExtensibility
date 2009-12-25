@@ -7,7 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    public class NumericMetadataItem : ModelMetadataItemBase, IModelMetadataFormattableItem
+    public class ValueTypeMetadataItem : ModelMetadataItemBase, IModelMetadataFormattableItem
     {
         public string DisplayFormat
         {
