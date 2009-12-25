@@ -22,7 +22,7 @@ namespace System.Web.Mvc.Extensibility
 
         public ObjectMetadataItemBuilder<TModel> DropDownList(string viewDataKey, string optionLabel)
         {
-            return List("DropDownList", viewDataKey, null);
+            return List("DropDownList", viewDataKey, optionLabel);
         }
 
         public ObjectMetadataItemBuilder<TModel> Select(string viewDataKey)
@@ -32,7 +32,7 @@ namespace System.Web.Mvc.Extensibility
 
         public ObjectMetadataItemBuilder<TModel> Select(string viewDataKey, string optionLabel)
         {
-            return List("Select", viewDataKey, null);
+            return List("Select", viewDataKey, optionLabel);
         }
 
         protected virtual ObjectMetadataItemBuilder<TModel> List(string templateName, string viewDataKey, string optionLabel)

@@ -28,11 +28,9 @@ namespace Demo.Web
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection form)
+        public ActionResult Create([Bind(Exclude = "Id")]ProductEditModel model)
         {
-            ProductEditModel model = new ProductEditModel();
-
-            if (TryUpdateModel(model, form.ToValueProvider()))
+            if (ModelState.IsValid)
             {
                 Product product = model.AsProduct();
                 product.Id = repository.All().LastOrDefault().Id + 1;

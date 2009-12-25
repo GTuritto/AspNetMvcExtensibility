@@ -28,6 +28,9 @@ namespace Demo.Web
                                                    });
 
             ModelMetadataProviders.Current = new ExtendedModelMetadataProvider(registry);
+
+            ModelValidatorProviders.Providers.Clear();
+            ModelValidatorProviders.Providers.Add(new ExtendedModelValidatorProvider());
         }
     }
 }

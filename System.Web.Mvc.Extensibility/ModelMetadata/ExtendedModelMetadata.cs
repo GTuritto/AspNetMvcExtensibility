@@ -7,8 +7,6 @@
 
 namespace System.Web.Mvc.Extensibility
 {
-    using Collections.Generic;
-
     public class ExtendedModelMetadata : ModelMetadata
     {
         public ExtendedModelMetadata(ModelMetadataProvider provider, Type containerType, Func<object> modelAccessor, Type modelType, string propertyName, ModelMetadataItemBase metadata) : base(provider, containerType, modelAccessor, modelType, propertyName)
@@ -20,19 +18,6 @@ namespace System.Web.Mvc.Extensibility
         {
             get;
             private set;
-        }
-
-        public override IEnumerable<ModelValidator> GetValidators(ControllerContext context)
-        {
-            Invariant.IsNotNull(context, "context");
-
-            if (Metadata != null)
-            {
-                foreach (IModelValidationMetadata validationMeta in Metadata.Validations)
-                {
-                    yield return validationMeta.CreateValidator(this, context);
-                }
-            }
         }
     }
 }

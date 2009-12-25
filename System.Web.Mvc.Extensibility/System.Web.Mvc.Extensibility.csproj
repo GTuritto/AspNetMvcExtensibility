@@ -127,6 +127,7 @@
     <Compile Include="BootstrapperTask\RegisterFiltersBase.cs" />
     <Compile Include="BuildManager\IBuildManager.cs" />
     <Compile Include="Filter\FilterRegistryExtensions.cs" />
+    <Compile Include="ModelMetadata\ExtendedModelValidatorProvider.cs" />
     <Compile Include="TypeCatalog\TypeCatalog.cs" />
     <Compile Include="TypeCatalog\TypeCatalogBuilder.cs" />
     <Compile Include="PerRequestTask\IPerRequestTask.cs" />
