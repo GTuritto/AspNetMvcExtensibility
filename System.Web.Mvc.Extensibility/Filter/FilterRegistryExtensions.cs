@@ -23,12 +23,12 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         /// <typeparam name="TFilter">The type of the filter.</typeparam>
         /// <param name="instance">The instance.</param>
-        /// <param name="controllerTypes">The controller types.</param>
+        /// <param name="typeCatalog">The controller types.</param>
         /// <returns></returns>
-        public static IFilterRegistry Register<TFilter>(this IFilterRegistry instance, IEnumerable<Type> controllerTypes)
+        public static IFilterRegistry Register<TFilter>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter : FilterAttribute
         {
-            return Register<TFilter>(instance, controllerTypes, filter => { });
+            return Register<TFilter>(instance, typeCatalog, filter => { });
         }
 
         /// <summary>
@@ -36,17 +36,17 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         /// <typeparam name="TFilter">The type of the filter.</typeparam>
         /// <param name="instance">The instance.</param>
-        /// <param name="controllerTypes">The controller types.</param>
+        /// <param name="typeCatalog">The controller types.</param>
         /// <param name="configureFilter">The configure filter action.</param>
         /// <returns></returns>
-        public static IFilterRegistry Register<TFilter>(this IFilterRegistry instance, IEnumerable<Type> controllerTypes, Action<TFilter> configureFilter)
+        public static IFilterRegistry Register<TFilter>(this IFilterRegistry instance, TypeCatalog typeCatalog, Action<TFilter> configureFilter)
             where TFilter : FilterAttribute
         {
             Invariant.IsNotNull(instance, "instance");
-            Invariant.IsNotNull(controllerTypes, "controllerTypes");
+            Invariant.IsNotNull(typeCatalog, "typeCatalog");
             Invariant.IsNotNull(configureFilter, "configureFilter");
 
-            IList<Type> controllerTypeList = controllerTypes.ToList();
+            IList<Type> controllerTypeList = typeCatalog.ToList();
 
             EnsureControllerTypes(controllerTypeList);
 
@@ -66,16 +66,16 @@ namespace System.Web.Mvc.Extensibility
         /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
         /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
         /// <param name="instance">The instance.</param>
-        /// <param name="controllerTypes">The controller types.</param>
+        /// <param name="typeCatalog">The controller types.</param>
         /// <returns></returns>
-        public static IFilterRegistry Register<TFilter1, TFilter2>(this IFilterRegistry instance, IEnumerable<Type> controllerTypes)
+        public static IFilterRegistry Register<TFilter1, TFilter2>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter1 : FilterAttribute
             where TFilter2 : FilterAttribute
         {
             Invariant.IsNotNull(instance, "instance");
-            Invariant.IsNotNull(controllerTypes, "types");
+            Invariant.IsNotNull(typeCatalog, "typeCatalog");
 
-            return Register(instance, controllerTypes, typeof(TFilter1), typeof(TFilter2));
+            return Register(instance, typeCatalog, typeof(TFilter1), typeof(TFilter2));
         }
 
         /// <summary>
@@ -85,17 +85,17 @@ namespace System.Web.Mvc.Extensibility
         /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
         /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
         /// <param name="instance">The instance.</param>
-        /// <param name="controllerTypes">The controller types.</param>
+        /// <param name="typeCatalog">The controller types.</param>
         /// <returns></returns>
-        public static IFilterRegistry Register<TFilter1, TFilter2, TFilter3>(this IFilterRegistry instance, IEnumerable<Type> controllerTypes)
+        public static IFilterRegistry Register<TFilter1, TFilter2, TFilter3>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter1 : FilterAttribute
             where TFilter2 : FilterAttribute
             where TFilter3 : FilterAttribute
         {
             Invariant.IsNotNull(instance, "instance");
-            Invariant.IsNotNull(controllerTypes, "controllerTypes");
+            Invariant.IsNotNull(typeCatalog, "typeCatalog");
 
-            return Register(instance, controllerTypes, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3));
+            return Register(instance, typeCatalog, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3));
         }
 
         /// <summary>
@@ -106,18 +106,18 @@ namespace System.Web.Mvc.Extensibility
         /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
         /// <typeparam name="TFilter4">The type of the filter4.</typeparam>
         /// <param name="instance">The instance.</param>
-        /// <param name="controllerTypes">The controller types.</param>
+        /// <param name="typeCatalog">The controller types.</param>
         /// <returns></returns>
-        public static IFilterRegistry Register<TFilter1, TFilter2, TFilter3, TFilter4>(this IFilterRegistry instance, IEnumerable<Type> controllerTypes)
+        public static IFilterRegistry Register<TFilter1, TFilter2, TFilter3, TFilter4>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter1 : FilterAttribute
             where TFilter2 : FilterAttribute
             where TFilter3 : FilterAttribute
             where TFilter4 : FilterAttribute
         {
             Invariant.IsNotNull(instance, "instance");
-            Invariant.IsNotNull(controllerTypes, "assembly");
+            Invariant.IsNotNull(typeCatalog, "typeCatalog");
 
-            return Register(instance, controllerTypes, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4));
+            return Register(instance, typeCatalog, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4));
         }
 
         /// <summary>

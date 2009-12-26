@@ -27,7 +27,7 @@ namespace System.Web.Mvc.Extensibility
         /// Initializes a new instance of the <see cref="TypeCatalogBuilder"/> class.
         /// </summary>
         /// <param name="typeCatalog">The type catalog.</param>
-        protected TypeCatalogBuilder(TypeCatalog typeCatalog)
+        public TypeCatalogBuilder(TypeCatalog typeCatalog)
         {
             Invariant.IsNotNull(typeCatalog, "typeCatalog");
 

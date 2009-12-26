@@ -37,23 +37,96 @@ namespace System.Web.Mvc.Extensibility.Tests
         }
 
         [Fact]
-        public void Should_be_able_Register_filter_for_controller()
+        public void Should_be_able_to_Register_filter_for_multiple_controllers()
         {
-            registry.Register<FakeController, DummyFilter1>();
+            registry.Register<DummyFilter1>(CreateTypeCatalog());
+
+            Assert.Equal(2, registry.PublicItems.Count());
+            Assert.Equal(1, registry.PublicItems[0].Filters.Count());
+            Assert.Equal(1, registry.PublicItems[1].Filters.Count());
+        }
+
+        [Fact]
+        public void Should_be_able_to_Register_and_configure_filter_for_multiple_controllers()
+        {
+            registry.Register<DummyFilter2>(CreateTypeCatalog(),
+                                            filter =>
+                                                      {
+                                                          filter.IntegerProperty = 10;
+                                                          filter.StringProperty = "foo";
+                                                      });
+
+            Assert.Equal(2, registry.PublicItems.Count());
+
+            var item1 = registry.PublicItems[0];
+            var item2 = registry.PublicItems[1];
+
+            Assert.Equal(1, item1.Filters.Count());
+            Assert.Equal(10, ((DummyFilter2)item1.Filters.ToList()[0]()).IntegerProperty);
+            Assert.Equal("foo", ((DummyFilter2)item1.Filters.ToList()[0]()).StringProperty);
+
+            Assert.Equal(1, item2.Filters.Count());
+            Assert.Equal(10, ((DummyFilter2)item2.Filters.ToList()[0]()).IntegerProperty);
+            Assert.Equal("foo", ((DummyFilter2)item2.Filters.ToList()[0]()).StringProperty);
+        }
+
+        [Fact]
+        public void Should_be_able_to_Register_two_filters_for_multiple_controllers()
+        {
+            registry.Register<DummyFilter1, DummyFilter2>(CreateTypeCatalog());
+
+            Assert.Equal(2, registry.PublicItems.Count());
+            Assert.Equal(2, registry.PublicItems[0].Filters.Count());
+            Assert.Equal(2, registry.PublicItems[1].Filters.Count());
+        }
+
+        [Fact]
+        public void Should_be_able_to_Register_three_filters_for_multiple_controllers()
+        {
+            registry.Register<DummyFilter1, DummyFilter2, DummyFilter3>(CreateTypeCatalog());
+
+            Assert.Equal(2, registry.PublicItems.Count());
+            Assert.Equal(3, registry.PublicItems[0].Filters.Count());
+            Assert.Equal(3, registry.PublicItems[1].Filters.Count());
+        }
+
+        [Fact]
+        public void Should_be_able_to_Register_four_filters_for_multiple_controllers()
+        {
+            registry.Register<DummyFilter1, DummyFilter2, DummyFilter3, DummyFilter4>(CreateTypeCatalog());
+
+            Assert.Equal(2, registry.PublicItems.Count());
+            Assert.Equal(4, registry.PublicItems[0].Filters.Count());
+            Assert.Equal(4, registry.PublicItems[1].Filters.Count());
+        }
+
+        [Fact]
+        public void Should_throw_exception_when_invalid_controller_type_is_passed_to_register_filter_for_multiple_controllers()
+        {
+            var catalog = CreateTypeCatalog();
+            catalog.IncludeFilters.Add(type => type == typeof(FilterRegistryTests));
+
+            Assert.Throws<ArgumentException>(() => registry.Register<DummyFilter1>(catalog));
+        }
+
+        [Fact]
+        public void Should_be_able_to_Register_filter_for_controller()
+        {
+            registry.Register<Dummy1Controller, DummyFilter1>();
 
             Assert.Equal(1, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_and_configure_filter_for_controller()
+        public void Should_be_able_to_Register_and_configure_filter_for_controller()
         {
-            registry.Register<FakeController, DummyFilter2>(filter =>
+            registry.Register<Dummy1Controller, DummyFilter2>(filter =>
                                                             {
                                                                 filter.IntegerProperty = 10;
                                                                 filter.StringProperty = "foo";
                                                             });
 
-            var item = (FilterRegistryControllerItem<FakeController>) registry.PublicItems[0];
+            var item = (FilterRegistryControllerItem<Dummy1Controller>) registry.PublicItems[0];
 
             Assert.Equal(1, item.Filters.Count());
             Assert.Equal(10, ((DummyFilter2) item.Filters.ToList()[0]()).IntegerProperty);
@@ -61,48 +134,48 @@ namespace System.Web.Mvc.Extensibility.Tests
         }
 
         [Fact]
-        public void Should_be_able_Register_two_filters_for_controller()
+        public void Should_be_able_to_Register_two_filters_for_controller()
         {
-            registry.Register<FakeController, DummyFilter1, DummyFilter2>();
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter2>();
 
             Assert.Equal(2, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_three_filters_for_controller()
+        public void Should_be_able_to_Register_three_filters_for_controller()
         {
-            registry.Register<FakeController, DummyFilter1, DummyFilter2, DummyFilter3>();
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter2, DummyFilter3>();
 
             Assert.Equal(3, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_four_filters_for_controller()
+        public void Should_be_able_to_Register_four_filters_for_controller()
         {
-            registry.Register<FakeController, DummyFilter1, DummyFilter2, DummyFilter3, DummyFilter4>();
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter2, DummyFilter3, DummyFilter4>();
 
             Assert.Equal(4, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_filter_for_action()
+        public void Should_be_able_to_Register_filter_for_action()
         {
-            registry.Register<FakeController, DummyFilter1>(c => c.Index());
+            registry.Register<Dummy1Controller, DummyFilter1>(c => c.Index());
 
             Assert.Equal(1, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_and_configure_filter_for_action()
+        public void Should_be_able_to_Register_and_configure_filter_for_action()
         {
-            registry.Register<FakeController, DummyFilter3>(c => c.Index(),
+            registry.Register<Dummy1Controller, DummyFilter3>(c => c.Index(),
                                                             filter =>
                                                             {
                                                                 filter.LongProperty = 10;
                                                                 filter.DecimalProperty = 100;
                                                             });
 
-            var item = (FilterRegistryActionItem<FakeController>)registry.PublicItems[0];
+            var item = (FilterRegistryActionItem<Dummy1Controller>)registry.PublicItems[0];
 
             Assert.Equal(1, item.Filters.Count());
             Assert.Equal(10, ((DummyFilter3)item.Filters.ToList()[0]()).LongProperty);
@@ -110,25 +183,25 @@ namespace System.Web.Mvc.Extensibility.Tests
         }
 
         [Fact]
-        public void Should_be_able_Register_two_filters_for_action()
+        public void Should_be_able_to_Register_two_filters_for_action()
         {
-            registry.Register<FakeController, DummyFilter1, DummyFilter2>(c => c.Index());
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter2>(c => c.Index());
 
             Assert.Equal(2, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_three_filters_for_action()
+        public void Should_be_able_to_Register_three_filters_for_action()
         {
-            registry.Register<FakeController, DummyFilter1, DummyFilter2, DummyFilter3>(c => c.Index());
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter2, DummyFilter3>(c => c.Index());
 
             Assert.Equal(3, registry.PublicItems[0].Filters.Count());
         }
 
         [Fact]
-        public void Should_be_able_Register_four_filters_for_action()
+        public void Should_be_able_to_Register_four_filters_for_action()
         {
-            registry.Register<FakeController, DummyFilter1, DummyFilter2, DummyFilter3, DummyFilter4>(c => c.Index());
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter2, DummyFilter3, DummyFilter4>(c => c.Index());
 
             Assert.Equal(4, registry.PublicItems[0].Filters.Count());
         }
@@ -138,18 +211,18 @@ namespace System.Web.Mvc.Extensibility.Tests
         {
             var controllerContext = new ControllerContext
                                         {
-                                            Controller = new FakeController()
+                                            Controller = new Dummy1Controller()
                                         };
 
             var controllerDescriptor = new Mock<ControllerDescriptor>();
-            controllerDescriptor.SetupGet(cd => cd.ControllerName).Returns("Fake");
+            controllerDescriptor.SetupGet(cd => cd.ControllerName).Returns("Dummy1");
 
             var actionDescriptor = new Mock<ActionDescriptor>();
             actionDescriptor.SetupGet(ad => ad.ControllerDescriptor).Returns(controllerDescriptor.Object);
             actionDescriptor.SetupGet(ad => ad.ActionName).Returns("Index");
 
-            registry.Register<FakeController, DummyFilter1, DummyFilter4>();
-            registry.Register<FakeController, DummyFilter2, DummyFilter3>(c => c.Index());
+            registry.Register<Dummy1Controller, DummyFilter1, DummyFilter4>();
+            registry.Register<Dummy1Controller, DummyFilter2, DummyFilter3>(c => c.Index());
 
             var filters = registry.Matching(controllerContext, actionDescriptor.Object);
 
@@ -157,6 +230,16 @@ namespace System.Web.Mvc.Extensibility.Tests
             Assert.IsType<DummyFilter2>(filters.ActionFilters[0]);
             Assert.IsType<DummyFilter3>(filters.ResultFilters[0]);
             Assert.IsType<DummyFilter4>(filters.ExceptionFilters[0]);
+        }
+
+        private static TypeCatalog CreateTypeCatalog()
+        {
+            var catalog = new TypeCatalog();
+
+            catalog.Assemblies.Add(typeof(FilterRegistryTests).Assembly);
+            catalog.IncludeFilters.Add(type => ((typeof(Dummy1Controller) == type) || (typeof(Dummy2Controller) == type)));
+
+            return catalog;
         }
 
         private sealed class FilterRegistryTestDouble : FilterRegistry
@@ -171,16 +254,6 @@ namespace System.Web.Mvc.Extensibility.Tests
                 {
                     return Items;
                 }
-            }
-        }
-
-        // ReSharper disable ClassNeverInstantiated.Local
-        private sealed class FakeController : Controller
-        // ReSharper restore ClassNeverInstantiated.Local
-        {
-            public ActionResult Index()
-            {
-                return View();
             }
         }
 

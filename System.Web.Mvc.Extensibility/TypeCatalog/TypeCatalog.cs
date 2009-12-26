@@ -83,13 +83,14 @@ namespace System.Web.Mvc.Extensibility
         /// </returns>
         public IEnumerator<Type> GetEnumerator()
         {
-            bool hasIncludeFilters = (IncludeFilters.Count > 0);
+            IEnumerable<Type> filteredTypes = Assemblies.SelectMany(assembly => assembly.GetExportedTypes());
 
-            IEnumerable<Type> filteredTypes = Assemblies.SelectMany(assembly => assembly.GetExportedTypes())
-                                                        .Where(type => !hasIncludeFilters || IncludeFilters.Any(filter => filter(type)))
-                                                        .Where(type => !ExcludeFilters.Any(filter => filter(type)));
+            if (IncludeFilters.Any())
+            {
+                filteredTypes = filteredTypes.Where(type => IncludeFilters.Any(filter => filter(type)));
+            }
 
-            foreach (Type type in filteredTypes)
+            foreach (Type type in filteredTypes.Where(type => !ExcludeFilters.Any(filter => filter(type))))
             {
                 yield return type;
             }

@@ -36,7 +36,7 @@ namespace System.Web.Mvc.Extensibility
         /// Gets or sets a value indicating whether to apply format in edit mode.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if [apply format in edit mode]; otherwise, <c>false</c>.
+        /// <c>true</c> if [apply format in edit mode]; otherwise, <c>false</c>.
         /// </value>
         public bool ApplyFormatInEditMode
         {

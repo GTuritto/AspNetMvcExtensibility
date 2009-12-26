@@ -104,7 +104,7 @@
     <Compile Include="Controller\ExtendedControllerActionInvokerTests.cs" />
     <Compile Include="Controller\ExtendedControllerFactoryTests.cs" />
     <Compile Include="ExtendedMvcApplicationBaseTests.cs" />
-    <Compile Include="FakeServiceLocator.cs" />
+    <Compile Include="TestHelpers\FakeServiceLocator.cs" />
     <Compile Include="Filter\FilterRegistryActionItemTests.cs" />
     <Compile Include="Filter\FilterRegistryControllerItemTests.cs" />
     <Compile Include="Filter\FilterRegistryTests.cs" />
@@ -118,6 +118,10 @@
     <Compile Include="BootstrapperTask\RegisterRoutesBaseTests.cs" />
     <Compile Include="BootstrapperTask\RegisterViewEnginesTests.cs" />
     <Compile Include="ExtensionMethod\TypeExtensionsTests.cs" />
+    <Compile Include="TestHelpers\Dummy1Controller.cs" />
+    <Compile Include="TestHelpers\Dummy2Controller.cs" />
+    <Compile Include="TypeCatalog\TypeCatalogBuilderTests.cs" />
+    <Compile Include="TypeCatalog\TypeCatalogTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Web.Mvc.Extensibility\System.Web.Mvc.Extensibility.csproj">
