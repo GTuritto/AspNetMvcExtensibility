@@ -13,10 +13,8 @@ namespace System.Web.Mvc.Extensibility
     /// <summary>
     /// Defines a class that is used to validate whether a value is specified.
     /// </summary>
-    public class ExtendedRequiredValidator : ModelValidator
+    public class ExtendedRequiredValidator : ExtendedValidatorBase<RequiredAttribute>
     {
-        private readonly RequiredAttribute attribute;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedRequiredValidator"/> class.
         /// </summary>
@@ -25,7 +23,18 @@ namespace System.Web.Mvc.Extensibility
         /// <param name="validationMetadata">The validation metadata.</param>
         public ExtendedRequiredValidator(ModelMetadata metadata, ControllerContext controllerContext, IModelValidationMetadata validationMetadata) : base(metadata, controllerContext)
         {
-            attribute = new RequiredAttribute { ErrorMessage = validationMetadata.ErrorMessage };
+            if (!string.IsNullOrEmpty(validationMetadata.ErrorMessage))
+            {
+                Attribute = new RequiredAttribute { ErrorMessage = validationMetadata.ErrorMessage };
+            }
+            else if ((validationMetadata.ErrorMessageResourceType != null) && (!string.IsNullOrEmpty(validationMetadata.ErrorMessageResourceName)))
+            {
+                Attribute = new RequiredAttribute { ErrorMessageResourceType = validationMetadata.ErrorMessageResourceType, ErrorMessageResourceName = validationMetadata.ErrorMessageResourceName };
+            }
+            else
+            {
+                Attribute = new RequiredAttribute();
+            }
         }
 
         /// <summary>
@@ -34,23 +43,7 @@ namespace System.Web.Mvc.Extensibility
         /// <returns>The metadata for client validation.</returns>
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-            return new[] { new ModelClientValidationRequiredRule(attribute.ErrorMessage) };
-        }
-
-        /// <summary>
-        /// When implemented in a derived class, validates the object.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <returns>A list of validation results.</returns>
-        public override IEnumerable<ModelValidationResult> Validate(object container)
-        {
-            if (!attribute.IsValid(Metadata.Model))
-            {
-                yield return new ModelValidationResult
-                {
-                    Message = attribute.ErrorMessage
-                };
-            }
+            return new[] { new ModelClientValidationRequiredRule(ErrorMessage) };
         }
     }
 }

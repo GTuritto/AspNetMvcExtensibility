@@ -15,7 +15,6 @@ namespace System.Web.Mvc.Extensibility
     /// <summary>
     /// Defines a base class that is used to configure metadata of a model fluently.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
     public abstract class ModelMetadataConfigurationBase<TModel> : IModelMetadataConfiguration, IFluentSyntax where TModel : class
     {
         private readonly Type modelType = typeof(TModel);

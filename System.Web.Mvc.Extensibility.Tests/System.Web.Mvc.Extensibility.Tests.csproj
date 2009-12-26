@@ -94,26 +94,30 @@
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BindingTypesAttributeTests.cs" />
-    <Compile Include="BootstrapperBaseTests.cs" />
-    <Compile Include="BootstrapperTaskBaseTests.cs" />
-    <Compile Include="DisposableBaseTests.cs" />
-    <Compile Include="EnumerableExtensionsTests.cs" />
-    <Compile Include="ExtendedControllerActionInvokerTests.cs" />
-    <Compile Include="ExtendedControllerFactoryTests.cs" />
+    <Compile Include="BootstrapperTask\RegisterModelMetadataTests.cs" />
+    <Compile Include="BuildManager\BuildManagerWrapperTests.cs" />
+    <Compile Include="ModelBinder\BindingTypesAttributeTests.cs" />
+    <Compile Include="Bootstrapper\BootstrapperBaseTests.cs" />
+    <Compile Include="BootstrapperTask\BootstrapperTaskBaseTests.cs" />
+    <Compile Include="Abstraction\DisposableBaseTests.cs" />
+    <Compile Include="ExtensionMethod\EnumerableExtensionsTests.cs" />
+    <Compile Include="Controller\ExtendedControllerActionInvokerTests.cs" />
+    <Compile Include="Controller\ExtendedControllerFactoryTests.cs" />
     <Compile Include="ExtendedMvcApplicationBaseTests.cs" />
     <Compile Include="FakeServiceLocator.cs" />
-    <Compile Include="FilterRegistryActionItemTests.cs" />
-    <Compile Include="FilterRegistryControllerItemTests.cs" />
-    <Compile Include="FilterRegistryTests.cs" />
-    <Compile Include="InvariantTests.cs" />
+    <Compile Include="Filter\FilterRegistryActionItemTests.cs" />
+    <Compile Include="Filter\FilterRegistryControllerItemTests.cs" />
+    <Compile Include="Filter\FilterRegistryTests.cs" />
+    <Compile Include="Helper\InvariantTests.cs" />
+    <Compile Include="PerRequestTask\PerRequestExecutionContextTests.cs" />
+    <Compile Include="PerRequestTask\PerRequestTaskBaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterControllerFactoryTests.cs" />
-    <Compile Include="RegisterFilterBaseTests.cs" />
-    <Compile Include="RegisterModelBindersTests.cs" />
-    <Compile Include="RegisterRoutesBaseTests.cs" />
-    <Compile Include="RegisterViewEnginesTests.cs" />
-    <Compile Include="TypeExtensionsTests.cs" />
+    <Compile Include="BootstrapperTask\RegisterControllerFactoryTests.cs" />
+    <Compile Include="BootstrapperTask\RegisterFilterBaseTests.cs" />
+    <Compile Include="BootstrapperTask\RegisterModelBindersTests.cs" />
+    <Compile Include="BootstrapperTask\RegisterRoutesBaseTests.cs" />
+    <Compile Include="BootstrapperTask\RegisterViewEnginesTests.cs" />
+    <Compile Include="ExtensionMethod\TypeExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Web.Mvc.Extensibility\System.Web.Mvc.Extensibility.csproj">

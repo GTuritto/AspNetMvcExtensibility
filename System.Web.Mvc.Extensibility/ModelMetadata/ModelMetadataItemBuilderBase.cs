@@ -111,25 +111,31 @@ namespace System.Web.Mvc.Extensibility
         /// <summary>
         /// Marks the value as required.
         /// </summary>
+        /// <returns></returns>
+        public TItemBuilder Required()
+        {
+            return Required(null, null, null);
+        }
+
+        /// <summary>
+        /// Marks the value as required.
+        /// </summary>
         /// <param name="errorMessage">The error message when the value is not specified.</param>
         /// <returns></returns>
         public TItemBuilder Required(string errorMessage)
         {
-            Item.IsRequired = true;
+            return Required(errorMessage, null, null);
+        }
 
-            RequiredValidationMetadata requiredValidation = Item.Validations
-                                                                .OfType<RequiredValidationMetadata>()
-                                                                .FirstOrDefault();
-
-            if (requiredValidation == null)
-            {
-                requiredValidation = new RequiredValidationMetadata();
-                Item.Validations.Add(requiredValidation);
-            }
-
-            requiredValidation.ErrorMessage = errorMessage;
-
-            return this as TItemBuilder;
+        /// <summary>
+        /// Marks the value as required.
+        /// </summary>
+        /// <param name="errorMessageResourceType">Type of the error message resource.</param>
+        /// <param name="errorMessageResourceName">Name of the error message resource.</param>
+        /// <returns></returns>
+        public TItemBuilder Required(Type errorMessageResourceType, string errorMessageResourceName)
+        {
+            return Required(null, errorMessageResourceType, errorMessageResourceName);
         }
 
         /// <summary>
@@ -141,9 +147,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Item.IsRequired = false;
 
-            RequiredValidationMetadata requiredValidation = Item.Validations
-                                                                .OfType<RequiredValidationMetadata>()
-                                                                .FirstOrDefault();
+            RequiredValidationMetadata requiredValidation = GetRequiredValidation();
 
             if (requiredValidation == null)
             {
@@ -267,6 +271,37 @@ namespace System.Web.Mvc.Extensibility
             Item.Watermark = value;
 
             return this as TItemBuilder;
+        }
+
+        /// <summary>
+        /// Marks the value as required.
+        /// </summary>
+        /// <param name="errorMessage">The error message.</param>
+        /// <param name="errorMessageResourceType">Type of the error message resource.</param>
+        /// <param name="errorMessageResourceName">Name of the error message resource.</param>
+        /// <returns></returns>
+        protected virtual TItemBuilder Required(string errorMessage, Type errorMessageResourceType, string errorMessageResourceName)
+        {
+            Item.IsRequired = true;
+
+            RequiredValidationMetadata requiredValidation = GetRequiredValidation();
+
+            if (requiredValidation == null)
+            {
+                requiredValidation = new RequiredValidationMetadata();
+                Item.Validations.Add(requiredValidation);
+            }
+
+            requiredValidation.ErrorMessage = errorMessage;
+            requiredValidation.ErrorMessageResourceType = errorMessageResourceType;
+            requiredValidation.ErrorMessageResourceName = errorMessageResourceName;
+
+            return this as TItemBuilder;
+        }
+
+        private RequiredValidationMetadata GetRequiredValidation()
+        {
+            return Item.Validations.OfType<RequiredValidationMetadata>().SingleOrDefault();
         }
     }
 }

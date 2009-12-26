@@ -13,10 +13,8 @@ namespace System.Web.Mvc.Extensibility
     /// <summary>
     /// Defines a class that is used to validate regular expression.
     /// </summary>
-    public class ExtendedRegularExpressionValidator : ModelValidator
+    public class ExtendedRegularExpressionValidator : ExtendedValidatorBase<RegularExpressionAttribute>
     {
-        private readonly RegularExpressionAttribute attribute;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedRegularExpressionValidator"/> class.
         /// </summary>
@@ -32,7 +30,18 @@ namespace System.Web.Mvc.Extensibility
                 throw new InvalidCastException();
             }
 
-            attribute = new RegularExpressionAttribute(regularExpressionValidationMetadata.Pattern) { ErrorMessage = regularExpressionValidationMetadata.ErrorMessage };
+            if (!string.IsNullOrEmpty(regularExpressionValidationMetadata.ErrorMessage))
+            {
+                Attribute = new RegularExpressionAttribute(regularExpressionValidationMetadata.Pattern) { ErrorMessage = regularExpressionValidationMetadata.ErrorMessage };
+            }
+            else if ((regularExpressionValidationMetadata.ErrorMessageResourceType != null) && (!string.IsNullOrEmpty(regularExpressionValidationMetadata.ErrorMessageResourceName)))
+            {
+                Attribute = new RegularExpressionAttribute(regularExpressionValidationMetadata.Pattern) { ErrorMessageResourceType = regularExpressionValidationMetadata.ErrorMessageResourceType, ErrorMessageResourceName = regularExpressionValidationMetadata.ErrorMessageResourceName };
+            }
+            else
+            {
+                Attribute = new RegularExpressionAttribute(regularExpressionValidationMetadata.Pattern);
+            }
         }
 
         /// <summary>
@@ -41,23 +50,7 @@ namespace System.Web.Mvc.Extensibility
         /// <returns>The metadata for client validation.</returns>
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-            return new[] { new ModelClientValidationRegexRule(attribute.ErrorMessage, attribute.Pattern) };
-        }
-
-        /// <summary>
-        /// When implemented in a derived class, validates the object.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <returns>A list of validation results.</returns>
-        public override IEnumerable<ModelValidationResult> Validate(object container)
-        {
-            if (!attribute.IsValid(Metadata.Model))
-            {
-                yield return new ModelValidationResult
-                                 {
-                                     Message = attribute.ErrorMessage
-                                 };
-            }
+            return new[] { new ModelClientValidationRegexRule(ErrorMessage, Attribute.Pattern) };
         }
     }
 }

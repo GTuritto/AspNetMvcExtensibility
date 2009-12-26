@@ -14,10 +14,8 @@ namespace System.Web.Mvc.Extensibility
     /// Defines a class that is used to validate range.
     /// </summary>
     /// <typeparam name="TValueType">The type of the value type.</typeparam>
-    public class ExtendedRangeValidator<TValueType> : ModelValidator
+    public class ExtendedRangeValidator<TValueType> : ExtendedValidatorBase<RangeAttribute>
     {
-        private readonly RangeAttribute attribute;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedRangeValidator&lt;TValueType&gt;"/> class.
         /// </summary>
@@ -33,7 +31,18 @@ namespace System.Web.Mvc.Extensibility
                 throw new InvalidCastException();
             }
 
-            attribute = new RangeAttribute(typeof(TValueType), rangeValidationMetadata.Minimum.ToString(), rangeValidationMetadata.Maximum.ToString()) { ErrorMessage = rangeValidationMetadata.ErrorMessage };
+            if (!string.IsNullOrEmpty(rangeValidationMetadata.ErrorMessage))
+            {
+                Attribute = new RangeAttribute(typeof(TValueType), rangeValidationMetadata.Minimum.ToString(), rangeValidationMetadata.Maximum.ToString()) { ErrorMessage = rangeValidationMetadata.ErrorMessage };
+            }
+            else if ((rangeValidationMetadata.ErrorMessageResourceType != null) && (!string.IsNullOrEmpty(rangeValidationMetadata.ErrorMessageResourceName)))
+            {
+                Attribute = new RangeAttribute(typeof(TValueType), rangeValidationMetadata.Minimum.ToString(), rangeValidationMetadata.Maximum.ToString()) { ErrorMessageResourceType = rangeValidationMetadata.ErrorMessageResourceType, ErrorMessageResourceName = rangeValidationMetadata.ErrorMessageResourceName };
+            }
+            else
+            {
+                Attribute = new RangeAttribute(typeof(TValueType), rangeValidationMetadata.Minimum.ToString(), rangeValidationMetadata.Maximum.ToString());
+            }
         }
 
         /// <summary>
@@ -42,23 +51,7 @@ namespace System.Web.Mvc.Extensibility
         /// <returns>The metadata for client validation.</returns>
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-            return new[] { new ModelClientValidationRangeRule(attribute.ErrorMessage, attribute.Minimum, attribute.Maximum) };
-        }
-
-        /// <summary>
-        /// When implemented in a derived class, validates the object.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <returns>A list of validation results.</returns>
-        public override IEnumerable<ModelValidationResult> Validate(object container)
-        {
-            if (!attribute.IsValid(Metadata.Model))
-            {
-                yield return new ModelValidationResult
-                                 {
-                                     Message = attribute.ErrorMessage
-                                 };
-            }
+            return new[] { new ModelClientValidationRangeRule(ErrorMessage, Attribute.Minimum, Attribute.Maximum) };
         }
     }
 }

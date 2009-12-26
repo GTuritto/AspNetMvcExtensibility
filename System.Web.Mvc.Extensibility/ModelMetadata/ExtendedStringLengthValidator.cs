@@ -13,10 +13,8 @@ namespace System.Web.Mvc.Extensibility
     /// <summary>
     /// Defines a class that is used to validate string length.
     /// </summary>
-    public class ExtendedStringLengthValidator : ModelValidator
+    public class ExtendedStringLengthValidator : ExtendedValidatorBase<StringLengthAttribute>
     {
-        private readonly StringLengthAttribute attribute;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedStringLengthValidator"/> class.
         /// </summary>
@@ -32,7 +30,18 @@ namespace System.Web.Mvc.Extensibility
                 throw new InvalidCastException();
             }
 
-            attribute = new StringLengthAttribute(stringLengthValidationMetadata.Maximum) { ErrorMessage = stringLengthValidationMetadata.ErrorMessage };
+            if (!string.IsNullOrEmpty(stringLengthValidationMetadata.ErrorMessage))
+            {
+                Attribute = new StringLengthAttribute(stringLengthValidationMetadata.Maximum) { ErrorMessage = stringLengthValidationMetadata.ErrorMessage };
+            }
+            else if ((stringLengthValidationMetadata.ErrorMessageResourceType != null) && (!string.IsNullOrEmpty(stringLengthValidationMetadata.ErrorMessageResourceName)))
+            {
+                Attribute = new StringLengthAttribute(stringLengthValidationMetadata.Maximum) { ErrorMessageResourceType = stringLengthValidationMetadata.ErrorMessageResourceType, ErrorMessageResourceName = stringLengthValidationMetadata.ErrorMessageResourceName };
+            }
+            else
+            {
+                Attribute = new StringLengthAttribute(stringLengthValidationMetadata.Maximum);
+            }
         }
 
         /// <summary>
@@ -41,23 +50,7 @@ namespace System.Web.Mvc.Extensibility
         /// <returns>The metadata for client validation.</returns>
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-            return new[] { new ModelClientValidationStringLengthRule(attribute.ErrorMessage, 0, attribute.MaximumLength) };
-        }
-
-        /// <summary>
-        /// When implemented in a derived class, validates the object.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <returns>A list of validation results.</returns>
-        public override IEnumerable<ModelValidationResult> Validate(object container)
-        {
-            if (!attribute.IsValid(Metadata.Model))
-            {
-                yield return new ModelValidationResult
-                {
-                    Message = attribute.ErrorMessage
-                };
-            }
+            return new[] { new ModelClientValidationStringLengthRule(ErrorMessage, 0, Attribute.MaximumLength) };
         }
     }
 }

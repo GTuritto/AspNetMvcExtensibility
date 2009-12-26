@@ -23,6 +23,26 @@ namespace System.Web.Mvc.Extensibility
         }
 
         /// <summary>
+        /// Gets or sets the type of the error message resource.
+        /// </summary>
+        /// <value>The type of the error message resource.</value>
+        public Type ErrorMessageResourceType
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the error message resource.
+        /// </summary>
+        /// <value>The name of the error message resource.</value>
+        public string ErrorMessageResourceName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Creates the validator.
         /// </summary>
         /// <param name="modelMetadata">The model metadata.</param>

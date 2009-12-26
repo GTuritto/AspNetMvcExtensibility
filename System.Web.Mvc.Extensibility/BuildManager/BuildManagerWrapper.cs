@@ -38,7 +38,7 @@ namespace System.Web.Mvc.Extensibility
         /// Gets the assemblies.
         /// </summary>
         /// <value>The assemblies.</value>
-        public IEnumerable<Assembly> Assemblies
+        public virtual IEnumerable<Assembly> Assemblies
         {
             [DebuggerStepThrough]
             get

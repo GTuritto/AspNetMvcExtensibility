@@ -68,6 +68,26 @@ namespace System.Web.Mvc.Extensibility
         }
 
         /// <summary>
+        /// Gets or sets the type of the email error message resource.
+        /// </summary>
+        /// <value>The type of the email error message resource.</value>
+        public static Type EmailErrorMessageResourceType
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the email error message resource.
+        /// </summary>
+        /// <value>The name of the email error message resource.</value>
+        public static string EmailErrorMessageResourceName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the URL expression.
         /// </summary>
         /// <value>The URL expression.</value>
@@ -106,11 +126,31 @@ namespace System.Web.Mvc.Extensibility
         }
 
         /// <summary>
+        /// Gets or sets the type of the URL error message resource.
+        /// </summary>
+        /// <value>The type of the URL error message resource.</value>
+        public static Type UrlErrorMessageResourceType
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the URL error message resource.
+        /// </summary>
+        /// <value>The name of the URL error message resource.</value>
+        public static string UrlErrorMessageResourceName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Sets the format in display mode.
         /// </summary>
         /// <param name="format">The value.</param>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder DisplayFormat(string format)
+        public StringMetadataItemBuilder DisplayFormat(string format)
         {
             Item.DisplayFormat = format;
 
@@ -122,7 +162,7 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         /// <param name="format">The format.</param>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder EditFormat(string format)
+        public StringMetadataItemBuilder EditFormat(string format)
         {
             Item.EditFormat = format;
 
@@ -134,7 +174,7 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder Format(string value)
+        public StringMetadataItemBuilder Format(string value)
         {
             Item.DisplayFormat = Item.EditFormat = value;
 
@@ -145,7 +185,7 @@ namespace System.Web.Mvc.Extensibility
         /// Indicates to apply format in edit mode.
         /// </summary>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder ApplyFormatInEditMode()
+        public StringMetadataItemBuilder ApplyFormatInEditMode()
         {
             Item.ApplyFormatInEditMode = true;
 
@@ -156,7 +196,7 @@ namespace System.Web.Mvc.Extensibility
         /// Indicates that the value would appear as email address in display mode.
         /// </summary>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder AsEmail()
+        public StringMetadataItemBuilder AsEmail()
         {
             Template("EmailAddress");
 
@@ -165,14 +205,14 @@ namespace System.Web.Mvc.Extensibility
                 throw new InvalidOperationException(ExceptionMessages.CannotApplyEmailWhenThereIsAActiveExpression);
             }
 
-            return Expression(EmailExpression, EmailErrorMessage);
+            return Expression(EmailExpression, ((EmailErrorMessageResourceType == null) && string.IsNullOrEmpty(EmailErrorMessageResourceName)) ? EmailErrorMessage : null, EmailErrorMessageResourceType, EmailErrorMessageResourceName);
         }
 
         /// <summary>
         /// Indicates that the value would appear as raw html in display mode, so no encoding will be performed.
         /// </summary>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder AsHtml()
+        public StringMetadataItemBuilder AsHtml()
         {
             return Template("Html");
         }
@@ -181,7 +221,7 @@ namespace System.Web.Mvc.Extensibility
         /// Indicates that the value would appear as url in display mode.
         /// </summary>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder AsUrl()
+        public StringMetadataItemBuilder AsUrl()
         {
             Template("Url");
 
@@ -190,14 +230,14 @@ namespace System.Web.Mvc.Extensibility
                 throw new InvalidOperationException(ExceptionMessages.CannotApplyUrlWhenThereIsAActiveExpression);
             }
 
-            return Expression(UrlExpression, UrlErrorMessage);
+            return Expression(UrlExpression, ((UrlErrorMessageResourceType == null) && string.IsNullOrEmpty(UrlErrorMessageResourceName)) ? UrlErrorMessage : null, UrlErrorMessageResourceType, UrlErrorMessageResourceName);
         }
 
         /// <summary>
         /// Marks the value to render as textarea element in edit mode.
         /// </summary>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder AsMultilineText()
+        public StringMetadataItemBuilder AsMultilineText()
         {
             return Template("MultilineText");
         }
@@ -206,7 +246,7 @@ namespace System.Web.Mvc.Extensibility
         /// Marks the value to render as password element in edit mode.
         /// </summary>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder AsPassword()
+        public StringMetadataItemBuilder AsPassword()
         {
             return Template("Password");
         }
@@ -215,9 +255,77 @@ namespace System.Web.Mvc.Extensibility
         /// Sets the regular expression that the value must match, this comes into action when is <code>Required</code> is <code>true</code>.
         /// </summary>
         /// <param name="pattern">The pattern.</param>
+        /// <returns></returns>
+        public StringMetadataItemBuilder Expression(string pattern)
+        {
+            return Expression(pattern, null, null, null);
+        }
+
+        /// <summary>
+        /// Sets the regular expression that the value must match, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
         /// <param name="errorMessage">The error message.</param>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder Expression(string pattern, string errorMessage)
+        public StringMetadataItemBuilder Expression(string pattern, string errorMessage)
+        {
+            return Expression(pattern, errorMessage, null, null);
+        }
+
+        /// <summary>
+        /// Sets the regular expression that the value must match, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="errorMessageResourceType">Type of the error message resource.</param>
+        /// <param name="errorMessageResourceName">Name of the error message resource.</param>
+        /// <returns></returns>
+        public StringMetadataItemBuilder Expression(string pattern, Type errorMessageResourceType, string errorMessageResourceName)
+        {
+            return Expression(pattern, null, errorMessageResourceType, errorMessageResourceName);
+        }
+
+        /// <summary>
+        /// Sets the maximum length of the value, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <returns></returns>
+        public StringMetadataItemBuilder MaximumLength(int length)
+        {
+            return MaximumLength(length, null, null, null);
+        }
+
+        /// <summary>
+        /// Sets the maximum length of the value, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns></returns>
+        public StringMetadataItemBuilder MaximumLength(int length, string errorMessage)
+        {
+            return MaximumLength(length, errorMessage, null, null);
+        }
+
+        /// <summary>
+        /// Sets the maximum length of the value, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <param name="errorMessageResourceType">Type of the error message resource.</param>
+        /// <param name="errorMessageResourceName">Name of the error message resource.</param>
+        /// <returns></returns>
+        public StringMetadataItemBuilder MaximumLength(int length, Type errorMessageResourceType, string errorMessageResourceName)
+        {
+            return MaximumLength(length, null, errorMessageResourceType, errorMessageResourceName);
+        }
+
+        /// <summary>
+        /// Sets the regular expression that the value must match, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <param name="errorMessageResourceType">Type of the error message resource.</param>
+        /// <param name="errorMessageResourceName">Name of the error message resource.</param>
+        /// <returns></returns>
+        protected virtual StringMetadataItemBuilder Expression(string pattern, string errorMessage, Type errorMessageResourceType, string errorMessageResourceName)
         {
             RegularExpressionValidationMetadata regularExpressionValidation = GetExpressionValidation();
 
@@ -229,6 +337,8 @@ namespace System.Web.Mvc.Extensibility
 
             regularExpressionValidation.Pattern = pattern;
             regularExpressionValidation.ErrorMessage = errorMessage;
+            regularExpressionValidation.ErrorMessageResourceType = errorMessageResourceType;
+            regularExpressionValidation.ErrorMessageResourceName = errorMessageResourceName;
 
             return this;
         }
@@ -238,8 +348,10 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         /// <param name="length">The length.</param>
         /// <param name="errorMessage">The error message.</param>
+        /// <param name="errorMessageResourceType">Type of the error message resource.</param>
+        /// <param name="errorMessageResourceName">Name of the error message resource.</param>
         /// <returns></returns>
-        public virtual StringMetadataItemBuilder MaximumLength(int length, string errorMessage)
+        protected virtual StringMetadataItemBuilder MaximumLength(int length, string errorMessage, Type errorMessageResourceType, string errorMessageResourceName)
         {
             StringLengthValidationMetadata stringLengthValidation = Item.Validations
                                                                         .OfType<StringLengthValidationMetadata>()
@@ -253,6 +365,8 @@ namespace System.Web.Mvc.Extensibility
 
             stringLengthValidation.Maximum = length;
             stringLengthValidation.ErrorMessage = errorMessage;
+            stringLengthValidation.ErrorMessageResourceType = errorMessageResourceType;
+            stringLengthValidation.ErrorMessageResourceName = errorMessageResourceName;
 
             return this;
         }

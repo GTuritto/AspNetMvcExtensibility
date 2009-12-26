@@ -7,6 +7,9 @@
 
 namespace System.Web.Mvc.Extensibility
 {
+    using Collections.Generic;
+    using Linq;
+
     using Microsoft.Practices.ServiceLocation;
 
     /// <summary>
@@ -41,10 +44,12 @@ namespace System.Web.Mvc.Extensibility
         /// <param name="serviceLocator">The service locator.</param>
         protected override void ExecuteCore(IServiceLocator serviceLocator)
         {
+            IEnumerable<Type> viewEngineTypes = ViewEngines.Select(ve => ve.GetType());
+
             serviceLocator.GetAllInstances<IViewEngine>()
                           .Each(engine =>
                                   {
-                                      if (!ViewEngines.Contains(engine))
+                                      if (!viewEngineTypes.Any(type => type == engine.GetType()))
                                       {
                                           ViewEngines.Add(engine);
                                       }
