@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -10,8 +10,15 @@ namespace System.Web.Mvc.Extensibility
     using ComponentModel;
     using Linq;
 
+    /// <summary>
+    /// Defines a base class to fluently configure metadata.
+    /// </summary>
     public abstract class ModelMetadataItemBuilderBase<TItem, TItemBuilder> : IFluentSyntax where TItem : ModelMetadataItemBase where TItemBuilder : ModelMetadataItemBuilderBase<TItem, TItemBuilder>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelMetadataItemBuilderBase&lt;TItem, TItemBuilder&gt;"/> class.
+        /// </summary>
+        /// <param name="item">The item.</param>
         protected ModelMetadataItemBuilderBase(TItem item)
         {
             Invariant.IsNotNull(item, "item");
@@ -19,6 +26,10 @@ namespace System.Web.Mvc.Extensibility
             Item = item;
         }
 
+        /// <summary>
+        /// Gets the iternal item.
+        /// </summary>
+        /// <value>The item.</value>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public TItem Item
         {
@@ -26,6 +37,11 @@ namespace System.Web.Mvc.Extensibility
             private set;
         }
 
+        /// <summary>
+        /// Sets the Display name.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public TItemBuilder DisplayName(string value)
         {
             Item.DisplayName = value;
@@ -33,6 +49,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Sets the short display name.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public TItemBuilder ShortDisplayName(string value)
         {
             Item.ShortDisplayName = value;
@@ -40,6 +61,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Sets the Templates name.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public TItemBuilder Template(string value)
         {
             Item.DisplayName = value;
@@ -47,6 +73,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Sets the Description.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public TItemBuilder Description(string value)
         {
             Item.Description = value;
@@ -54,6 +85,10 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Marks the value as readonly.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder ReadOnly()
         {
             Item.IsReadOnly = true;
@@ -61,6 +96,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Marks the value as writable, this is handy when the framework initializes the
+        /// value as readonly and you want to negate it.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder Writable()
         {
             Item.IsReadOnly = false;
@@ -68,6 +108,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Marks the value as required.
+        /// </summary>
+        /// <param name="errorMessage">The error message when the value is not specified.</param>
+        /// <returns></returns>
         public TItemBuilder Required(string errorMessage)
         {
             Item.IsRequired = true;
@@ -87,6 +132,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Marks the value as optional, this is handy when the framework initializes the 
+        /// value as required and you want to negate it.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder Optional()
         {
             Item.IsRequired = false;
@@ -103,6 +153,10 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Marks the value to render as hidden input element in edit mode.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder AsHidden()
         {
             Item.TemplateName = "HiddenInput";
@@ -110,13 +164,23 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
-        public TItemBuilder HideSurroundingHtml()
+        /// <summary>
+        /// Marks the value to render as hidden input element in edit mode.
+        /// </summary>
+        /// <param name="hideSurroundingHtml">Indicates whether the value will appear in display mode</param>
+        /// <returns></returns>
+        public TItemBuilder AsHidden(bool hideSurroundingHtml)
         {
-            Item.HideSurroundingHtml = true;
+            Item.TemplateName = "HiddenInput";
+            Item.HideSurroundingHtml = hideSurroundingHtml;
 
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Shows the value in display mode.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder ShowForDisplay()
         {
             Item.ShowForDisplay = true;
@@ -124,6 +188,10 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Hides the value in display mode.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder HideForDisplay()
         {
             Item.ShowForDisplay = false;
@@ -131,6 +199,10 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Shows the value in edit mode.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder ShowForEdit()
         {
             Item.ShowForEdit = true;
@@ -138,6 +210,10 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Hides the value in edit mode.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder HideForEdit()
         {
             Item.ShowForEdit = false;
@@ -145,6 +221,22 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Shows the value in both display and edit mode.
+        /// </summary>
+        /// <returns></returns>
+        public TItemBuilder Show()
+        {
+            Item.ShowForDisplay = true;
+            Item.ShowForEdit = true;
+
+            return this as TItemBuilder;
+        }
+
+        /// <summary>
+        /// Hides the value in both display and edit mode.
+        /// </summary>
+        /// <returns></returns>
         public TItemBuilder Hide()
         {
             Item.ShowForDisplay = false;
@@ -153,6 +245,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Sets the display text when the value is null.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public TItemBuilder NullDisplayText(string value)
         {
             Item.NullDisplayText = value;
@@ -160,6 +257,11 @@ namespace System.Web.Mvc.Extensibility
             return this as TItemBuilder;
         }
 
+        /// <summary>
+        /// Sets the Watermark.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public TItemBuilder Watermark(string value)
         {
             Item.Watermark = value;

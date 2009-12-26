@@ -1,41 +1,57 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
 {
     using Linq;
 
+    /// <summary>
+    /// Defines a class to fluently configure metadata of a <seealso cref="ValueType"/> type.
+    /// </summary>
+    /// <typeparam name="TValueType">The type of the value type.</typeparam>
     public class ValueTypeMetadataItemBuilder<TValueType> : ModelMetadataItemBuilderBase<ValueTypeMetadataItem, ValueTypeMetadataItemBuilder<TValueType>>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValueTypeMetadataItemBuilder&lt;TValueType&gt;"/> class.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public ValueTypeMetadataItemBuilder(ValueTypeMetadataItem item) : base(item)
         {
         }
 
-        public virtual ValueTypeMetadataItemBuilder<TValueType> DisplayFormat(string value)
+        /// <summary>
+        /// Sets the format in display mode.
+        /// </summary>
+        /// <param name="format">The value.</param>
+        /// <returns></returns>
+        public virtual ValueTypeMetadataItemBuilder<TValueType> DisplayFormat(string format)
         {
-            Item.DisplayFormat = value;
+            Item.DisplayFormat = format;
 
             return this;
         }
 
-        public virtual ValueTypeMetadataItemBuilder<TValueType> EditFormat(string value)
+        /// <summary>
+        /// Sets the format in edit mode.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        public virtual ValueTypeMetadataItemBuilder<TValueType> EditFormat(string format)
         {
-            Item.EditFormat = value;
+            Item.EditFormat = format;
 
             return this;
         }
 
-        public virtual ValueTypeMetadataItemBuilder<TValueType> ApplyFormatInEditMode()
-        {
-            Item.ApplyFormatInEditMode = true;
-
-            return this;
-        }
-
+        /// <summary>
+        /// Sets format for both display and edit mode.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public virtual ValueTypeMetadataItemBuilder<TValueType> Format(string value)
         {
             Item.DisplayFormat = Item.EditFormat = value;
@@ -43,6 +59,24 @@ namespace System.Web.Mvc.Extensibility
             return this;
         }
 
+        /// <summary>
+        /// Indicates to apply format in edit mode.
+        /// </summary>
+        /// <returns></returns>
+        public virtual ValueTypeMetadataItemBuilder<TValueType> ApplyFormatInEditMode()
+        {
+            Item.ApplyFormatInEditMode = true;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the range of value, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns></returns>
         public virtual ValueTypeMetadataItemBuilder<TValueType> Range(TValueType minimum, TValueType maximum, string errorMessage)
         {
             RangeValidationMetadata<TValueType> rangeValidation = Item.Validations

@@ -22,7 +22,7 @@ namespace Demo.Web
             Configure(model => model.Id).Hide();
             Configure(model => model.CategoryName).DisplayName("Category");
             Configure(model => model.SupplierName).DisplayName("Supplier");
-            Configure(model => model.Price).AsCurrency();
+            Configure(model => model.Price).FormatAsCurrency();
         }
     }
 }

@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedFiles", "SharedFiles"
 		build.bat = build.bat
 		SharedFiles\CodeAnalysisDictionary.xml = SharedFiles\CodeAnalysisDictionary.xml
 		SharedFiles\CommonAssemblyInfo.cs = SharedFiles\CommonAssemblyInfo.cs
+		license.txt = license.txt
 		System.Web.Mvc.Extensibility.build = System.Web.Mvc.Extensibility.build
 	EndProjectSection
 EndProject
@@ -108,6 +109,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{86BC
 		Sample\SharedFiles\Scripts\MicrosoftAjax.js = Sample\SharedFiles\Scripts\MicrosoftAjax.js
 		Sample\SharedFiles\Scripts\MicrosoftMvcAjax.js = Sample\SharedFiles\Scripts\MicrosoftMvcAjax.js
 		Sample\SharedFiles\Scripts\MicrosoftMvcValidation.js = Sample\SharedFiles\Scripts\MicrosoftMvcValidation.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DisplayTemplates", "DisplayTemplates", "{375138DB-E561-4289-8220-78ED0D1BA0C4}"
+	ProjectSection(SolutionItems) = preProject
+		Sample\SharedFiles\Views\Shared\DisplayTemplates\DropDownList.ascx = Sample\SharedFiles\Views\Shared\DisplayTemplates\DropDownList.ascx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EditorTemplates", "EditorTemplates", "{13050E0C-4A06-44A0-9665-9BE92F2E2BC8}"
+	ProjectSection(SolutionItems) = preProject
+		Sample\SharedFiles\Views\Shared\EditorTemplates\DropDownList.ascx = Sample\SharedFiles\Views\Shared\EditorTemplates\DropDownList.ascx
 	EndProjectSection
 EndProject
 Global
@@ -316,11 +327,11 @@ Global
 		{76D82D9F-B800-48AC-A6D7-B5DBDEB1D9A5} = {CCFD5BFB-75A9-4ACA-8380-4050A17E1487}
 		{683177DA-BD0E-461F-B0BE-7286E7E15E0A} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
 		{D6C78A5E-D5C6-4070-86AE-4B02651ED347} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
+		{5A2DAB55-5E7C-4900-8A40-AE623DD0D629} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
 		{B5477703-7F80-4B99-9AF0-65B48BAFA098} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
 		{57AD994C-603A-42F7-B591-D9EF9DFD762F} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
 		{0BB027BB-9BD2-410A-AEB2-B12B82D37D2D} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
 		{606218C6-42A0-4E40-A5C8-046A0093E146} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
-		{5A2DAB55-5E7C-4900-8A40-AE623DD0D629} = {88AE2353-483C-4541-89C3-FDADBAC34B7A}
 		{21DE407E-18C5-40CB-BC4E-C7EE1B209DDB} = {E401B3C3-E914-4779-9914-23A280FDD506}
 		{5AB70A39-B770-4046-BA9A-017AADA68762} = {E401B3C3-E914-4779-9914-23A280FDD506}
 		{30498924-CBE8-4B17-A002-80C7B20809C8} = {606218C6-42A0-4E40-A5C8-046A0093E146}
@@ -330,5 +341,7 @@ Global
 		{2A742070-96C6-401E-AB1C-E85DD057DD7E} = {30498924-CBE8-4B17-A002-80C7B20809C8}
 		{C226FACC-DB31-40BA-B259-7D59495551EE} = {30498924-CBE8-4B17-A002-80C7B20809C8}
 		{04074A79-5EE6-4FB4-B8FB-C5D45CB31BAB} = {30498924-CBE8-4B17-A002-80C7B20809C8}
+		{375138DB-E561-4289-8220-78ED0D1BA0C4} = {04074A79-5EE6-4FB4-B8FB-C5D45CB31BAB}
+		{13050E0C-4A06-44A0-9665-9BE92F2E2BC8} = {04074A79-5EE6-4FB4-B8FB-C5D45CB31BAB}
 	EndGlobalSection
 EndGlobal

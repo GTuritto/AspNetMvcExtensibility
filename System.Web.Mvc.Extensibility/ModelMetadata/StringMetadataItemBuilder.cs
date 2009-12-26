@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -10,6 +10,9 @@ namespace System.Web.Mvc.Extensibility
     using Diagnostics;
     using Linq;
 
+    /// <summary>
+    /// Defines a class to fluently configure metadata of a <seealso cref="string"/> type.
+    /// </summary>
     public class StringMetadataItemBuilder : ModelMetadataItemBuilderBase<StringMetadataItem, StringMetadataItemBuilder>
     {
         private static string emailExpression = @"^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$";
@@ -18,10 +21,18 @@ namespace System.Web.Mvc.Extensibility
         private static string urlExpression = @"(ftp|http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?";
         private static string urlErrorMessage = ExceptionMessages.InvalidUrlFormat;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringMetadataItemBuilder"/> class.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public StringMetadataItemBuilder(StringMetadataItem item) : base(item)
         {
         }
 
+        /// <summary>
+        /// Gets or sets the email expression.
+        /// </summary>
+        /// <value>The email expression.</value>
         public static string EmailExpression
         {
             [DebuggerStepThrough]
@@ -37,6 +48,10 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
+        /// <summary>
+        /// Gets or sets the email error message.
+        /// </summary>
+        /// <value>The email error message.</value>
         public static string EmailErrorMessage
         {
             [DebuggerStepThrough]
@@ -52,6 +67,10 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
+        /// <summary>
+        /// Gets or sets the URL expression.
+        /// </summary>
+        /// <value>The URL expression.</value>
         public static string UrlExpression
         {
             [DebuggerStepThrough]
@@ -67,6 +86,10 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
+        /// <summary>
+        /// Gets or sets the URL error message.
+        /// </summary>
+        /// <value>The URL error message.</value>
         public static string UrlErrorMessage
         {
             [DebuggerStepThrough]
@@ -82,20 +105,35 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
-        public virtual StringMetadataItemBuilder DisplayFormat(string value)
+        /// <summary>
+        /// Sets the format in display mode.
+        /// </summary>
+        /// <param name="format">The value.</param>
+        /// <returns></returns>
+        public virtual StringMetadataItemBuilder DisplayFormat(string format)
         {
-            Item.DisplayFormat = value;
+            Item.DisplayFormat = format;
 
             return this;
         }
 
-        public virtual StringMetadataItemBuilder EditFormat(string value)
+        /// <summary>
+        /// Sets the format in edit mode.
+        /// </summary>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        public virtual StringMetadataItemBuilder EditFormat(string format)
         {
-            Item.EditFormat = value;
+            Item.EditFormat = format;
 
             return this;
         }
 
+        /// <summary>
+        /// Sets format for both display and edit mode.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder Format(string value)
         {
             Item.DisplayFormat = Item.EditFormat = value;
@@ -103,6 +141,10 @@ namespace System.Web.Mvc.Extensibility
             return this;
         }
 
+        /// <summary>
+        /// Indicates to apply format in edit mode.
+        /// </summary>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder ApplyFormatInEditMode()
         {
             Item.ApplyFormatInEditMode = true;
@@ -110,6 +152,10 @@ namespace System.Web.Mvc.Extensibility
             return this;
         }
 
+        /// <summary>
+        /// Indicates that the value would appear as email address in display mode.
+        /// </summary>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder AsEmail()
         {
             Template("EmailAddress");
@@ -122,11 +168,19 @@ namespace System.Web.Mvc.Extensibility
             return Expression(EmailExpression, EmailErrorMessage);
         }
 
+        /// <summary>
+        /// Indicates that the value would appear as raw html in display mode, so no encoding will be performed.
+        /// </summary>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder AsHtml()
         {
             return Template("Html");
         }
 
+        /// <summary>
+        /// Indicates that the value would appear as url in display mode.
+        /// </summary>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder AsUrl()
         {
             Template("Url");
@@ -139,16 +193,30 @@ namespace System.Web.Mvc.Extensibility
             return Expression(UrlExpression, UrlErrorMessage);
         }
 
+        /// <summary>
+        /// Marks the value to render as textarea element in edit mode.
+        /// </summary>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder AsMultilineText()
         {
             return Template("MultilineText");
         }
 
+        /// <summary>
+        /// Marks the value to render as password element in edit mode.
+        /// </summary>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder AsPassword()
         {
             return Template("Password");
         }
 
+        /// <summary>
+        /// Sets the regular expression that the value must match, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder Expression(string pattern, string errorMessage)
         {
             RegularExpressionValidationMetadata regularExpressionValidation = GetExpressionValidation();
@@ -165,6 +233,12 @@ namespace System.Web.Mvc.Extensibility
             return this;
         }
 
+        /// <summary>
+        /// Sets the maximum length of the value, this comes into action when is <code>Required</code> is <code>true</code>.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns></returns>
         public virtual StringMetadataItemBuilder MaximumLength(int length, string errorMessage)
         {
             StringLengthValidationMetadata stringLengthValidation = Item.Validations

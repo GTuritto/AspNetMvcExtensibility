@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -10,8 +10,17 @@ namespace System.Web.Mvc.Extensibility
     using Collections.Generic;
     using Linq;
 
+    /// <summary>
+    /// Defines a model validator provider which support fluent registration.
+    /// </summary>
     public class ExtendedModelValidatorProvider : ModelValidatorProvider
     {
+        /// <summary>
+        /// Gets a list of validators.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>A list of validators.</returns>
         public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, ControllerContext context)
         {
             Invariant.IsNotNull(metadata, "metadata");

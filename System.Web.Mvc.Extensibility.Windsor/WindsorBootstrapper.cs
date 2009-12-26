@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility.Windsor
@@ -15,14 +15,25 @@ namespace System.Web.Mvc.Extensibility.Windsor
     using Castle.Core;
     using Castle.Windsor;
 
+    /// <summary>
+    /// Defines a <seealso cref="BootstrapperBase">Bootstrapper</seealso> which is backed by Windsor <seealso cref="IWindsorContainer">Container</seealso>.
+    /// </summary>
     public class WindsorBootstrapper : BootstrapperBase
     {
         private static readonly Type moduleType = typeof(IModule);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WindsorBootstrapper"/> class.
+        /// </summary>
+        /// <param name="buildManager">The build manager.</param>
         public WindsorBootstrapper(IBuildManager buildManager) : base(buildManager)
         {
         }
 
+        /// <summary>
+        /// Creates the service locator.
+        /// </summary>
+        /// <returns></returns>
         protected override IServiceLocator CreateServiceLocator()
         {
             IWindsorContainer container = new WindsorContainer();

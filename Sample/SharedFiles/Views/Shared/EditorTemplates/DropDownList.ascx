@@ -12,7 +12,7 @@
 </script>
 <% ModelMetadataItemSelectableElementSetting setting = GetSelectableElementSetting();%>
 <% if (setting != null) {%>
-    <%= Html.DropDownList(null, ViewData.Eval(setting.ViewDataKey) as SelectList, setting.OptionLabel) %>
+    <%= Html.DropDownList(null, ViewData.Eval(setting.ViewDataKey) as IEnumerable<SelectListItem>, setting.OptionLabel)%>
 <% }%>
 <% else {%>
     <%= Html.DisplayForModel()%>

@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -14,10 +14,17 @@ namespace System.Web.Mvc.Extensibility
 
     using Microsoft.Practices.ServiceLocation;
 
+    /// <summary>
+    /// The default filter registry which supports fluent registration.
+    /// </summary>
     public class FilterRegistry : IFilterRegistry
     {
         private readonly IList<FilterRegistryItemBase> items;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterRegistry"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public FilterRegistry(IServiceLocator serviceLocator)
         {
             Invariant.IsNotNull(serviceLocator, "serviceLocator");
@@ -26,12 +33,20 @@ namespace System.Web.Mvc.Extensibility
             items = new List<FilterRegistryItemBase>();
         }
 
+        /// <summary>
+        /// Gets the service locator.
+        /// </summary>
+        /// <value>The service locator.</value>
         public IServiceLocator ServiceLocator
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the registered items.
+        /// </summary>
+        /// <value>The items.</value>
         public virtual IList<FilterRegistryItemBase> Items
         {
             [DebuggerStepThrough]
@@ -41,6 +56,13 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="filters">The filters.</param>
+        /// <returns></returns>
         public virtual IFilterRegistry Register<TController, TFilter>(IEnumerable<Func<TFilter>> filters)
             where TController : Controller where TFilter : FilterAttribute
         {
@@ -54,6 +76,14 @@ namespace System.Web.Mvc.Extensibility
             return this;
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller action.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="filters">The filters.</param>
+        /// <returns></returns>
         public virtual IFilterRegistry Register<TController, TFilter>(Expression<Action<TController>> action, IEnumerable<Func<TFilter>> filters)
             where TController : Controller
             where TFilter : FilterAttribute
@@ -69,6 +99,12 @@ namespace System.Web.Mvc.Extensibility
             return this;
         }
 
+        /// <summary>
+        /// Returns the matching filters for the given controller action.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="actionDescriptor">The action descriptor.</param>
+        /// <returns></returns>
         public virtual FilterInfo Matching(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
         {
             Invariant.IsNotNull(controllerContext, "controllerContext");

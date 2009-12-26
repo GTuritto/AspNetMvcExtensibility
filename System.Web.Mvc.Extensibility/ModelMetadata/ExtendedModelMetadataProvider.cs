@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -12,10 +12,17 @@ namespace System.Web.Mvc.Extensibility
     using Linq;
     using Globalization;
 
+    /// <summary>
+    /// Defines a metadata provider which supports fluent registration.
+    /// </summary>
     public class ExtendedModelMetadataProvider : ModelMetadataProvider
     {
         private readonly IModelMetadataRegistry registry;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtendedModelMetadataProvider"/> class.
+        /// </summary>
+        /// <param name="registry">The registry.</param>
         public ExtendedModelMetadataProvider(IModelMetadataRegistry registry)
         {
             Invariant.IsNotNull(registry, "registry");
@@ -23,6 +30,14 @@ namespace System.Web.Mvc.Extensibility
             this.registry = registry;
         }
 
+        /// <summary>
+        /// Gets a <see cref="T:System.Web.Mvc.ModelMetadata"/> object for each property of a model.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="containerType">The type of the container.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Mvc.ModelMetadata"/> object for each property of a model.
+        /// </returns>
         public override IEnumerable<ModelMetadata> GetMetadataForProperties(object container, Type containerType)
         {
             Invariant.IsNotNull(containerType, "containerType");
@@ -41,6 +56,15 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
+        /// <summary>
+        /// Gets metadata for the specified property.
+        /// </summary>
+        /// <param name="modelAccessor">The model accessor.</param>
+        /// <param name="containerType">The type of the container.</param>
+        /// <param name="propertyName">The property to get the metadata model for.</param>
+        /// <returns>
+        /// The metadata model for the specified property.
+        /// </returns>
         public override ModelMetadata GetMetadataForProperty(Func<object> modelAccessor, Type containerType, string propertyName)
         {
             Invariant.IsNotNull(containerType, "containerType");
@@ -58,6 +82,12 @@ namespace System.Web.Mvc.Extensibility
             return CreateModelMetaData(containerType, propertyName, propertyDescriptor.PropertyType, registry.Matching(containerType, propertyName), modelAccessor);
         }
 
+        /// <summary>
+        /// Gets metadata for the specified model accessor and model type.
+        /// </summary>
+        /// <param name="modelAccessor">The model accessor.</param>
+        /// <param name="modelType">They type of the model.</param>
+        /// <returns>The metadata.</returns>
         public override ModelMetadata GetMetadataForType(Func<object> modelAccessor, Type modelType)
         {
             return new ExtendedModelMetadata(this, null, modelAccessor, modelType, null, null);

@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -12,8 +12,16 @@ namespace System.Web.Mvc.Extensibility
 
     using Microsoft.Practices.ServiceLocation;
 
+    /// <summary>
+    /// The default <seealso cref="IActionInvoker"/> which supports the fluent filter registration.
+    /// </summary>
     public class ExtendedControllerActionInvoker : ControllerActionInvoker
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtendedControllerActionInvoker"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        /// <param name="filterRegistry">The filter registry.</param>
         public ExtendedControllerActionInvoker(IServiceLocator locator, IFilterRegistry filterRegistry)
         {
             Invariant.IsNotNull(locator, "locator");
@@ -23,18 +31,32 @@ namespace System.Web.Mvc.Extensibility
             FilterRegistry = filterRegistry;
         }
 
+        /// <summary>
+        /// Gets or sets the service locator.
+        /// </summary>
+        /// <value>The service locator.</value>
         protected IServiceLocator ServiceLocator
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets or sets the filter registry.
+        /// </summary>
+        /// <value>The filter registry.</value>
         protected IFilterRegistry FilterRegistry
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Retrieves information about the action filters.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="actionDescriptor">The action descriptor.</param>
+        /// <returns>Information about the action filters.</returns>
         protected override FilterInfo GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
         {
             Invariant.IsNotNull(controllerContext, "controllerContext");

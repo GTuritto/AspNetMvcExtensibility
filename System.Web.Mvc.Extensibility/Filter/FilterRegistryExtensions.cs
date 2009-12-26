@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -11,16 +11,34 @@ namespace System.Web.Mvc.Extensibility
     using Linq.Expressions;
     using Linq;
 
+    /// <summary>
+    /// Defines an static class which contains extension methods of <see cref="IFilterRegistry"/>.
+    /// </summary>
     public static class FilterRegistryExtensions
     {
         private static readonly Type genericControllerItemType = typeof(FilterRegistryControllerItem<>);
 
+        /// <summary>
+        /// Registers the specified filter for the matching controller types of <seealso cref="TypeCatalog"/>.
+        /// </summary>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="typeCatalog">The type catalog.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TFilter>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter : FilterAttribute
         {
             return Register<TFilter>(instance, typeCatalog, filter => { });
         }
 
+        /// <summary>
+        /// Registers and configures the specified filter for the matching controller types of <seealso cref="TypeCatalog"/>.
+        /// </summary>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="typeCatalog">The type catalog.</param>
+        /// <param name="configureFilter">The configure filter.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TFilter>(this IFilterRegistry instance, TypeCatalog typeCatalog, Action<TFilter> configureFilter)
             where TFilter : FilterAttribute
         {
@@ -42,6 +60,14 @@ namespace System.Web.Mvc.Extensibility
             return instance;
         }
 
+        /// <summary>
+        /// Registers the specified filters for the matching controller types of <seealso cref="TypeCatalog"/>.
+        /// </summary>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="typeCatalog">The type catalog.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TFilter1, TFilter2>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter1 : FilterAttribute
             where TFilter2 : FilterAttribute
@@ -52,6 +78,15 @@ namespace System.Web.Mvc.Extensibility
             return Register(instance, typeCatalog, typeof(TFilter1), typeof(TFilter2));
         }
 
+        /// <summary>
+        /// Registers the specified filters for the matching controller types of <seealso cref="TypeCatalog"/>.
+        /// </summary>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="typeCatalog">The type catalog.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TFilter1, TFilter2, TFilter3>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter1 : FilterAttribute
             where TFilter2 : FilterAttribute
@@ -63,6 +98,16 @@ namespace System.Web.Mvc.Extensibility
             return Register(instance, typeCatalog, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3));
         }
 
+        /// <summary>
+        /// Registers the specified filters for the matching controller types of <seealso cref="TypeCatalog"/>.
+        /// </summary>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
+        /// <typeparam name="TFilter4">The type of the filter4.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="typeCatalog">The type catalog.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TFilter1, TFilter2, TFilter3, TFilter4>(this IFilterRegistry instance, TypeCatalog typeCatalog)
             where TFilter1 : FilterAttribute
             where TFilter2 : FilterAttribute
@@ -75,6 +120,13 @@ namespace System.Web.Mvc.Extensibility
             return Register(instance, typeCatalog, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4));
         }
 
+        /// <summary>
+        /// Registers the specified filter for the given controller.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter>(this IFilterRegistry instance)
             where TController : Controller
             where TFilter : FilterAttribute
@@ -82,6 +134,14 @@ namespace System.Web.Mvc.Extensibility
             return Register<TController, TFilter>(instance, (TFilter filter) => { });
         }
 
+        /// <summary>
+        /// Registers and configures the specified filter for the given controller.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="configureFilter">The configure filter.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter>(this IFilterRegistry instance, Action<TFilter> configureFilter)
             where TController : Controller
             where TFilter : FilterAttribute
@@ -94,6 +154,14 @@ namespace System.Web.Mvc.Extensibility
             return instance;
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter1, TFilter2>(this IFilterRegistry instance)
             where TController : Controller
             where TFilter1 : FilterAttribute
@@ -104,6 +172,15 @@ namespace System.Web.Mvc.Extensibility
             return instance.Register<TController, FilterAttribute>(instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2)).ToArray());
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3>(this IFilterRegistry instance)
             where TController : Controller
             where TFilter1 : FilterAttribute
@@ -115,6 +192,16 @@ namespace System.Web.Mvc.Extensibility
             return instance.Register<TController, FilterAttribute>(instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3)).ToArray());
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
+        /// <typeparam name="TFilter4">The type of the filter4.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3, TFilter4>(this IFilterRegistry instance)
             where TController : Controller
             where TFilter1 : FilterAttribute
@@ -127,6 +214,14 @@ namespace System.Web.Mvc.Extensibility
             return instance.Register<TController, FilterAttribute>(instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4)).ToArray());
         }
 
+        /// <summary>
+        /// Registers the specified filter for the given controller action.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="action">The controller action method.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter>(this IFilterRegistry instance, Expression<Action<TController>> action)
             where TController : Controller
             where TFilter : FilterAttribute
@@ -136,6 +231,15 @@ namespace System.Web.Mvc.Extensibility
             return Register<TController, TFilter>(instance, action, filter => { });
         }
 
+        /// <summary>
+        /// Registers and configures the specified filter for the given controller action.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="action">The controller action method.</param>
+        /// <param name="configureFilter">The configure filter.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter>(this IFilterRegistry instance, Expression<Action<TController>> action, Action<TFilter> configureFilter)
             where TController : Controller
             where TFilter : FilterAttribute
@@ -147,6 +251,15 @@ namespace System.Web.Mvc.Extensibility
             return instance.Register(action, instance.CreateAndConfigureFilterFactory(configureFilter));
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller action.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="action">The controller action method.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter1, TFilter2>(this IFilterRegistry instance, Expression<Action<TController>> action)
             where TController : Controller
             where TFilter1 : FilterAttribute
@@ -157,6 +270,16 @@ namespace System.Web.Mvc.Extensibility
             return instance.Register(action, instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2)).ToArray());
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller action.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="action">The controller action method.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3>(this IFilterRegistry instance, Expression<Action<TController>> action)
             where TController : Controller
             where TFilter1 : FilterAttribute
@@ -168,6 +291,17 @@ namespace System.Web.Mvc.Extensibility
             return instance.Register(action, instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3)).ToArray());
         }
 
+        /// <summary>
+        /// Registers the specified filters for the given controller action.
+        /// </summary>
+        /// <typeparam name="TController">The type of the controller.</typeparam>
+        /// <typeparam name="TFilter1">The type of the filter1.</typeparam>
+        /// <typeparam name="TFilter2">The type of the filter2.</typeparam>
+        /// <typeparam name="TFilter3">The type of the filter3.</typeparam>
+        /// <typeparam name="TFilter4">The type of the filter4.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="action">The controller action method.</param>
+        /// <returns></returns>
         public static IFilterRegistry Register<TController, TFilter1, TFilter2, TFilter3, TFilter4>(this IFilterRegistry instance, Expression<Action<TController>> action)
             where TController : Controller
             where TFilter1 : FilterAttribute

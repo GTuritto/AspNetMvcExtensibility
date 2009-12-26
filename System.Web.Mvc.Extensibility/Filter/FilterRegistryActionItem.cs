@@ -1,8 +1,8 @@
 #region Copyright
-/// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
-/// This source is subject to the Microsoft Public License. 
-/// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
-/// All other rights reserved.
+// Copyright (c) 2009, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// This source is subject to the Microsoft Public License. 
+// See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
+// All other rights reserved.
 #endregion
 
 namespace System.Web.Mvc.Extensibility
@@ -10,14 +10,22 @@ namespace System.Web.Mvc.Extensibility
     using Collections.Generic;
     using Linq.Expressions;
 
+    /// <summary>
+    /// Defines a class to store the <see cref="FilterAttribute"/> factories of <seealso cref="Controller"/> action method.
+    /// </summary>
+    /// <typeparam name="TController">The type of the controller.</typeparam>
     public class FilterRegistryActionItem<TController> : FilterRegistryItemBase where TController : Controller
     {
         private readonly ReflectedActionDescriptor reflectedActionDescriptor;
 
-        public FilterRegistryActionItem(Expression<Action<TController>> action, IEnumerable<Func<FilterAttribute>> filters)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterRegistryActionItem&lt;TController&gt;"/> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="filters">The filters.</param>
+        public FilterRegistryActionItem(Expression<Action<TController>> action, IEnumerable<Func<FilterAttribute>> filters) : base(filters)
         {
             Invariant.IsNotNull(action, "action");
-            Invariant.IsNotNull(filters, "filters");
 
             MethodCallExpression methodCall = action.Body as MethodCallExpression;
 
@@ -27,9 +35,16 @@ namespace System.Web.Mvc.Extensibility
             }
 
             reflectedActionDescriptor = new ReflectedActionDescriptor(methodCall.Method, methodCall.Method.Name, new ReflectedControllerDescriptor(methodCall.Object.Type));
-            Filters = filters;
         }
 
+        /// <summary>
+        /// Determines whether the specified controller context is matching.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="actionDescriptor">The action descriptor.</param>
+        /// <returns>
+        /// <c>true</c> if the specified controller context is matching; otherwise, <c>false</c>.
+        /// </returns>
         public override bool IsMatching(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
         {
             Invariant.IsNotNull(controllerContext, "controllerContext");

@@ -14,7 +14,7 @@
 
             if (setting != null)
             {
-                SelectList selectList = ViewData.Eval(setting.ViewDataKey) as SelectList;
+                IEnumerable<SelectListItem> selectList = ViewData.Eval(setting.ViewDataKey) as IEnumerable<SelectListItem>;
 
                 if ((selectList != null) && selectList.Any())
                 {
