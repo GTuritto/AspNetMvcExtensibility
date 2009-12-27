@@ -8,6 +8,7 @@
 namespace System.Web.Mvc.Extensibility
 {
     using Collections.Generic;
+    using Globalization;
     using Linq.Expressions;
     using Linq;
 
@@ -54,7 +55,7 @@ namespace System.Web.Mvc.Extensibility
             {
                 Type itemType = genericControllerItemType.MakeGenericType(controllerType);
 
-                instance.Items.Add(Activator.CreateInstance(itemType, new object[] { instance.CreateAndConfigureFilterFactory(configureFilter) }) as FilterRegistryItemBase);
+                instance.Items.Add(Activator.CreateInstance(itemType, new object[] { CreateAndConfigureFilterFactory(instance, configureFilter) }) as FilterRegistryItemBase);
             }
 
             return instance;
@@ -169,7 +170,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.Register<TController, FilterAttribute>(instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2)).ToArray());
+            return instance.Register<TController, FilterAttribute>(CreateFilterFactories(instance, typeof(TFilter1), typeof(TFilter2)).ToArray());
         }
 
         /// <summary>
@@ -189,7 +190,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.Register<TController, FilterAttribute>(instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3)).ToArray());
+            return instance.Register<TController, FilterAttribute>(CreateFilterFactories(instance, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3)).ToArray());
         }
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.Register<TController, FilterAttribute>(instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4)).ToArray());
+            return instance.Register<TController, FilterAttribute>(CreateFilterFactories(instance, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4)).ToArray());
         }
 
         /// <summary>
@@ -248,7 +249,7 @@ namespace System.Web.Mvc.Extensibility
             Invariant.IsNotNull(action, "action");
             Invariant.IsNotNull(configureFilter, "configureFilter");
 
-            return instance.Register(action, instance.CreateAndConfigureFilterFactory(configureFilter));
+            return instance.Register(action, CreateAndConfigureFilterFactory(instance, configureFilter));
         }
 
         /// <summary>
@@ -267,7 +268,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.Register(action, instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2)).ToArray());
+            return instance.Register(action, CreateFilterFactories(instance, typeof(TFilter1), typeof(TFilter2)).ToArray());
         }
 
         /// <summary>
@@ -288,7 +289,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.Register(action, instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3)).ToArray());
+            return instance.Register(action, CreateFilterFactories(instance, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3)).ToArray());
         }
 
         /// <summary>
@@ -311,7 +312,7 @@ namespace System.Web.Mvc.Extensibility
         {
             Invariant.IsNotNull(instance, "instance");
 
-            return instance.Register(action, instance.CreateFilterFactories(typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4)).ToArray());
+            return instance.Register(action, CreateFilterFactories(instance, typeof(TFilter1), typeof(TFilter2), typeof(TFilter3), typeof(TFilter4)).ToArray());
         }
 
         private static IFilterRegistry Register(IFilterRegistry instance, IEnumerable<Type> typeCatalog, params Type[] filterTypes)
@@ -324,9 +325,7 @@ namespace System.Web.Mvc.Extensibility
             {
                 Type itemType = genericControllerItemType.MakeGenericType(controllerType);
 
-                IEnumerable<Func<FilterAttribute>> filters = instance.CreateFilterFactories(filterTypes);
-
-                instance.Items.Add(Activator.CreateInstance(itemType, new object[] { filters }) as FilterRegistryItemBase);
+                instance.Items.Add(Activator.CreateInstance(itemType, new object[] { CreateFilterFactories(instance, filterTypes) }) as FilterRegistryItemBase);
             }
 
             return instance;
@@ -338,32 +337,23 @@ namespace System.Web.Mvc.Extensibility
             {
                 if (!KnownTypes.ControllerType.IsAssignableFrom(controllerType))
                 {
-                    throw new ArgumentException(string.Format(Globalization.CultureInfo.CurrentCulture, "\"{0}\" is not a \"{1}\" type.", controllerType.FullName, KnownTypes.ControllerType.FullName));
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "\"{0}\" is not a \"{1}\" type.", controllerType.FullName, KnownTypes.ControllerType.FullName));
                 }
             }
         }
 
-        private static IEnumerable<Func<FilterAttribute>> CreateFilterFactories(this IFilterRegistry instance, params Type[] filterTypes)
+        private static IEnumerable<Func<FilterAttribute>> CreateFilterFactories(IFilterRegistry registry, params Type[] filterTypes)
         {
-            IList<Func<FilterAttribute>> filters = new List<Func<FilterAttribute>>();
-
-            foreach (Type filterType in filterTypes)
-            {
-                Type type = filterType;
-
-                filters.Add(() => instance.ServiceLocator.GetInstance(type) as FilterAttribute);
-            }
-
-            return filters;
+            return filterTypes.Select(filterType => new Func<FilterAttribute>(() => registry.ServiceLocator.GetInstance(filterType) as FilterAttribute));
         }
 
-        private static IEnumerable<Func<FilterAttribute>> CreateAndConfigureFilterFactory<TFilter>(this IFilterRegistry instance, Action<TFilter> configureFilter) where TFilter : FilterAttribute
+        private static IEnumerable<Func<FilterAttribute>> CreateAndConfigureFilterFactory<TFilter>(IFilterRegistry registry, Action<TFilter> configureFilter) where TFilter : FilterAttribute
         {
             return new List<Func<FilterAttribute>>
                        {
                            () =>
                            {
-                               TFilter filter = instance.ServiceLocator.GetInstance<TFilter>();
+                               TFilter filter = registry.ServiceLocator.GetInstance<TFilter>();
 
                                configureFilter(filter);
 

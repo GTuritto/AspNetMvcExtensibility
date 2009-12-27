@@ -24,7 +24,7 @@ namespace System.Web.Mvc.Extensibility
         /// Gets the type of the model.
         /// </summary>
         /// <value>The type of the model.</value>
-        public virtual Type ModelType
+        public Type ModelType
         {
             [DebuggerStepThrough, EditorBrowsable(EditorBrowsableState.Never)]
             get

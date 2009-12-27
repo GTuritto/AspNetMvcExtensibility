@@ -5,10 +5,11 @@
 // All other rights reserved.
 #endregion
 
-using System.Collections.Generic;
-
 namespace System.Web.Mvc.Extensibility.Tests
 {
+    using Collections.Generic;
+    using Linq;
+
     using Moq;
     using Xunit;
 
@@ -42,8 +43,8 @@ namespace System.Web.Mvc.Extensibility.Tests
 
             registry.VerifyAll();
 
-            Assert.IsType<ExtendedModelMetadataProvider>(ModelMetadataProviders.Current);
-            Assert.IsType<ExtendedModelValidatorProvider>(ModelValidatorProviders.Providers[0]);
+            Assert.IsType<CompositeModelMetadataProvider>(ModelMetadataProviders.Current);
+            Assert.Contains(typeof(ExtendedModelValidatorProvider), ModelValidatorProviders.Providers.Select(p => p.GetType()));
         }
     }
 }

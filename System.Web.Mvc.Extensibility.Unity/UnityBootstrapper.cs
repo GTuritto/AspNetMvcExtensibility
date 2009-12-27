@@ -58,9 +58,14 @@ namespace System.Web.Mvc.Extensibility.Unity
                      .RegisterInstance<IServiceLocator>(serviceLocator)
                      .RegisterInstance<IInjector>(serviceLocator)
                      .RegisterType<IFilterRegistry, FilterRegistry>(new ContainerControlledLifetimeManager())
-                     .RegisterType<IModelMetadataRegistry, ModelMetadataRegistry>(new ContainerControlledLifetimeManager())
                      .RegisterType<IControllerFactory, ExtendedControllerFactory>(new ContainerControlledLifetimeManager())
                      .RegisterType<IActionInvoker, ExtendedControllerActionInvoker>();
+
+            #if (!MVC1)
+
+            container.RegisterType<IModelMetadataRegistry, ModelMetadataRegistry>(new ContainerControlledLifetimeManager());
+
+            #endif
         }
 
         private static void RegisterDynamicTypes(IUnityContainer container, IEnumerable<Type> concreteTypes)
@@ -71,8 +76,15 @@ namespace System.Web.Mvc.Extensibility.Unity
             concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.PerRequestTaskType, type, type.FullName, new ContainerControlledLifetimeManager()));
 
+            #if (!MVC1)
+
             concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.ModelMetadataConfigurationType, type, type.FullName));
+
+            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                         .Each(type => container.RegisterType(KnownTypes.ExtendedModelMetadataProviderType, type, type.FullName, new ContainerControlledLifetimeManager()));
+
+            #endif
 
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.RegisterType(KnownTypes.ModelBinderType, type, type.FullName, new ContainerControlledLifetimeManager()));

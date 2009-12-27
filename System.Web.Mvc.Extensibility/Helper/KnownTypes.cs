@@ -54,6 +54,11 @@ namespace System.Web.Mvc.Extensibility
 
         #if (!MVC1)
         /// <summary>
+        /// The <seealso cref="ExtendedModelMetadataProviderBase"/> type.
+        /// </summary>
+        public static readonly Type ExtendedModelMetadataProviderType = typeof(ExtendedModelMetadataProviderBase);
+
+        /// <summary>
         /// The <seealso cref="ModelMetadataConfigurationType"/> type.
         /// </summary>
         public static readonly Type ModelMetadataConfigurationType = typeof(IModelMetadataConfiguration);

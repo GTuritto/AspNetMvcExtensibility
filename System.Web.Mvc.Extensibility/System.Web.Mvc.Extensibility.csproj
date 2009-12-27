@@ -122,6 +122,9 @@
     <Compile Include="ModelMetadata\ExtendedModelValidatorProvider.cs" />
     <Compile Include="ModelMetadata\IModelMetadataConfiguration.cs" />
     <Compile Include="ModelMetadata\ModelMetadataConfigurationBase.cs" />
+    <Compile Include="ModelMetadata\CompositeModelMetadataProvider.cs" />
+    <Compile Include="ModelMetadata\ExtendedModelMetadataProviderBase.cs" />
+    <Compile Include="ModelMetadata\ExtendedValidatorBase.cs" />
     <Compile Include="ModelMetadata\ExtendedModelMetadataProvider.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -132,7 +135,6 @@
     </Compile>
     <Compile Include="BuildManager\BuildManagerWrapper.cs" />
     <Compile Include="BuildManager\IBuildManager.cs" />
-    <Compile Include="ModelMetadata\ExtendedValidatorBase.cs" />
     <Compile Include="TypeCatalog\TypeCatalog.cs" />
     <Compile Include="TypeCatalog\TypeCatalogBuilder.cs" />
     <Compile Include="PerRequestTask\IPerRequestTask.cs" />

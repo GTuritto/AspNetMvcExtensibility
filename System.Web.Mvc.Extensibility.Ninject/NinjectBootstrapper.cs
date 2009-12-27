@@ -63,6 +63,12 @@ namespace System.Web.Mvc.Extensibility.Ninject
 
             public override void Load()
             {
+                LoadKnownTypes();
+                LoadDynamicTypes();
+            }
+
+            private void LoadKnownTypes()
+            {
                 Bind<IBuildManager>().ToConstant(buildManager);
                 Bind<RouteCollection>().ToConstant(RouteTable.Routes);
                 Bind<ControllerBuilder>().ToConstant(ControllerBuilder.Current);
@@ -70,10 +76,18 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 Bind<ViewEngineCollection>().ToConstant(ViewEngines.Engines);
 
                 Bind<IFilterRegistry>().To<FilterRegistry>().InSingletonScope();
-                Bind<IModelMetadataRegistry>().To<ModelMetadataRegistry>().InSingletonScope();
                 Bind<IControllerFactory>().To<ExtendedControllerFactory>().InSingletonScope();
                 Bind<IActionInvoker>().To<ExtendedControllerActionInvoker>().InTransientScope();
 
+                #if (!MVC1)
+
+                Bind<IModelMetadataRegistry>().To<ModelMetadataRegistry>().InSingletonScope();
+
+                #endif
+            }
+
+            private void LoadDynamicTypes()
+            {
                 IEnumerable<Type> concreteTypes = buildManager.ConcreteTypes;
 
                 concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
@@ -82,8 +96,13 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.PerRequestTaskType).To(type).InSingletonScope());
 
+                #if (!MVC1)
                 concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.ModelMetadataConfigurationType).To(type).InTransientScope());
+
+                concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                             .Each(type => Bind(KnownTypes.ExtendedModelMetadataProviderType).To(type).InSingletonScope());
+                #endif
 
                 concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                              .Each(type => Bind(KnownTypes.ModelBinderType).To(type).InSingletonScope());

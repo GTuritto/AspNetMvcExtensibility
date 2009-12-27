@@ -8,7 +8,6 @@
 namespace System.Web.Mvc.Extensibility
 {
     using Collections.Generic;
-    using Linq;
 
     using Microsoft.Practices.ServiceLocation;
 
@@ -25,16 +24,12 @@ namespace System.Web.Mvc.Extensibility
         {
             IEnumerable<IModelMetadataConfiguration> configurations = serviceLocator.GetAllInstances<IModelMetadataConfiguration>();
 
-            if (configurations.Any())
-            {
-                IModelMetadataRegistry registry = serviceLocator.GetInstance<IModelMetadataRegistry>();
+            IModelMetadataRegistry registry = serviceLocator.GetInstance<IModelMetadataRegistry>();
 
-                configurations.Each(configuration => registry.Register(configuration.ModelType, configuration.Configurations));
+            configurations.Each(configuration => registry.Register(configuration.ModelType, configuration.Configurations));
 
-                ModelMetadataProviders.Current = new ExtendedModelMetadataProvider(registry);
-                ModelValidatorProviders.Providers.Clear();
-                ModelValidatorProviders.Providers.Add(new ExtendedModelValidatorProvider());
-            }
+            ModelMetadataProviders.Current = new CompositeModelMetadataProvider(serviceLocator.GetAllInstances<ExtendedModelMetadataProviderBase>());
+            ModelValidatorProviders.Providers.Insert(0, new ExtendedModelValidatorProvider());
         }
     }
 }

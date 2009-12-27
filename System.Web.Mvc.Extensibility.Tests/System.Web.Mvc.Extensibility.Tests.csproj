@@ -104,6 +104,8 @@
     <Compile Include="Controller\ExtendedControllerActionInvokerTests.cs" />
     <Compile Include="Controller\ExtendedControllerFactoryTests.cs" />
     <Compile Include="ExtendedMvcApplicationBaseTests.cs" />
+    <Compile Include="ModelMetadata\ExtendedModelMetadataTests.cs" />
+    <Compile Include="ModelMetadata\ModelMetadataItemBaseTests.cs" />
     <Compile Include="TestHelpers\FakeServiceLocator.cs" />
     <Compile Include="Filter\FilterRegistryActionItemTests.cs" />
     <Compile Include="Filter\FilterRegistryControllerItemTests.cs" />

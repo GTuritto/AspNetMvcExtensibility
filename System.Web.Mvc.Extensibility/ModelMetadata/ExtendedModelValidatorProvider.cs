@@ -28,12 +28,7 @@ namespace System.Web.Mvc.Extensibility
 
             ExtendedModelMetadata extendedModelMetadata = metadata as ExtendedModelMetadata;
 
-            if (extendedModelMetadata == null)
-            {
-                throw new InvalidCastException();
-            }
-
-            return (extendedModelMetadata.Metadata != null) ?
+            return (extendedModelMetadata != null) && (extendedModelMetadata.Metadata != null) ?
                    extendedModelMetadata.Metadata.Validations.Select(validationMeta => validationMeta.CreateValidator(extendedModelMetadata, context)) :
                    Enumerable.Empty<ModelValidator>();
         }

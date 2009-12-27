@@ -23,6 +23,25 @@ namespace System.Web.Mvc.Extensibility
         void Register(Type modelType, IDictionary<string, ModelMetadataItemBase> metadataDictionary);
 
         /// <summary>
+        /// Determines whether the specified model type is registered.
+        /// </summary>
+        /// <param name="modelType">Type of the model.</param>
+        /// <returns>
+        /// <c>true</c> if the specified model type is registered; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsRegistered(Type modelType);
+
+        /// <summary>
+        /// Determines whether the specified model type with the property name is registered.
+        /// </summary>
+        /// <param name="modelType">Type of the model.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>
+        /// <c>true</c> if the specified model type with property name is registered; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsRegistered(Type modelType, string propertyName);
+
+        /// <summary>
         /// Gets the Matchings metadata of the given model.
         /// </summary>
         /// <param name="modelType">Type of the model.</param>
