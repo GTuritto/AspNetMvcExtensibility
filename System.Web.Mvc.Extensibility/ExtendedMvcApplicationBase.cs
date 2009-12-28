@@ -76,30 +76,30 @@ namespace System.Web.Mvc.Extensibility
         }
 
         /// <summary>
-        /// Executes at the start of begin request.
+        /// Executes before the registerted <see cref="IPerRequestTask"/> executes.
         /// </summary>
-        protected virtual void OnBeginRequestStart()
+        protected virtual void OnPerRequestTasksExecuting()
         {
         }
 
         /// <summary>
-        /// Executes at the end of begin request.
+        /// Executes after the registerted <see cref="IPerRequestTask"/> executes.
         /// </summary>
-        protected virtual void OnBeginRequestEnd()
+        protected virtual void OnPerRequestTasksExecuted()
         {
         }
 
         /// <summary>
-        /// Executes at the start of end request.
+        /// Executes before the registerted <see cref="IPerRequestTask"/> disposes.
         /// </summary>
-        protected virtual void OnEndRequestStart()
+        protected virtual void OnPerRequestTasksDisposing()
         {
         }
 
         /// <summary>
-        /// Executes at the end of end request.
+        /// Executes after the registerted <see cref="IPerRequestTask"/> disposes.
         /// </summary>
-        protected virtual void OnEndRequestEnd()
+        protected virtual void OnPerRequestTasksDisposed()
         {
         }
 
@@ -112,7 +112,7 @@ namespace System.Web.Mvc.Extensibility
 
         private void HandleBeginRequest(object sender, EventArgs e)
         {
-            OnBeginRequestStart();
+            OnPerRequestTasksExecuting();
 
             HttpContextBase httpContext = new HttpContextWrapper(Context);
             IServiceLocator serviceLocator = Bootstrapper.ServiceLocator;
@@ -123,19 +123,19 @@ namespace System.Web.Mvc.Extensibility
                           .OrderBy(task => task.Order)
                           .Each(task => task.Execute(perRequestExecutionContext));
 
-            OnBeginRequestEnd();
+            OnPerRequestTasksExecuted();
         }
 
         private void HandleEndRequest(object sender, EventArgs e)
         {
-            OnEndRequestStart();
+            OnPerRequestTasksDisposing();
 
             Bootstrapper.ServiceLocator
                         .GetAllInstances<IPerRequestTask>()
                         .OrderByDescending(task => task.Order)
                         .Each(task => task.Dispose());
 
-            OnEndRequestEnd();
+            OnPerRequestTasksDisposed();
         }
     }
 }
