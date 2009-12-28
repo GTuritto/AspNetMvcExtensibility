@@ -22,7 +22,7 @@ namespace System.Web.Mvc.Extensibility
         /// Initializes a new instance of the <see cref="CompositeModelMetadataProvider"/> class.
         /// </summary>
         /// <param name="providers">The providers.</param>
-        public CompositeModelMetadataProvider(IEnumerable<ExtendedModelMetadataProviderBase> providers)
+        public CompositeModelMetadataProvider(params ExtendedModelMetadataProviderBase[] providers)
         {
             Invariant.IsNotNull(providers, "providers");
 

@@ -40,6 +40,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
         protected override IServiceLocator CreateServiceLocator()
         {
             IContainer container = new Container();
+
             StructureMapServiceLocator serviceLocator = new StructureMapServiceLocator(container);
 
             RegisterKnownTypes(container, BuildManager, serviceLocator);
@@ -71,7 +72,6 @@ namespace System.Web.Mvc.Extensibility.StructureMap
 
                                     x.ForRequestedType<CompositeModelMetadataProvider>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<CompositeModelMetadataProvider>();
                                     x.ForRequestedType<IModelMetadataRegistry>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<ModelMetadataRegistry>();
-                                    x.ForRequestedType<IAreaManager>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<AreaManager>();
 
                                     #endif
                                 });
@@ -107,9 +107,6 @@ namespace System.Web.Mvc.Extensibility.StructureMap
 
             concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelValidatorProviderType).CacheBy(InstanceScope.Singleton).AddType(type)));
-
-            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
-                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.AreaType).CacheBy(InstanceScope.Singleton).AddType(type)));
 
             #endif
         }

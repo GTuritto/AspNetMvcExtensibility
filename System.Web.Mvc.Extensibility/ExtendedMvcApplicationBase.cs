@@ -18,7 +18,8 @@ namespace System.Web.Mvc.Extensibility
     /// </summary>
     public abstract class ExtendedMvcApplicationBase : HttpApplication
     {
-        private IBootstrapper bootstrapper;
+        private static readonly object syncLock = new object();
+        private static IBootstrapper bootstrapper;
 
         /// <summary>
         /// Gets the bootstrapper.
@@ -29,7 +30,18 @@ namespace System.Web.Mvc.Extensibility
             [DebuggerStepThrough]
             get
             {
-                return bootstrapper ?? (bootstrapper = CreateBootstrapper());
+                if (bootstrapper == null)
+                {
+                    lock (syncLock)
+                    {
+                        if (bootstrapper == null)
+                        {
+                            bootstrapper = CreateBootstrapper();
+                        }
+                    }
+                }
+
+                return bootstrapper;
             }
         }
 

@@ -15,7 +15,7 @@ namespace Demo.Web
         protected override void ExecuteCore(IServiceLocator locator)
         {
             Routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            Routes.MapRoute( "Default", "{controller}/{action}/{id}", new { controller = "Product", action = "Index", id = string.Empty } );
+            Routes.MapRoute( "Default", "{controller}/{action}/{id}", new { controller = "Home", action = "Index", id = string.Empty } );
         }
     }
 }

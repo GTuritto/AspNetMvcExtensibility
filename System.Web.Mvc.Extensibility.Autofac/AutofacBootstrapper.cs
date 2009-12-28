@@ -87,9 +87,6 @@ namespace System.Web.Mvc.Extensibility.Autofac
             concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).As(KnownTypes.ModelValidatorProviderType).ContainerScoped());
 
-            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.AreaType).ContainerScoped());
-
             #endif
         }
 
@@ -118,7 +115,6 @@ namespace System.Web.Mvc.Extensibility.Autofac
 
             builder.Register<CompositeModelMetadataProvider>().ContainerScoped();
             builder.Register<ModelMetadataRegistry>().As<IModelMetadataRegistry>().ContainerScoped();
-            builder.Register<AreaManager>().As<IAreaManager>().ContainerScoped();
 
             #endif
         }

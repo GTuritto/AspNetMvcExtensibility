@@ -12,8 +12,10 @@ namespace System.Web.Mvc.Extensibility.Windsor
     using Routing;
 
     using Microsoft.Practices.ServiceLocation;
+
     using Castle.Core;
     using Castle.Windsor;
+    using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 
     /// <summary>
     /// Defines a <seealso cref="BootstrapperBase">Bootstrapper</seealso> which is backed by Windsor <seealso cref="IWindsorContainer">Container</seealso>.
@@ -37,6 +39,8 @@ namespace System.Web.Mvc.Extensibility.Windsor
         protected override IServiceLocator CreateServiceLocator()
         {
             IWindsorContainer container = new WindsorContainer();
+            container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
+
             WindsorServiceLocator serviceLocator = new WindsorServiceLocator(container);
 
             RegisterKnownTypes(container, BuildManager, serviceLocator);
@@ -65,9 +69,8 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
             #if (!MVC1)
 
-            container.AddComponentLifeStyle<CompositeModelMetadataProvider, CompositeModelMetadataProvider>(LifestyleType.Singleton)
-                     .AddComponentLifeStyle<IModelMetadataRegistry, ModelMetadataRegistry>(LifestyleType.Singleton)
-                     .AddComponentLifeStyle<IAreaManager, AreaManager>(LifestyleType.Singleton);
+            container.AddComponentLifeStyle<CompositeModelMetadataProvider>(LifestyleType.Singleton)
+                     .AddComponentLifeStyle<IModelMetadataRegistry, ModelMetadataRegistry>(LifestyleType.Singleton);
 
             #endif
         }
@@ -102,9 +105,6 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
             concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelValidatorProviderType, type, LifestyleType.Singleton));
-
-            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
-                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.AreaType, type, LifestyleType.Singleton));
 
             #endif
         }

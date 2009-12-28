@@ -83,7 +83,6 @@ namespace System.Web.Mvc.Extensibility.Ninject
 
                 Bind<CompositeModelMetadataProvider>().ToSelf().InSingletonScope();
                 Bind<IModelMetadataRegistry>().To<ModelMetadataRegistry>().InSingletonScope();
-                Bind<IAreaManager>().To<AreaManager>().InSingletonScope();
 
                 #endif
             }
@@ -120,9 +119,6 @@ namespace System.Web.Mvc.Extensibility.Ninject
 
                 concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.ModelValidatorProviderType).To(type).InSingletonScope());
-
-                concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
-                             .Each(type => Bind(KnownTypes.AreaType).To(type).InSingletonScope());
 
                 #endif
             }

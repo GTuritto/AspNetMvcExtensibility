@@ -136,12 +136,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)'=='Debug' Or '$(Configuration)'=='Release' ">
-    <Compile Include="Area\IArea.cs" />
-    <Compile Include="Area\AreaBase.cs" />
-    <Compile Include="Area\IAreaManager.cs" />
-    <Compile Include="Area\AreaManager.cs" />
-    <Compile Include="Area\AreaRegistrationContextExtensions.cs" />
-    <Compile Include="Area\ExtendedAreaRegistrationContext.cs" />
     <Compile Include="BootstrapperTask\RegisterModelMetadata.cs" />
     <Compile Include="ModelMetadata\ExtendedRangeValidator.cs" />
     <Compile Include="ModelMetadata\RegularExpressionValidationMetadata.cs" />

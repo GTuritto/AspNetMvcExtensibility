@@ -64,8 +64,7 @@ namespace System.Web.Mvc.Extensibility.Unity
             #if (!MVC1)
 
             container.RegisterType<CompositeModelMetadataProvider, CompositeModelMetadataProvider>(new ContainerControlledLifetimeManager())
-                     .RegisterType<IModelMetadataRegistry, ModelMetadataRegistry>(new ContainerControlledLifetimeManager())
-                     .RegisterType<IAreaManager, AreaManager>(new ContainerControlledLifetimeManager());
+                     .RegisterType<IModelMetadataRegistry, ModelMetadataRegistry>(new ContainerControlledLifetimeManager());
 
             #endif
         }
@@ -100,9 +99,6 @@ namespace System.Web.Mvc.Extensibility.Unity
 
             concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.ModelValidatorProviderType, type, type.FullName, new ContainerControlledLifetimeManager()));
-
-            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
-                         .Each(type => container.RegisterType(KnownTypes.AreaType, type, type.FullName, new ContainerControlledLifetimeManager()));
 
             #endif
         }

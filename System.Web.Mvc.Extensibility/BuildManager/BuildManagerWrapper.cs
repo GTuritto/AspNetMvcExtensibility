@@ -21,10 +21,6 @@ namespace System.Web.Mvc.Extensibility
         private static readonly IBuildManager current = new BuildManagerWrapper();
         private IEnumerable<Assembly> referencedAssemblies;
 
-        private BuildManagerWrapper()
-        {
-        }
-
         /// <summary>
         /// Gets the current <see cref="IBuildManager"/>.
         /// </summary>

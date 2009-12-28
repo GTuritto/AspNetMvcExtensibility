@@ -17,12 +17,13 @@ namespace System.Web.Mvc.Extensibility
     /// </summary>
     public abstract class BootstrapperBase : DisposableBase, IBootstrapper
     {
+        private readonly object syncLock = new object();
         private IServiceLocator serviceLocator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BootstrapperBase"/> class.
         /// </summary>
-        /// <param name="buildManager">The build manager.</param>
+        /// <param name="buildManager">The build manager.</param>   
         protected BootstrapperBase(IBuildManager buildManager)
         {
             Invariant.IsNotNull(buildManager, "buildManager");
@@ -39,7 +40,18 @@ namespace System.Web.Mvc.Extensibility
             [DebuggerStepThrough]
             get
             {
-                return serviceLocator ?? (serviceLocator = CreateAndSetCurrent());
+                if (serviceLocator == null)
+                {
+                    lock (syncLock)
+                    {
+                        if (serviceLocator == null)
+                        {
+                            serviceLocator = CreateAndSetCurrent();
+                        }
+                    }
+                }
+
+                return serviceLocator;
             }
         }
 

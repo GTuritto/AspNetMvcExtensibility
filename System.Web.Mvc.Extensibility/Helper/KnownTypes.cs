@@ -69,11 +69,6 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         public static readonly Type ModelMetadataConfigurationType = typeof(IModelMetadataConfiguration);
 
-        /// <summary>
-        /// The <seealso cref="IArea"/> type.
-        /// </summary>
-        public static readonly Type AreaType = typeof(IArea);
-
         #endif
     }
 }

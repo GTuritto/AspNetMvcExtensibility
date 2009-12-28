@@ -3,6 +3,7 @@ namespace Demo.Web
     using System.Linq;
     using System.Web.Mvc;
 
+    [HandleError]
     public class ProductController : Controller
     {
         private readonly IRepository<Product> repository;
