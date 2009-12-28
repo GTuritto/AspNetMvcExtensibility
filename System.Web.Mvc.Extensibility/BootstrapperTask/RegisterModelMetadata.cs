@@ -28,8 +28,9 @@ namespace System.Web.Mvc.Extensibility
 
             configurations.Each(configuration => registry.Register(configuration.ModelType, configuration.Configurations));
 
-            ModelMetadataProviders.Current = new CompositeModelMetadataProvider(serviceLocator.GetAllInstances<ExtendedModelMetadataProviderBase>());
-            ModelValidatorProviders.Providers.Insert(0, new ExtendedModelValidatorProvider());
+            ModelMetadataProviders.Current = serviceLocator.GetInstance<CompositeModelMetadataProvider>();
+            ModelValidatorProviders.Providers.Clear();
+            serviceLocator.GetAllInstances<ModelValidatorProvider>().Each(provider => ModelValidatorProviders.Providers.Add(provider));
         }
     }
 }

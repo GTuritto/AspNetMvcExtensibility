@@ -69,6 +69,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
 
                                     #if (!MVC1)
 
+                                    x.ForRequestedType<CompositeModelMetadataProvider>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<CompositeModelMetadataProvider>();
                                     x.ForRequestedType<IModelMetadataRegistry>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<ModelMetadataRegistry>();
                                     x.ForRequestedType<IAreaManager>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<AreaManager>();
 
@@ -103,6 +104,9 @@ namespace System.Web.Mvc.Extensibility.StructureMap
 
             concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ExtendedModelMetadataProviderType).CacheBy(InstanceScope.Singleton).AddType(type)));
+
+            concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
+                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelValidatorProviderType).CacheBy(InstanceScope.Singleton).AddType(type)));
 
             concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.AreaType).CacheBy(InstanceScope.Singleton).AddType(type)));

@@ -65,8 +65,9 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
             #if (!MVC1)
 
-            container.AddComponentLifeStyle<IModelMetadataRegistry, ModelMetadataRegistry>(LifestyleType.Singleton);
-            container.AddComponentLifeStyle<IAreaManager, AreaManager>(LifestyleType.Singleton);
+            container.AddComponentLifeStyle<CompositeModelMetadataProvider, CompositeModelMetadataProvider>(LifestyleType.Singleton)
+                     .AddComponentLifeStyle<IModelMetadataRegistry, ModelMetadataRegistry>(LifestyleType.Singleton)
+                     .AddComponentLifeStyle<IAreaManager, AreaManager>(LifestyleType.Singleton);
 
             #endif
         }
@@ -98,6 +99,9 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
             concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ExtendedModelMetadataProviderType, type, LifestyleType.Singleton));
+
+            concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelValidatorProviderType, type, LifestyleType.Singleton));
 
             concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.AreaType, type, LifestyleType.Singleton));
