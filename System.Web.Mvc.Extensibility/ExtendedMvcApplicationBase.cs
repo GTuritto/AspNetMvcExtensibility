@@ -76,16 +76,30 @@ namespace System.Web.Mvc.Extensibility
         }
 
         /// <summary>
-        /// Executes when a request arrives.
+        /// Executes at the start of begin request.
         /// </summary>
-        protected virtual void OnBeginRequest()
+        protected virtual void OnBeginRequestStart()
         {
         }
 
         /// <summary>
-        /// Executes when the request is processed.
+        /// Executes at the end of begin request.
         /// </summary>
-        protected virtual void OnEndRequest()
+        protected virtual void OnBeginRequestEnd()
+        {
+        }
+
+        /// <summary>
+        /// Executes at the start of end request.
+        /// </summary>
+        protected virtual void OnEndRequestStart()
+        {
+        }
+
+        /// <summary>
+        /// Executes at the end of end request.
+        /// </summary>
+        protected virtual void OnEndRequestEnd()
         {
         }
 
@@ -98,6 +112,8 @@ namespace System.Web.Mvc.Extensibility
 
         private void HandleBeginRequest(object sender, EventArgs e)
         {
+            OnBeginRequestStart();
+
             HttpContextBase httpContext = new HttpContextWrapper(Context);
             IServiceLocator serviceLocator = Bootstrapper.ServiceLocator;
 
@@ -107,17 +123,19 @@ namespace System.Web.Mvc.Extensibility
                           .OrderBy(task => task.Order)
                           .Each(task => task.Execute(perRequestExecutionContext));
 
-            OnBeginRequest();
+            OnBeginRequestEnd();
         }
 
         private void HandleEndRequest(object sender, EventArgs e)
         {
-            OnEndRequest();
+            OnEndRequestStart();
 
             Bootstrapper.ServiceLocator
                         .GetAllInstances<IPerRequestTask>()
                         .OrderByDescending(task => task.Order)
                         .Each(task => task.Dispose());
+
+            OnEndRequestEnd();
         }
     }
 }
