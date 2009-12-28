@@ -17,7 +17,7 @@ namespace System.Web.Mvc.Extensibility
         /// </summary>
         protected PerRequestTaskBase()
         {
-            Order = -1;
+            Order = int.MaxValue;
         }
 
         /// <summary>

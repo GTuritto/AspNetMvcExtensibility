@@ -82,6 +82,7 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 #if (!MVC1)
 
                 Bind<IModelMetadataRegistry>().To<ModelMetadataRegistry>().InSingletonScope();
+                Bind<IAreaManager>().To<AreaManager>().InSingletonScope();
 
                 #endif
             }
@@ -96,14 +97,6 @@ namespace System.Web.Mvc.Extensibility.Ninject
                 concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.PerRequestTaskType).To(type).InSingletonScope());
 
-                #if (!MVC1)
-                concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
-                             .Each(type => Bind(KnownTypes.ModelMetadataConfigurationType).To(type).InTransientScope());
-
-                concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
-                             .Each(type => Bind(KnownTypes.ExtendedModelMetadataProviderType).To(type).InSingletonScope());
-                #endif
-
                 concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                              .Each(type => Bind(KnownTypes.ModelBinderType).To(type).InSingletonScope());
 
@@ -115,6 +108,19 @@ namespace System.Web.Mvc.Extensibility.Ninject
 
                 concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                              .Each(type => Bind(KnownTypes.ViewEngineType).To(type).InSingletonScope());
+
+                #if (!MVC1)
+
+                concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                             .Each(type => Bind(KnownTypes.ModelMetadataConfigurationType).To(type).InTransientScope());
+
+                concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                             .Each(type => Bind(KnownTypes.ExtendedModelMetadataProviderType).To(type).InSingletonScope());
+
+                concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
+                             .Each(type => Bind(KnownTypes.AreaType).To(type).InSingletonScope());
+
+                #endif
             }
         }
     }

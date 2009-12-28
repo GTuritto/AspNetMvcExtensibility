@@ -7,7 +7,6 @@
 
 namespace System.Web.Mvc.Extensibility.Tests
 {
-    using Moq;
     using Xunit;
 
     public class BuildManagerWrapperTests
@@ -21,17 +20,13 @@ namespace System.Web.Mvc.Extensibility.Tests
         [Fact]
         public void Assemblies_should_throw_exception_when_not_running_in_web_server()
         {
-            Assert.Throws<HttpException>(() => Assert.Empty(new BuildManagerWrapper().Assemblies));
+            Assert.Throws<HttpException>(() => Assert.Empty(BuildManagerWrapper.Current.Assemblies));
         }
 
         [Fact]
-        public void ConcreteTypes_should_not_be_empty()
+        public void ConcreteTypes_should_throw_exception_when_not_running_in_web_server()
         {
-            var buildManager = new Mock<BuildManagerWrapper>();
-
-            buildManager.SetupGet(bm => bm.Assemblies).Returns(new[] { GetType().Assembly });
-
-            Assert.NotEmpty(buildManager.Object.ConcreteTypes);
+            Assert.Throws<HttpException>(() => Assert.Empty(BuildManagerWrapper.Current.ConcreteTypes));
         }
     }
 }

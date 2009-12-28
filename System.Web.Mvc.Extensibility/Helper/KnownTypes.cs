@@ -53,6 +53,7 @@ namespace System.Web.Mvc.Extensibility
         public static readonly Type ActionResultType = typeof(ActionResult);
 
         #if (!MVC1)
+
         /// <summary>
         /// The <seealso cref="ExtendedModelMetadataProviderBase"/> type.
         /// </summary>
@@ -62,6 +63,12 @@ namespace System.Web.Mvc.Extensibility
         /// The <seealso cref="ModelMetadataConfigurationType"/> type.
         /// </summary>
         public static readonly Type ModelMetadataConfigurationType = typeof(IModelMetadataConfiguration);
+
+        /// <summary>
+        /// The <seealso cref="IArea"/> type.
+        /// </summary>
+        public static readonly Type AreaType = typeof(IArea);
+
         #endif
     }
 }

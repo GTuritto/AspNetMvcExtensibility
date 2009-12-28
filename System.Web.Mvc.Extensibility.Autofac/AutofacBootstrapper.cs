@@ -64,15 +64,6 @@ namespace System.Web.Mvc.Extensibility.Autofac
             concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).As(KnownTypes.PerRequestTaskType).ContainerScoped());
 
-            #if (!MVC1)
-
-            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.ModelMetadataConfigurationType).FactoryScoped());
-
-            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.ExtendedModelMetadataProviderType).ContainerScoped());
-            #endif
-
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => builder.Register(type).As(KnownTypes.ModelBinderType).ContainerScoped());
 
@@ -84,6 +75,19 @@ namespace System.Web.Mvc.Extensibility.Autofac
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => builder.Register(type).As(KnownTypes.ViewEngineType).ContainerScoped());
+
+            #if (!MVC1)
+
+            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                         .Each(type => builder.Register(type).As(KnownTypes.ModelMetadataConfigurationType).FactoryScoped());
+
+            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                         .Each(type => builder.Register(type).As(KnownTypes.ExtendedModelMetadataProviderType).ContainerScoped());
+
+            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
+                         .Each(type => builder.Register(type).As(KnownTypes.AreaType).ContainerScoped());
+
+            #endif
         }
 
         private static void RegisterModules(ContainerBuilder builder, IEnumerable<Type> concreteTypes)
@@ -110,6 +114,7 @@ namespace System.Web.Mvc.Extensibility.Autofac
             #if (!MVC1)
 
             builder.Register<ModelMetadataRegistry>().As<IModelMetadataRegistry>().ContainerScoped();
+            builder.Register<AreaManager>().As<IAreaManager>().ContainerScoped();
 
             #endif
         }

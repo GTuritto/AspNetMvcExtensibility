@@ -70,6 +70,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap
                                     #if (!MVC1)
 
                                     x.ForRequestedType<IModelMetadataRegistry>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<ModelMetadataRegistry>();
+                                    x.ForRequestedType<IAreaManager>().CacheBy(InstanceScope.Singleton).TheDefaultIsConcreteType<AreaManager>();
 
                                     #endif
                                 });
@@ -83,15 +84,6 @@ namespace System.Web.Mvc.Extensibility.StructureMap
             concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.PerRequestTaskType).CacheBy(InstanceScope.Singleton).AddType(type)));
 
-            #if (!MVC1)
-
-            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
-                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelMetadataConfigurationType).AddType(type)));
-
-            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
-                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ExtendedModelMetadataProviderType).CacheBy(InstanceScope.Singleton).AddType(type)));
-            #endif
-
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelBinderType).CacheBy(InstanceScope.Singleton).AddType(type)));
 
@@ -103,6 +95,19 @@ namespace System.Web.Mvc.Extensibility.StructureMap
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ViewEngineType).CacheBy(InstanceScope.Singleton).AddType(type)));
+
+            #if (!MVC1)
+
+            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ModelMetadataConfigurationType).AddType(type)));
+
+            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.ExtendedModelMetadataProviderType).CacheBy(InstanceScope.Singleton).AddType(type)));
+
+            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
+                         .Each(type => container.Configure(x => x.ForRequestedType(KnownTypes.AreaType).CacheBy(InstanceScope.Singleton).AddType(type)));
+
+            #endif
         }
 
         private static void RegisterRegistry(IContainer container, IEnumerable<Type> concreteTypes)

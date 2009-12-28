@@ -66,6 +66,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
             #if (!MVC1)
 
             container.AddComponentLifeStyle<IModelMetadataRegistry, ModelMetadataRegistry>(LifestyleType.Singleton);
+            container.AddComponentLifeStyle<IAreaManager, AreaManager>(LifestyleType.Singleton);
 
             #endif
         }
@@ -78,16 +79,6 @@ namespace System.Web.Mvc.Extensibility.Windsor
             concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.PerRequestTaskType, type, LifestyleType.Singleton));
 
-            #if (!MVC1)
-
-            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
-                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelMetadataConfigurationType, type, LifestyleType.Transient));
-
-            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
-                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ExtendedModelMetadataProviderType, type, LifestyleType.Singleton));
-
-            #endif
-
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelBinderType, type, LifestyleType.Singleton));
 
@@ -99,6 +90,19 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => container.AddComponentLifeStyle(type.FullName, type, type, LifestyleType.Singleton));
+
+            #if (!MVC1)
+
+            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ModelMetadataConfigurationType, type, LifestyleType.Transient));
+
+            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.ExtendedModelMetadataProviderType, type, LifestyleType.Singleton));
+
+            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
+                         .Each(type => container.AddComponentLifeStyle(type.FullName, KnownTypes.AreaType, type, LifestyleType.Singleton));
+
+            #endif
         }
 
         private static void RegisterModules(IWindsorContainer container, IEnumerable<Type> concreteTypes)

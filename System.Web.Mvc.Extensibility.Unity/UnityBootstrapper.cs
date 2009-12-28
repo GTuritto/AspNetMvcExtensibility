@@ -64,6 +64,7 @@ namespace System.Web.Mvc.Extensibility.Unity
             #if (!MVC1)
 
             container.RegisterType<IModelMetadataRegistry, ModelMetadataRegistry>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IAreaManager, AreaManager>(new ContainerControlledLifetimeManager());
 
             #endif
         }
@@ -76,16 +77,6 @@ namespace System.Web.Mvc.Extensibility.Unity
             concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.PerRequestTaskType, type, type.FullName, new ContainerControlledLifetimeManager()));
 
-            #if (!MVC1)
-
-            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
-                         .Each(type => container.RegisterType(KnownTypes.ModelMetadataConfigurationType, type, type.FullName));
-
-            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
-                         .Each(type => container.RegisterType(KnownTypes.ExtendedModelMetadataProviderType, type, type.FullName, new ContainerControlledLifetimeManager()));
-
-            #endif
-
             concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
                          .Each(type => container.RegisterType(KnownTypes.ModelBinderType, type, type.FullName, new ContainerControlledLifetimeManager()));
 
@@ -97,6 +88,19 @@ namespace System.Web.Mvc.Extensibility.Unity
 
             concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
                          .Each(type => container.RegisterType(KnownTypes.ViewEngineType, type, type.FullName, new ContainerControlledLifetimeManager()));
+
+            #if (!MVC1)
+
+            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                         .Each(type => container.RegisterType(KnownTypes.ModelMetadataConfigurationType, type, type.FullName));
+
+            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                         .Each(type => container.RegisterType(KnownTypes.ExtendedModelMetadataProviderType, type, type.FullName, new ContainerControlledLifetimeManager()));
+
+            concreteTypes.Where(type => KnownTypes.AreaType.IsAssignableFrom(type))
+                         .Each(type => container.RegisterType(KnownTypes.AreaType, type, type.FullName, new ContainerControlledLifetimeManager()));
+
+            #endif
         }
 
         private static void RegisterModules(IUnityContainer container, IEnumerable<Type> concreteTypes)
