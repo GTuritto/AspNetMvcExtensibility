@@ -104,10 +104,13 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IModule.cs" />
+    <Compile Include="InternalUnityContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InternalUnityExtension.cs" />
+    <Compile Include="UnityContainerExtensions.cs" />
     <Compile Include="UnityMvcApplication.cs" />
     <Compile Include="UnityBootstrapper.cs" />
-    <Compile Include="UnityServiceLocator.cs" />
+    <Compile Include="UnityAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Web.Mvc.Extensibility\System.Web.Mvc.Extensibility.csproj">

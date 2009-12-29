@@ -34,7 +34,7 @@ namespace Demo.Web
 
             Configure(model => model.Price).FormatAsCurrency()
                                            .Required("Price cannot be blank.")
-                                           .Range(10, 1000, "Price must be between 10.00-1000.00.");
+                                           .Range(10.00m, 1000.00m, "Price must be between 10.00-1000.00.");
         }
     }
 }

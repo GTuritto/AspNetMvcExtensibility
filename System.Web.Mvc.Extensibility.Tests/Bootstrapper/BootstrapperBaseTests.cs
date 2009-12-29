@@ -73,6 +73,10 @@ namespace System.Web.Mvc.Extensibility.Tests
             {
                 return serviceLocator.Object;
             }
+
+            protected override void LoadModules()
+            {
+            }
         }
     }
 }

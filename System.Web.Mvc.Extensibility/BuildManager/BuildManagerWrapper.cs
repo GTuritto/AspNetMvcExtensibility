@@ -20,6 +20,7 @@ namespace System.Web.Mvc.Extensibility
     {
         private static readonly IBuildManager current = new BuildManagerWrapper();
         private IEnumerable<Assembly> referencedAssemblies;
+        private IEnumerable<Type> concreteTypes;
 
         /// <summary>
         /// Gets the current <see cref="IBuildManager"/>.
@@ -56,7 +57,7 @@ namespace System.Web.Mvc.Extensibility
             [DebuggerStepThrough]
             get
             {
-                return Assemblies.ConcreteTypes();
+                return concreteTypes ?? (concreteTypes = Assemblies.ConcreteTypes());
             }
         }
     }

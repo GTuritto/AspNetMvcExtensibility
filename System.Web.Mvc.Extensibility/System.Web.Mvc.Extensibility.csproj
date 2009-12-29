@@ -94,8 +94,19 @@
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Abstraction\IRegistrar.cs" />
+    <Compile Include="Abstraction\RegistrarExtensions.cs" />
     <Compile Include="BuildManager\BuildManagerWrapper.cs" />
     <Compile Include="BuildManager\IBuildManager.cs" />
+    <Compile Include="EventAggregator\DelegateReference.cs" />
+    <Compile Include="EventAggregator\EventAggregator.cs" />
+    <Compile Include="EventAggregator\EventBase.cs" />
+    <Compile Include="EventAggregator\EventBase`1.cs" />
+    <Compile Include="EventAggregator\EventSubscription.cs" />
+    <Compile Include="EventAggregator\IDelegateReference.cs" />
+    <Compile Include="EventAggregator\IEventAggregator.cs" />
+    <Compile Include="EventAggregator\IEventSubscription.cs" />
+    <Compile Include="EventAggregator\SubscriptionToken.cs" />
     <Compile Include="TypeCatalog\TypeCatalog.cs" />
     <Compile Include="TypeCatalog\TypeCatalogBuilder.cs" />
     <Compile Include="PerRequestTask\IPerRequestTask.cs" />

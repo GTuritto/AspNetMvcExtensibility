@@ -17,15 +17,15 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
     using IParameter = global::Ninject.Parameters.IParameter;
     using IRequest = global::Ninject.Activation.IRequest;
 
-    public class NinjectServiceLocatorTests
+    public class NinjectAdapterTests
     {
         private readonly Mock<IKernel> kernel;
-        private NinjectServiceLocator serviceLocator;
+        private NinjectAdapter adapter;
 
-        public NinjectServiceLocatorTests()
+        public NinjectAdapterTests()
         {
             kernel = new Mock<IKernel>();
-            serviceLocator = new NinjectServiceLocator(kernel.Object);
+            adapter = new NinjectAdapter(kernel.Object);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
         {
             kernel.Setup(c => c.Dispose());
 
-            serviceLocator.Dispose();
+            adapter.Dispose();
 
             kernel.VerifyAll();
         }
@@ -41,7 +41,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
         [Fact]
         public void Should_finalize()
         {
-            serviceLocator = null;
+            adapter = null;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -54,7 +54,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
 
             kernel.Setup(c => c.Inject(It.IsAny<object>()));
 
-            serviceLocator.Inject(dummy);
+            adapter.Inject(dummy);
 
             kernel.VerifyAll();
         }
@@ -64,7 +64,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
         {
             SetupResolve();
 
-            serviceLocator.GetInstance<DummyObject>();
+            adapter.GetInstance<DummyObject>();
 
             kernel.VerifyAll();
         }
@@ -74,7 +74,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
         {
             SetupResolve();
 
-            serviceLocator.GetInstance<DummyObject>("foo");
+            adapter.GetInstance<DummyObject>("foo");
 
             kernel.VerifyAll();
         }
@@ -84,7 +84,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
         {
             SetupResolve();
 
-            serviceLocator.GetAllInstances(typeof(DummyObject));
+            adapter.GetAllInstances(typeof(DummyObject));
 
             kernel.VerifyAll();
         }

@@ -20,7 +20,7 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
 
             var bootstrapper = new UnityBootstrapper(buildManager.Object);
 
-            Assert.IsType<UnityServiceLocator>(bootstrapper.ServiceLocator);
+            Assert.IsType<UnityAdapter>(bootstrapper.ServiceLocator);
         }
     }
 }

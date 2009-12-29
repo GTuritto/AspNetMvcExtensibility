@@ -20,7 +20,7 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
 
             var bootstrapper = new WindsorBootstrapper(buildManager.Object);
 
-            Assert.IsType<WindsorServiceLocator>(bootstrapper.ServiceLocator);
+            Assert.IsType<WindsorAdapter>(bootstrapper.ServiceLocator);
         }
     }
 }

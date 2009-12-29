@@ -8,7 +8,6 @@
 namespace System.Web.Mvc.Extensibility
 {
     using Collections.Generic;
-    using Linq;
 
     using Microsoft.Practices.ServiceLocation;
 
@@ -17,8 +16,6 @@ namespace System.Web.Mvc.Extensibility
     /// </summary>
     public class RegisterModelMetadata : BootstrapperTaskBase
     {
-        private static readonly Type[] builtInProviderTypes = new[] { typeof(DataAnnotationsModelValidatorProvider), typeof(DataErrorInfoModelValidatorProvider), typeof(ClientDataTypeModelValidatorProvider), typeof(EmptyModelValidatorProvider) };
-
         /// <summary>
         /// Executes the task.
         /// </summary>
@@ -35,9 +32,7 @@ namespace System.Web.Mvc.Extensibility
 
             // We have to make sure that custom provider will appear first,
             // otherwise it will return wrong validation messages.
-
             serviceLocator.GetAllInstances<ModelValidatorProvider>()
-                          .Where(provider => !builtInProviderTypes.Any(type => type == provider.GetType()))
                           .Each(provider => ModelValidatorProviders.Providers.Insert(0, provider));
         }
     }

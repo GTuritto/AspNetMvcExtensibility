@@ -3,7 +3,7 @@ namespace Demo.Web
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
-    //using System.Web.Mvc.Extensibility;
+    // using System.Web.Mvc.Extensibility;
 
     public class ProductDisplayModel
     {

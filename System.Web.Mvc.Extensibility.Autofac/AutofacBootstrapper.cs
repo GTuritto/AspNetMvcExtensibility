@@ -7,9 +7,7 @@
 
 namespace System.Web.Mvc.Extensibility.Autofac
 {
-    using Collections.Generic;
     using Linq;
-    using Routing;
 
     using Microsoft.Practices.ServiceLocation;
 
@@ -40,83 +38,28 @@ namespace System.Web.Mvc.Extensibility.Autofac
         protected override IServiceLocator CreateServiceLocator()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            AutofacServiceLocator serviceLocator = new AutofacServiceLocator();
-
-            builder.Register(serviceLocator).As<IServiceLocator>();
-            builder.Register(serviceLocator).As<IInjector>();
-            RegisterKnownTypes(builder);
-
-            IEnumerable<Type> concreteTypes = BuildManager.ConcreteTypes;
-
-            RegisterDynamicTypes(builder, concreteTypes);
-            RegisterModules(builder, concreteTypes);
-
-            serviceLocator.Container = builder.Build();
-
-            return serviceLocator;
-        }
-
-        private static void RegisterDynamicTypes(ContainerBuilder builder, IEnumerable<Type> concreteTypes)
-        {
-            concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.BootstrapperTaskType).ContainerScoped());
-
-            concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.PerRequestTaskType).ContainerScoped());
-
-            concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
-                         .Each(type => builder.Register(type).As(KnownTypes.ModelBinderType).ContainerScoped());
-
-            concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).FactoryScoped());
-
-            concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).FactoryScoped());
-
-            concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.ViewEngineType).ContainerScoped());
-
-            #if (!MVC1)
-
-            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.ModelMetadataConfigurationType).FactoryScoped());
-
-            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.ExtendedModelMetadataProviderType).ContainerScoped());
-
-            concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
-                         .Each(type => builder.Register(type).As(KnownTypes.ModelValidatorProviderType).ContainerScoped());
-
-            #endif
-        }
-
-        private static void RegisterModules(ContainerBuilder builder, IEnumerable<Type> concreteTypes)
-        {
             builder.RegisterModule(new CollectionModule());
 
-            concreteTypes.Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
-                         .Where(type => !type.Namespace.StartsWith("Autofac", StringComparison.OrdinalIgnoreCase))
-                         .Each(type => builder.RegisterModule(Activator.CreateInstance(type) as IModule));
+            AutofacAdapter adapter = new AutofacAdapter(builder.Build());
+
+            return adapter;
         }
 
-        private void RegisterKnownTypes(ContainerBuilder builder)
+        /// <summary>
+        /// Loads the container specific modules.
+        /// </summary>
+        protected override void LoadModules()
         {
-            builder.Register(RouteTable.Routes);
-            builder.Register(ControllerBuilder.Current);
-            builder.Register(ModelBinders.Binders);
-            builder.Register(ViewEngines.Engines);
-            builder.Register(BuildManager);
+            ContainerBuilder builder = new ContainerBuilder();
 
-            builder.Register<FilterRegistry>().As<IFilterRegistry>().ContainerScoped();
-            builder.Register<ExtendedControllerFactory>().As<IControllerFactory>().ContainerScoped();
-            builder.Register<ExtendedControllerActionInvoker>().As<IActionInvoker>().FactoryScoped();
+            BuildManager.ConcreteTypes
+                        .Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
+                        .Where(type => !type.Namespace.StartsWith("Autofac", StringComparison.OrdinalIgnoreCase))
+                        .Each(type => builder.RegisterModule(Activator.CreateInstance(type) as IModule));
 
-            #if (!MVC1)
+            IContainer container = ((AutofacAdapter) ServiceLocator).Container;
 
-            builder.Register<CompositeModelMetadataProvider>().ContainerScoped();
-            builder.Register<ModelMetadataRegistry>().As<IModelMetadataRegistry>().ContainerScoped();
-
-            #endif
+            builder.Build(container);
         }
     }
 }

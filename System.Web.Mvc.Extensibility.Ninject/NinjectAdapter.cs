@@ -15,17 +15,17 @@ namespace System.Web.Mvc.Extensibility.Ninject
     using IKernel = global::Ninject.IKernel;
 
     /// <summary>
-    /// Defines a <seealso cref="IServiceLocator">service locator</seealso> which with backed by Ninject <seealso cref="IKernel">Kernel</seealso>.
+    /// Defines an adapter class which with backed by Ninject <seealso cref="IKernel">Kernel</seealso>.
     /// </summary>
-    public class NinjectServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
+    public class NinjectAdapter : ServiceLocatorImplBase, IRegistrar, IInjector, IDisposable
     {
         private bool isDisposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NinjectServiceLocator"/> class.
+        /// Initializes a new instance of the <see cref="NinjectAdapter"/> class.
         /// </summary>
         /// <param name="kernel">The kernel.</param>
-        public NinjectServiceLocator(IKernel kernel)
+        public NinjectAdapter(IKernel kernel)
         {
             Invariant.IsNotNull(kernel, "kernel");
 
@@ -34,10 +34,10 @@ namespace System.Web.Mvc.Extensibility.Ninject
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="NinjectServiceLocator"/> is reclaimed by garbage collection.
+        /// <see cref="NinjectAdapter"/> is reclaimed by garbage collection.
         /// </summary>
         [DebuggerStepThrough]
-        ~NinjectServiceLocator()
+        ~NinjectAdapter()
         {
             Dispose(false);
         }
@@ -60,6 +60,52 @@ namespace System.Web.Mvc.Extensibility.Ninject
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Registers the type.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="asSingleton">if set to <c>true</c> [as singleton].</param>
+        /// <returns></returns>
+        public virtual IRegistrar RegisterType(string key, Type serviceType, Type implementationType, bool asSingleton)
+        {
+            Invariant.IsNotNull(serviceType, "serviceType");
+            Invariant.IsNotNull(implementationType, "implementationType");
+
+            var bindingExpression = Kernel.Bind(serviceType).To(implementationType);
+            var expression = asSingleton ? bindingExpression.InSingletonScope() : bindingExpression.InTransientScope();
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                expression.Named(key);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
+        public virtual IRegistrar RegisterInstance(string key, Type serviceType, object instance)
+        {
+            Invariant.IsNotNull(serviceType, "serviceType");
+            Invariant.IsNotNull(instance, "instance");
+
+            var bindingExpression = Kernel.Bind(serviceType).ToConstant(instance);
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                bindingExpression.Named(key);
+            }
+
+            return this;
         }
 
         /// <summary>

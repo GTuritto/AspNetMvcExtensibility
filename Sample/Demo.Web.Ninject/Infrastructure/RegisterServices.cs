@@ -5,7 +5,7 @@ namespace Demo.Web.Ninject
         public override void Load()
         {
             Bind<IDatabase>().To<InMemoryDatabasae>();
-            Bind(typeof(IRepository<>)).To(typeof (Repository<>));
+            Bind(typeof(IRepository<>)).To(typeof(Repository<>));
         }
     }
 }

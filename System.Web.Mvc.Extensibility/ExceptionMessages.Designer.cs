@@ -88,6 +88,15 @@ namespace System.Web.Mvc.Extensibility {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid delegate reference type..
+        /// </summary>
+        internal static string InvalidDelegateReferenceType {
+            get {
+                return ResourceManager.GetString("InvalidDelegateReferenceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email address format..
         /// </summary>
         internal static string InvalidEmailAddressFormat {

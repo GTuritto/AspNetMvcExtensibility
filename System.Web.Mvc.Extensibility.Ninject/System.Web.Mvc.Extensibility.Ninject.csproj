@@ -101,7 +101,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NinjectMvcApplication.cs" />
     <Compile Include="NinjectBootstrapper.cs" />
-    <Compile Include="NinjectServiceLocator.cs" />
+    <Compile Include="NinjectAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

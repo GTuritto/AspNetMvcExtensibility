@@ -5,22 +5,22 @@
 // All other rights reserved.
 #endregion
 
-namespace System.Web.Mvc.Extensibility.Windsor.Tests
+namespace System.Web.Mvc.Extensibility.Unity.Tests
 {
     using Moq;
     using Xunit;
 
-    using Castle.Windsor;
+    using Microsoft.Practices.Unity;
 
-    public class WindsorServiceLocatorTests
+    public class UnityAdapterTests
     {
-        private readonly Mock<IWindsorContainer> container;
-        private WindsorServiceLocator serviceLocator;
+        private readonly Mock<IUnityContainer> container;
+        private UnityAdapter adapter;
 
-        public WindsorServiceLocatorTests()
+        public UnityAdapterTests()
         {
-            container = new Mock<IWindsorContainer>();
-            serviceLocator = new WindsorServiceLocator(container.Object);
+            container = new Mock<IUnityContainer>();
+            adapter = new UnityAdapter(container.Object);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
         {
             container.Setup(c => c.Dispose());
 
-            serviceLocator.Dispose();
+            adapter.Dispose();
 
             container.VerifyAll();
         }
@@ -36,7 +36,7 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
         [Fact]
         public void Should_finalize()
         {
-            serviceLocator = null;
+            adapter = null;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -45,12 +45,11 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
         [Fact]
         public void Should_be_able_to_inject()
         {
-            var dummy = new DummyObject2();
+            var dummy = new DummyObject();
 
-            container.Setup(c => c.Kernel.HasComponent(typeof(DummyObject))).Returns(true);
-            container.Setup(c => c.Resolve(typeof (DummyObject))).Returns(new DummyObject());
+            container.Setup(c => c.BuildUp(It.IsAny<Type>(), It.IsAny<DummyObject>()));
 
-            serviceLocator.Inject(dummy);
+            adapter.Inject(dummy);
 
             container.VerifyAll();
         }
@@ -60,7 +59,7 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
         {
             container.Setup(c => c.Resolve(It.IsAny<Type>()));
 
-            serviceLocator.GetInstance<DummyObject>();
+            adapter.GetInstance<DummyObject>();
 
             container.VerifyAll();
         }
@@ -70,7 +69,7 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
         {
             container.Setup(c => c.Resolve(It.IsAny<Type>(), It.IsAny<string>()));
 
-            serviceLocator.GetInstance<DummyObject>("foo");
+            adapter.GetInstance<DummyObject>("foo");
 
             container.VerifyAll();
         }
@@ -80,22 +79,13 @@ namespace System.Web.Mvc.Extensibility.Windsor.Tests
         {
             container.Setup(c => c.ResolveAll(It.IsAny<Type>())).Returns(new DummyObject[] { });
 
-            serviceLocator.GetAllInstances(typeof(DummyObject));
+            adapter.GetAllInstances(typeof(DummyObject));
 
             container.VerifyAll();
         }
 
         private class DummyObject
         {
-        }
-
-        private class DummyObject2
-        {
-            // ReSharper disable UnusedMember.Local
-            public DummyObject Dummy { get; set; }
-
-            public string StringProperty { get; set; }
-            // ReSharper restore UnusedMember.Local
         }
     }
 }

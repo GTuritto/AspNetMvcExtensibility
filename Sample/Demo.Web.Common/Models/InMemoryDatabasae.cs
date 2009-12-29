@@ -20,9 +20,9 @@ namespace Demo.Web
 
             return new Dictionary<Type, object>
                        {
-                           {typeof(Category), categories },
-                           {typeof(Supplier), suppliers },
-                           {typeof(Product), products }
+                           { typeof(Category), categories },
+                           { typeof(Supplier), suppliers },
+                           { typeof(Product), products }
                        };
         }
 

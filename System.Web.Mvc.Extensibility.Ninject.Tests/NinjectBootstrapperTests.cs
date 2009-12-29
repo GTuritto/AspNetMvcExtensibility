@@ -20,7 +20,7 @@ namespace System.Web.Mvc.Extensibility.Ninject.Tests
 
             var bootstrapper = new NinjectBootstrapper(buildManager.Object);
 
-            Assert.IsType<NinjectServiceLocator>(bootstrapper.ServiceLocator);
+            Assert.IsType<NinjectAdapter>(bootstrapper.ServiceLocator);
         }
     }
 }

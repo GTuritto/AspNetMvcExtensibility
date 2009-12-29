@@ -12,15 +12,15 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
 
     using IContainer = global::StructureMap.IContainer;
 
-    public class StructureMapServiceLocatorTests
+    public class StructureMapAdapterTests
     {
         private readonly Mock<IContainer> container;
-        private readonly StructureMapServiceLocator serviceLocator;
+        private readonly StructureMapAdapter adapter;
 
-        public StructureMapServiceLocatorTests()
+        public StructureMapAdapterTests()
         {
             container = new Mock<IContainer>();
-            serviceLocator = new StructureMapServiceLocator(container.Object);
+            adapter = new StructureMapAdapter(container.Object);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
 
             container.Setup(c => c.BuildUp(It.IsAny<object>()));
 
-            serviceLocator.Inject(dummy);
+            adapter.Inject(dummy);
 
             container.VerifyAll();
         }
@@ -40,7 +40,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
         {
             container.Setup(c => c.GetInstance(It.IsAny<Type>()));
 
-            serviceLocator.GetInstance<DummyObject>();
+            adapter.GetInstance<DummyObject>();
 
             container.VerifyAll();
         }
@@ -50,7 +50,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
         {
             container.Setup(c => c.GetInstance(It.IsAny<Type>(), It.IsAny<string>()));
 
-            serviceLocator.GetInstance<DummyObject>("foo");
+            adapter.GetInstance<DummyObject>("foo");
 
             container.VerifyAll();
         }
@@ -60,7 +60,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
         {
             container.Setup(c => c.GetAllInstances(It.IsAny<Type>())).Returns(new [] { new DummyObject() });
 
-            serviceLocator.GetAllInstances(typeof(DummyObject));
+            adapter.GetAllInstances(typeof(DummyObject));
 
             container.VerifyAll();
         }

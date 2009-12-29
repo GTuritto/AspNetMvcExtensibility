@@ -16,4 +16,4 @@
 #endregion
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "System.Web.Mvc.Extensibility.Unity.UnityBootstrapper.#RegisterDynamicTypes(Microsoft.Practices.Unity.IUnityContainer,System.Collections.Generic.IEnumerable`1<System.Type>)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Scope = "type", Target = "System.Web.Mvc.Extensibility.Unity.InternalUnityExtension")]

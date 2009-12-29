@@ -5,8 +5,9 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%= Html.Encode(ViewData["Message"]) %></h2>
     <ul>
-        <li>IoC Containers rules everywhere.</li>
-        <li><%= Html.ActionLink("ModelMetadata Provider", "Index", "Product")%></li>
+        <li>IoC Containers rules everywhere. Currently has adapter for Autofac, Ninject, StructureMap, Unity and Windsor.</li>
+        <li>Supports multiple Modelmetadata Provider, Fluent Metadata provider is included.</li>
+        <li>Fluent Action Filter registration, dependency injection for decorated action filters.</li>
         <li>Area Manager (Under Development).</li>
     </ul>
     <p>

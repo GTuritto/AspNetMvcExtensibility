@@ -13,35 +13,48 @@ namespace System.Web.Mvc.Extensibility.Autofac
     using Linq;
 
     using Microsoft.Practices.ServiceLocation;
+
+    using ContainerBuilder = global::Autofac.Builder.ContainerBuilder;
     using IContainer = global::Autofac.IContainer;
 
     /// <summary>
-    /// Defines a <seealso cref="IServiceLocator">service locator</seealso> which with backed by Autofac <seealso cref="IContainer">Container</seealso>.
+    /// Defines an adapter class which with backed by Autofac <seealso cref="IContainer">Container</seealso>.
     /// </summary>
-    public class AutofacServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
+    public class AutofacAdapter : ServiceLocatorImplBase, IRegistrar, IInjector, IDisposable
     {
         private static readonly Type genericEnumerableType = typeof(IEnumerable<>);
 
         private bool isDisposed;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacAdapter"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        public AutofacAdapter(IContainer container)
+        {
+            Invariant.IsNotNull(container, "container");
+
+            Container = container;
+        }
+
+        /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="AutofacServiceLocator"/> is reclaimed by garbage collection.
+        /// <see cref="AutofacAdapter"/> is reclaimed by garbage collection.
         /// </summary>
         [DebuggerStepThrough]
-        ~AutofacServiceLocator()
+        ~AutofacAdapter()
         {
             Dispose(false);
         }
 
         /// <summary>
-        /// Gets or sets the container.
+        /// Gets the container.
         /// </summary>
         /// <value>The container.</value>
         public IContainer Container
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -52,6 +65,61 @@ namespace System.Web.Mvc.Extensibility.Autofac
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Registers the type.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="asSingleton">if set to <c>true</c> [as singleton].</param>
+        /// <returns></returns>
+        public virtual IRegistrar RegisterType(string key, Type serviceType, Type implementationType, bool asSingleton)
+        {
+            Invariant.IsNotNull(serviceType, "serviceType");
+            Invariant.IsNotNull(implementationType, "implementationType");
+
+            ContainerBuilder builder = new ContainerBuilder();
+
+            var registrar = builder.Register(implementationType).As(serviceType);
+
+            registrar = asSingleton ? registrar.SingletonScoped() : registrar.FactoryScoped();
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                registrar.Named(key);
+            }
+
+            builder.Build(Container);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
+        public virtual IRegistrar RegisterInstance(string key, Type serviceType, object instance)
+        {
+            Invariant.IsNotNull(serviceType, "serviceType");
+            Invariant.IsNotNull(instance, "instance");
+
+            ContainerBuilder builder = new ContainerBuilder();
+
+            var registrar = builder.Register(instance).As(serviceType).ExternallyOwned();
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                registrar.Named(key);
+            }
+
+            builder.Build(Container);
+
+            return this;
         }
 
         /// <summary>

@@ -5,22 +5,23 @@
 // All other rights reserved.
 #endregion
 
-namespace System.Web.Mvc.Extensibility.Unity.Tests
+namespace System.Web.Mvc.Extensibility.Autofac.Tests
 {
     using Moq;
     using Xunit;
 
-    using Microsoft.Practices.Unity;
+    using IContainer = global::Autofac.IContainer;
+    using Parameter = global::Autofac.Parameter;
 
-    public class UnityServiceLocatorTests
+    public class AutofacAdapterTests
     {
-        private readonly Mock<IUnityContainer> container;
-        private UnityServiceLocator serviceLocator;
+        private readonly Mock<IContainer> container;
+        private AutofacAdapter adapter;
 
-        public UnityServiceLocatorTests()
+        public AutofacAdapterTests()
         {
-            container = new Mock<IUnityContainer>();
-            serviceLocator = new UnityServiceLocator(container.Object);
+            container = new Mock<IContainer>();
+            adapter = new AutofacAdapter(container.Object);
         }
 
         [Fact]
@@ -28,7 +29,7 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         {
             container.Setup(c => c.Dispose());
 
-            serviceLocator.Dispose();
+            adapter.Dispose();
 
             container.VerifyAll();
         }
@@ -36,7 +37,7 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         [Fact]
         public void Should_finalize()
         {
-            serviceLocator = null;
+            adapter = null;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -47,9 +48,9 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         {
             var dummy = new DummyObject();
 
-            container.Setup(c => c.BuildUp(It.IsAny<Type>(), It.IsAny<DummyObject>()));
+            container.Setup(c => c.InjectProperties(It.IsAny<object>()));
 
-            serviceLocator.Inject(dummy);
+            adapter.Inject(dummy);
 
             container.VerifyAll();
         }
@@ -59,7 +60,7 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         {
             container.Setup(c => c.Resolve(It.IsAny<Type>()));
 
-            serviceLocator.GetInstance<DummyObject>();
+            adapter.GetInstance<DummyObject>();
 
             container.VerifyAll();
         }
@@ -67,9 +68,9 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         [Fact]
         public void Should_be_able_to_get_instance_by_type_and_key()
         {
-            container.Setup(c => c.Resolve(It.IsAny<Type>(), It.IsAny<string>()));
+            container.Setup(c => c.Resolve(It.IsAny<string>()));
 
-            serviceLocator.GetInstance<DummyObject>("foo");
+            adapter.GetInstance<DummyObject>("foo");
 
             container.VerifyAll();
         }
@@ -77,10 +78,11 @@ namespace System.Web.Mvc.Extensibility.Unity.Tests
         [Fact]
         public void Should_be_able_to_get_all_instances()
         {
-            container.Setup(c => c.ResolveAll(It.IsAny<Type>())).Returns(new DummyObject[] { });
-            container.Setup(c => c.Resolve(It.IsAny<Type>())).Throws(new ResolutionFailedException(typeof(DummyObject), null, null));
+            object instances;
 
-            serviceLocator.GetAllInstances(typeof(DummyObject));
+            container.Setup(c => c.TryResolve(It.IsAny<Type>(), out instances, It.IsAny<Parameter[]>())).Returns(false);
+
+            adapter.GetAllInstances(typeof(DummyObject));
 
             container.VerifyAll();
         }

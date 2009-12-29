@@ -138,4 +138,7 @@
   <data name="InvalidUrlFormat" xml:space="preserve">
     <value>Invalid url format.</value>
   </data>
+  <data name="InvalidDelegateReferenceType" xml:space="preserve">
+    <value>Invalid delegate reference type.</value>
+  </data>
 </root>

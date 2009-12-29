@@ -20,7 +20,7 @@ namespace System.Web.Mvc.Extensibility.StructureMap.Tests
 
             var bootstrapper = new StructureMapBootstrapper(buildManager.Object);
 
-            Assert.IsType<StructureMapServiceLocator>(bootstrapper.ServiceLocator);
+            Assert.IsType<StructureMapAdapter>(bootstrapper.ServiceLocator);
         }
     }
 }

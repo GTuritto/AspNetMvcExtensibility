@@ -20,7 +20,7 @@ namespace System.Web.Mvc.Extensibility.Autofac.Tests
 
             var bootstrapper = new AutofacBootstrapper(buildManager.Object);
 
-            Assert.IsType<AutofacServiceLocator>(bootstrapper.ServiceLocator);
+            Assert.IsType<AutofacAdapter>(bootstrapper.ServiceLocator);
         }
     }
 }

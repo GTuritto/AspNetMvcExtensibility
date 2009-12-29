@@ -5,28 +5,25 @@
 // All other rights reserved.
 #endregion
 
-namespace System.Web.Mvc.Extensibility.Windsor
+namespace System.Web.Mvc.Extensibility.Unity
 {
     using Collections.Generic;
     using Diagnostics;
-    using Linq;
-    using Reflection;
-
     using Microsoft.Practices.ServiceLocation;
-    using Castle.Windsor;
+    using Microsoft.Practices.Unity;
 
     /// <summary>
-    /// Defines a <seealso cref="IServiceLocator">service locator</seealso> with backed by Windsor <seealso cref="IWindsorContainer">Container</seealso>.
+    /// Defines an adapter class which with backed by Unity <seealso cref="IUnityContainer">Container</seealso>.
     /// </summary>
-    public class WindsorServiceLocator : ServiceLocatorImplBase, IInjector, IDisposable
+    public class UnityAdapter : ServiceLocatorImplBase, IRegistrar, IInjector, IDisposable
     {
         private bool isDisposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WindsorServiceLocator"/> class.
+        /// Initializes a new instance of the <see cref="UnityAdapter"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        public WindsorServiceLocator(IWindsorContainer container)
+        public UnityAdapter(IUnityContainer container)
         {
             Invariant.IsNotNull(container, "container");
 
@@ -35,10 +32,10 @@ namespace System.Web.Mvc.Extensibility.Windsor
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="WindsorServiceLocator"/> is reclaimed by garbage collection.
+        /// <see cref="UnityAdapter"/> is reclaimed by garbage collection.
         /// </summary>
         [DebuggerStepThrough]
-        ~WindsorServiceLocator()
+        ~UnityAdapter()
         {
             Dispose(false);
         }
@@ -47,7 +44,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
         /// Gets the container.
         /// </summary>
         /// <value>The container.</value>
-        public IWindsorContainer Container
+        public IUnityContainer Container
         {
             get;
             private set;
@@ -64,6 +61,63 @@ namespace System.Web.Mvc.Extensibility.Windsor
         }
 
         /// <summary>
+        /// Registers the type.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="asSingleton">if set to <c>true</c> [as singleton].</param>
+        /// <returns></returns>
+        public virtual IRegistrar RegisterType(string key, Type serviceType, Type implementationType, bool asSingleton)
+        {
+            Invariant.IsNotNull(serviceType, "serviceType");
+            Invariant.IsNotNull(implementationType, "implementationType");
+
+            if (string.IsNullOrEmpty(key) && asSingleton)
+            {
+                Container.RegisterType(serviceType, implementationType, new ContainerControlledLifetimeManager());
+            }
+            else if (string.IsNullOrEmpty(key) && !asSingleton)
+            {
+                Container.RegisterType(serviceType, implementationType);
+            }
+            else if (!string.IsNullOrEmpty(key) && asSingleton)
+            {
+                Container.RegisterType(serviceType, implementationType, key, new ContainerControlledLifetimeManager());
+            }
+            else if (!string.IsNullOrEmpty(key) && !asSingleton)
+            {
+                Container.RegisterType(serviceType, implementationType, key);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
+        public virtual IRegistrar RegisterInstance(string key, Type serviceType, object instance)
+        {
+            Invariant.IsNotNull(serviceType, "serviceType");
+            Invariant.IsNotNull(instance, "instance");
+
+            if (string.IsNullOrEmpty(key))
+            {
+                Container.RegisterInstance(serviceType, instance);
+            }
+            else
+            {
+                Container.RegisterInstance(serviceType, key, instance);
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Injects the matching dependences.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -71,28 +125,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
         {
             if (instance != null)
             {
-                Func<PropertyInfo, bool> isMatching = property =>
-                                                      {
-                                                          if (property.CanWrite)
-                                                          {
-                                                              MethodInfo setMethod = property.GetSetMethod();
-
-                                                              if ((setMethod != null) && (setMethod.GetParameters().Length == 1))
-                                                              {
-                                                                  if (Container.Kernel.HasComponent(property.PropertyType))
-                                                                  {
-                                                                      return true;
-                                                                  }
-                                                              }
-                                                          }
-
-                                                          return false;
-                                                      };
-
-                instance.GetType()
-                        .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
-                        .Where(isMatching)
-                        .Each(property => property.SetValue(instance, Container.Resolve(property.PropertyType), null));
+                Container.BuildUp(instance.GetType(), instance);
             }
         }
 
@@ -114,7 +147,7 @@ namespace System.Web.Mvc.Extensibility.Windsor
         /// <returns></returns>
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
         {
-            return Container.ResolveAll(serviceType).Cast<object>();
+            return Container.ResolveAll(serviceType);
         }
 
         /// <summary>

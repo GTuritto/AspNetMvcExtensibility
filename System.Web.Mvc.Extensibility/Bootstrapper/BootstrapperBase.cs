@@ -7,13 +7,16 @@
 
 namespace System.Web.Mvc.Extensibility
 {
+    using Collections.Generic;
     using Diagnostics;
+    using Linq;
+    using Routing;
 
     using Microsoft.Practices.ServiceLocation;
     using CurrentLocator = Microsoft.Practices.ServiceLocation.ServiceLocator;
 
     /// <summary>
-    /// Defines a base class to execute <seealso cref="IBootstrapperTask"/>.
+    /// Defines a base class which is used for executing application startup and cleanup tasks.
     /// </summary>
     public abstract class BootstrapperBase : DisposableBase, IBootstrapper
     {
@@ -23,7 +26,7 @@ namespace System.Web.Mvc.Extensibility
         /// <summary>
         /// Initializes a new instance of the <see cref="BootstrapperBase"/> class.
         /// </summary>
-        /// <param name="buildManager">The build manager.</param>   
+        /// <param name="buildManager">The build manager.</param>
         protected BootstrapperBase(IBuildManager buildManager)
         {
             Invariant.IsNotNull(buildManager, "buildManager");
@@ -47,6 +50,7 @@ namespace System.Web.Mvc.Extensibility
                         if (serviceLocator == null)
                         {
                             serviceLocator = CreateAndSetCurrent();
+                            LoadModules();
                         }
                     }
                 }
@@ -81,6 +85,11 @@ namespace System.Web.Mvc.Extensibility
         protected abstract IServiceLocator CreateServiceLocator();
 
         /// <summary>
+        /// Loads the container specific modules.
+        /// </summary>
+        protected abstract void LoadModules();
+
+        /// <summary>
         /// Disposes the resources.
         /// </summary>
         protected override void DisposeCore()
@@ -99,9 +108,79 @@ namespace System.Web.Mvc.Extensibility
             }
         }
 
+        private static void RegisterKnownTypes(IRegistrar registrar, IServiceLocator serviceLocator, IBuildManager buildManager)
+        {
+            registrar.RegisterInstance<RouteCollection>(RouteTable.Routes)
+                     .RegisterInstance<ControllerBuilder>(ControllerBuilder.Current)
+                     .RegisterInstance<ModelBinderDictionary>(ModelBinders.Binders)
+                     .RegisterInstance<ViewEngineCollection>(ViewEngines.Engines)
+                     .RegisterInstance<IBuildManager>(buildManager)
+                     .RegisterInstance<IRegistrar>(registrar)
+                     .RegisterInstance<IServiceLocator>(serviceLocator)
+                     .RegisterAsSingleton<IEventAggregator, EventAggregator>()
+                     .RegisterAsSingleton<IFilterRegistry, FilterRegistry>()
+                     .RegisterAsSingleton<IControllerFactory, ExtendedControllerFactory>()
+                     .RegisterAsTransient<IActionInvoker, ExtendedControllerActionInvoker>();
+
+            if (serviceLocator is IInjector)
+            {
+                registrar.RegisterInstance<IInjector>(serviceLocator);
+            }
+
+            #if (!MVC1)
+
+            registrar.RegisterAsSingleton<CompositeModelMetadataProvider>()
+                     .RegisterAsSingleton<IModelMetadataRegistry, ModelMetadataRegistry>();
+
+            #endif
+        }
+
+        private static void RegisterUnknownTypes(IRegistrar registrar, IEnumerable<Type> concreteTypes)
+        {
+            concreteTypes.Where(type => KnownTypes.BootstrapperTaskType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsSingleton(KnownTypes.BootstrapperTaskType, type));
+
+            concreteTypes.Where(type => KnownTypes.PerRequestTaskType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsSingleton(KnownTypes.PerRequestTaskType, type));
+
+            concreteTypes.Where(type => KnownTypes.ModelBinderType.IsAssignableFrom(type) && type.IsDefined(KnownTypes.BindingAttributeType, true))
+                         .Each(type => registrar.RegisterAsSingleton(KnownTypes.ModelBinderType, type));
+
+            concreteTypes.Where(type => KnownTypes.ControllerType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsTransient(type));
+
+            concreteTypes.Where(type => KnownTypes.FilterAttributeType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsTransient(type));
+
+            concreteTypes.Where(type => KnownTypes.ViewEngineType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsSingleton(KnownTypes.ViewEngineType, type));
+
+            #if (!MVC1)
+
+            concreteTypes.Where(type => KnownTypes.ModelMetadataConfigurationType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsTransient(KnownTypes.ModelMetadataConfigurationType, type));
+
+            concreteTypes.Where(type => KnownTypes.ExtendedModelMetadataProviderType.IsAssignableFrom(type))
+                         .Each(type => registrar.RegisterAsSingleton(KnownTypes.ExtendedModelMetadataProviderType, type));
+
+            concreteTypes.Where(type => KnownTypes.ModelValidatorProviderType.IsAssignableFrom(type))
+                         .Where(type => !KnownTypes.BuiltInModelValidatorProviderTypes.Any(builtInType => builtInType == type))
+                         .Each(type => registrar.RegisterAsSingleton(KnownTypes.ModelValidatorProviderType, type));
+
+            #endif
+        }
+
         private IServiceLocator CreateAndSetCurrent()
         {
             IServiceLocator locator = CreateServiceLocator();
+            IRegistrar registrar = locator as IRegistrar;
+
+            if (registrar != null)
+            {
+                RegisterKnownTypes(registrar, locator, BuildManager);
+                RegisterUnknownTypes(registrar, BuildManager.ConcreteTypes);
+            }
+
             CurrentLocator.SetLocatorProvider(() => locator);
 
             return locator;
